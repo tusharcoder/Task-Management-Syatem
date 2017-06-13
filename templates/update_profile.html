@@ -1,0 +1,46 @@
+{%extends 'base.html'%}
+{%block content%}
+<div class="container">
+  <h1>Update <small>Your profile</small></h1>
+  <form class="" action="index.html" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="name"></label>
+      <input type="text" name="name" class="form-control" id="name" placeholder="Enter your name" value="{{profile.name}}">
+      <p class="help-block">Enter your name</p>
+    </div>
+
+    <div class="form-group">
+      <label for="email"></label>
+      <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" disabled value={{email}}>
+      <p class="help-block">Enter your email</p>
+    </div>
+
+    <div class="form-group">
+      <label for="emp_id"></label>
+      <input type="text" class="form-control" id="emp_id" name=emp_id placeholder="Your Employid" disabled value="{{profile.emp_id}}">
+      <p class="help-block">Employid</p>
+    </div>
+
+    <div class="form-group">
+      <label for="address"></label>
+      <textarea name="address" rows="8" cols="80" placeholder="Enter your address" class="form-control">{{profile.address}}</textarea>
+      <p class="help-block">kindly update your address</p>
+    </div>
+
+    <div class="form-group">
+      <label for="pan_no"></label>
+      <input type="text" class="form-control" id="pan_no" placeholder="Enter your pan no" name="pan_no" value="{{profile.pan_no}}">
+      <p class="help-block">kindly update your pan number</p>
+    </div>
+
+    <div class="form-group">
+      <label for="position"></label>
+      <input type="text" class="form-control" id="pan_no" placeholder="Your Position" name="position" disabled value="{{profile.position}}">
+      <p class="help-block">Your position</p>
+    </div>
+
+    <button type="submit" name="Login" class="btn btn-primary">Update Profile</button>
+  </form>
+</div>
+{%endblock%}
