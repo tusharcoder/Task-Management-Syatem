@@ -25,7 +25,7 @@ class UserProfile(models.Model):
 
     def __str__(self):
         """
-        return the string representation of the model
+        return the string representation of the Model
         """
         return self.name
 
@@ -39,28 +39,36 @@ class UserProfile(models.Model):
         self.save()
         return True
 
+
 class Project(models.Model):
     """Model to store the Projet details"""
     name=models.CharField(max_length=100)
     description=models.CharField(max_length=500)
     def __str__(self):
-        """return the string representation of the MOdel Project"""
+        """return the string representation of the Model Project"""
         return self.name
 
+class Assigned_by(models.Model):
+    """Model to store the details of person assigning the task"""
+    name=models.CharField(max_length=100)
+    def __str__(self):
+        """return the string representation of the Model Project"""
+        return self.name
 
 class WorkType(models.Model):
     """Model to store the type"""
     name=models.CharField(max_length=100)
     def __str__(self):
-        """return the string representation of the MOdel Project"""
+        """return the string representation of the Model Project"""
         return self.name
 
 class Task(models.Model):
     """Model to store the task assigned to the user"""
-    name=models.CharField(max_length=100)
+    user = models.ForeignKey(User,related_name="taskuser")
+    name=models.CharField(max_length=100, null= True)
     description=models.CharField(max_length=500)
-    starttime=models.DateTimeField()
-    endtime=models.DateTimeField()
+    starttime=models.TimeField()
+    endtime=models.TimeField()
     project=models.ForeignKey(Project)
     worktype=models.ForeignKey(WorkType)
     assigned_by=models.ForeignKey(User)

@@ -14,10 +14,6 @@ from core import urls as coreurls
 admin.autodiscover()
 
 urlpatterns = [
-    # Examples:
-    # url(r'^$', 'taskmgt.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
-
     url(r'^admin/', include(admin.site.urls)),
     url(r'', include(coreurls)),
 ]

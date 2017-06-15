@@ -1,43 +1,64 @@
 {%extends 'base.html'%}
 {%block content%}
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://www.scaledesk.com/">ScaleDesk</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/home/">Home</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/task/">Tasks</a></li>
+      <li><a href="/viewtasks/">View Tasks</a></li>
+      <li class="active"><a href="/profile">Profile</a></li>
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+      <li><a href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+  </div>
+</nav>
+
+
 <div class="container">
   <h1>Update <small>Your profile</small></h1>
   <form class="" action="index.html" method="post">
     {% csrf_token %}
     <div class="form-group">
-      <label for="name"></label>
+      <label for="name">Name:</label>
       <input type="text" name="name" class="form-control" id="name" placeholder="Enter your name" value="{{profile.name}}">
-      <p class="help-block">Enter your name</p>
+
     </div>
 
     <div class="form-group">
-      <label for="email"></label>
+      <label for="email">Email:</label>
       <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" disabled value={{email}}>
-      <p class="help-block">Enter your email</p>
+
     </div>
 
     <div class="form-group">
-      <label for="emp_id"></label>
+      <label for="emp_id">Employee Id:</label>
       <input type="text" class="form-control" id="emp_id" name=emp_id placeholder="Your Employid" disabled value="{{profile.emp_id}}">
-      <p class="help-block">Employid</p>
+
     </div>
 
     <div class="form-group">
-      <label for="address"></label>
+      <label for="address">Address:</label>
       <textarea name="address" rows="8" cols="80" placeholder="Enter your address" class="form-control">{{profile.address}}</textarea>
-      <p class="help-block">kindly update your address</p>
+
     </div>
 
     <div class="form-group">
-      <label for="pan_no"></label>
+      <label for="pan_no">Pan No:</label>
       <input type="text" class="form-control" id="pan_no" placeholder="Enter your pan no" name="pan_no" value="{{profile.pan_no}}">
-      <p class="help-block">kindly update your pan number</p>
+
     </div>
 
     <div class="form-group">
-      <label for="position"></label>
+      <label for="position">Position:</label>
       <input type="text" class="form-control" id="pan_no" placeholder="Your Position" name="position" disabled value="{{profile.position}}">
-      <p class="help-block">Your position</p>
+
     </div>
 
     <button type="submit" name="Login" class="btn btn-primary">Update Profile</button>

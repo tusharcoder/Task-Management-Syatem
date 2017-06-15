@@ -7,14 +7,18 @@
 
 
 from django.conf.urls import url
-from .views import TestView, RegisterView, LoginView, ProfileView,LogoutView
+from .views import TestView, RegisterView, LoginView, ProfileView, LogoutView,TaskView,HomeView,AboutView,ViewTaskView
 
 urlpatterns = [
     # Examples:
     # url(r'^$', 'taskmgt.views.home', name='home'),
-    url(r'^test/',TestView),
+    url(r'^test/',TestView ),
     url(r'^login/',LoginView, name="login"),
     url(r'^register/',RegisterView, name="register"),
+    url(r'^home/',HomeView, name="home"),
     url(r'^profile/',ProfileView, name="profile"),
     url(r'^logout/',LogoutView, name="logout"),
+    url(r'^task/',TaskView, name="task"),
+    url(r'^about/',AboutView, name="about"),
+    url(r'^viewtasks/',ViewTaskView, name="viewtask"),
 ]

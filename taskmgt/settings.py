@@ -31,8 +31,6 @@ SECRET_KEY = 'v%eda&(*cwrkcgjqjqfn%z%)l^4&0*wv_)(%$s-f7qa6%3tnr&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -73,14 +71,10 @@ TEMPLATES = [
         },
     }
 ]
-
 ROOT_URLCONF = 'taskmgt.urls'
 
 WSGI_APPLICATION = 'taskmgt.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -89,8 +83,6 @@ DATABASES = {
     }
 }
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
