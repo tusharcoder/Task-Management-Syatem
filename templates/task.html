@@ -69,6 +69,21 @@
 
     </div>
 
+    <div class="form-group">
+      <label for="asssigned_by">Assigned By:</label>
+      <select class="form-control" id="worktype" name="worktype">
+        <option value="">task assigned by</option>
+        {% for assign in assigned %}
+        <option value="{{assign.id}}">{{assign.name}}</option>
+        {% endfor %}
+      </select>
+
+    </div>
+
+
+  </div>
+
+
     <button type="submit" name="Add Task" class="btn btn-primary">Add Task</button>
 
     </form>

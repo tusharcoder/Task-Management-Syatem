@@ -50,6 +50,7 @@ class Project(models.Model):
 
 class Assigned_by(models.Model):
     """Model to store the details of person assigning the task"""
+    user = models.ForeignKey(User,related_name="assigninguser")
     name=models.CharField(max_length=100)
     def __str__(self):
         """return the string representation of the Model Project"""

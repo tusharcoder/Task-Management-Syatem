@@ -57,7 +57,9 @@ def RegisterView(request):
 
     if request.method=="POST":
         register(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"name":request.POST.get("name")})
-        return render(request,"home.html",{"title":"Welcome"})
+        return redirect('login', permanent=True)
+
+
 @login_required(login_url="/login/")
 def ProfileView(request):
     """
@@ -95,8 +97,10 @@ def TaskView(request):
         records = Task.objects.filter(user=user)
         projects = Project.objects.all()
         worktypes = WorkType.objects.all()
-        return render(request, "task.html", {"tasks": records,'projects':projects,"worktype":worktypes})
+        assigned = User.objects.filter(is_staff=True)
+        return render(request, "task.html", {"tasks": records,'projects':projects,"worktype":worktypes,"assigned_by":assigned})
     if request.method == 'POST':
         task=Task(**{"name":request.POST.get("name"),"description":request.POST.get("description"),"starttime":request.POST.get("starttime"),"endtime":request.POST.get("endtime"),"project":Project.objects.get(pk=request.POST.get("project")),"worktype":WorkType.objects.get(pk=request.POST.get("worktype")),"assigned_by":request.user,"user":request.user})
-        task.save()
+        task.save
+
         return render(request, "viewtasks.html")
