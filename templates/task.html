@@ -73,8 +73,8 @@
       <label for="asssigned_by">Assigned By:</label>
       <select class="form-control" id="worktype" name="worktype">
         <option value="">task assigned by</option>
-        {% for assign in assigned %}
-        <option value="{{assign.id}}">{{assign.name}}</option>
+        {% for assign in assigned_by %}
+        <option value="{{assign.id}}">{{assign.username}}</option>
         {% endfor %}
       </select>
 

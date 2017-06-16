@@ -57,7 +57,7 @@ def RegisterView(request):
 
     if request.method=="POST":
         register(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"name":request.POST.get("name")})
-        return redirect('login', permanent=True)
+        return redirect('/login/', permanent=True)
 
 
 @login_required(login_url="/login/")
