@@ -8,6 +8,7 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from core.models import UserProfile
+from django.contrib import auth
 
 def login_util(*args,**kwargs):
     "login function"
@@ -15,6 +16,7 @@ def login_util(*args,**kwargs):
     password = kwargs.get("password")
     user = authenticate(username=username, password=password)
     if user:
+        auth.login(kwargs.get("request"),user)
         login(kwargs.get("request"),user)
         return True
 

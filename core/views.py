@@ -6,11 +6,15 @@
 # @Last modified time: 2017-06-13T12:19:30+05:30
 
 
-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from .models import *
 from .utils import *
+
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.contrib import auth
 
 # Create your views here.
 
@@ -33,9 +37,12 @@ def LoginView(request):
         return render(request,"login.html",{"title":"Login"})
 
     if request.method=="POST":
-        result=login_util(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"request":request})
+        user = authenticate(username=request.POST.get("email"), password=request.POST.get("password"))
+        # result=login_util(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"request":request})
         # import ipdb; ipdb.set_trace()
-        if result:
+        auth.login(request,user)
+
+        if user:
             return redirect('home', permanent=True)
         else:
             return redirect('login', permanent=True)
@@ -51,7 +58,7 @@ def RegisterView(request):
     if request.method=="POST":
         register(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"name":request.POST.get("name")})
         return render(request,"home.html",{"title":"Welcome"})
-
+@login_required(login_url="/login/")
 def ProfileView(request):
     """
     Profile View
@@ -64,6 +71,7 @@ def ProfileView(request):
         profile.updateProfile(**request.POST)
         return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email})
 
+@login_required(login_url="/login/")
 def HomeView(request):
     useronline_list = UserProfile.objects.filter(user=request.user)
     profile = useronline_list[0]
@@ -71,19 +79,16 @@ def HomeView(request):
     return render(request,"home.html",{"title":"Welcome","user":username})
 
 def LogoutView(request):
-    """
-    logout the user
-    """
-    if request.method=="GET":
-        logout(request)
-        return redirect('login', permanent=True)
+    logout(request)
+    return redirect('/login/')
 
+@login_required(login_url="/login/")
 def ViewTaskView(request):
     user=request.user
     tasks = Task.objects.filter(user=user)
     return render(request, "viewtasks.html",{'tasks':tasks})
 
-
+@login_required(login_url="/login/")
 def TaskView(request):
     user=request.user
     if request.method == 'GET':
