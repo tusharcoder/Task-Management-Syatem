@@ -7,7 +7,7 @@
 
 
 from django.conf.urls import url
-from .views import TestView, RegisterView, LoginView, ProfileView, LogoutView,TaskView,HomeView,AboutView,ViewTaskView
+from .views import TestView, RegisterView, LoginView, ProfileView,DashView, LogoutView,TaskView,HomeView,AboutView,ViewTaskView
 
 urlpatterns = [
     # Examples:
@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^task/',TaskView, name="task"),
     url(r'^about/',AboutView, name="about"),
     url(r'^viewtasks/',ViewTaskView, name="viewtask"),
+    url(r'^dashboard/',DashView, name='dashboard'),
 ]

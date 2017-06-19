@@ -12,9 +12,13 @@
       <li><a href="/task/">Tasks</a></li>
       <li><a href="/profile/">Profile</a></li>
       <li><a href="/viewtask/">View Task</a></li>
+      {% if staff %}
+        <li><a href="/dashboard/">DashBoard</a></li>
+      {% endif %}
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="/login/"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
+      <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
     </ul>
   </div>
 </nav>
