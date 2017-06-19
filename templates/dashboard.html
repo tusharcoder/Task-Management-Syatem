@@ -98,6 +98,7 @@
                     <th>Project</th>
                     <th>WorkType</th>
                     <th>Assigned By</th>
+                    <th>Created At</th>
                 </tr>
             </thead>
           {% for task in tasks%}
@@ -111,6 +112,7 @@
                       <td>{{task.project}}</td>
                       <td>{{task.worktype}}</td>
                       <td>{{task.assigned_by}}</td>
+                      <td>{{task.created_at}}</td>
                     </tr>
                 {%endfor%}
           </tbody>
@@ -164,6 +166,7 @@
                   <th>Project</th>
                   <th>WorkType</th>
                   <th>Assigned By</th>
+                  <th>Created At</th>
                 </tr>
             </thead>
           {% for taskp in taskpending%}
@@ -177,6 +180,7 @@
                     <td>{{taskp.project}}</td>
                     <td>{{taskp.worktype}}</td>
                     <td>{{taskp.assigned_by}}</td>
+                    <td>{{taskp.created_at}}</td>
                   </tr>
           {% endfor %}
           </tbody>

@@ -37,6 +37,7 @@
                 <th>Project</th>
                 <th>WorkType</th>
                 <th>Assigned By</th>
+                <th>Created At</th>
             </tr>
         </thead>
       {% for task in tasks%}
@@ -50,7 +51,7 @@
                 <td>{{task.project}}</td>
                 <td>{{task.worktype}}</td>
                 <td>{{task.assigned_by}}</td>
-
+                <td>{{task.created_at}}</td>
             </tr>
       {%endfor%}
       </tbody>

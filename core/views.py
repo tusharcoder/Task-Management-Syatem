@@ -124,10 +124,7 @@ def TaskView(request):
     if request.method == 'POST':
         task=Task(**{"name":request.POST.get("name"),"description":request.POST.get("description"),"starttime":request.POST.get("starttime"),"endtime":request.POST.get("endtime"),"project":Project.objects.get(pk=request.POST.get("project")),"worktype":WorkType.objects.get(pk=request.POST.get("worktype")),"assigned_by":User.objects.get(pk=request.POST.get("assigned_by")),"user":request.user})
         staff =user.is_staff
-        if endtime>starttime:
-            task.save()
-        else:
-            print("Error: End time cannot be before Start time")
+        task.save()
         tasks = Task.objects.filter(user=user)
 
         return render(request, "viewtasks.html",{"tasks":tasks,"staff":staff,"user":username})
