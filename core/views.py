@@ -11,11 +11,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from .models import *
 from .utils import *
-
+from datetime import date  ,time ,datetime, timedelta
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import auth
-
+import datetime
 # Create your views here.
 
 def AboutView(request):
@@ -25,14 +25,6 @@ def AboutView(request):
     username = profile.name
     staff =user.is_staff
     return render(request,"about.html",{"user":username,"staff":staff})
-
-
-def TestView(request):
-    """"
-    testing
-    """
-    return render(request,"update_profile.html",{"title":"Testing"})
-
 
 def LoginView(request):
     """
@@ -105,7 +97,7 @@ def ViewTaskView(request):
     profile = useronline_list[0]
     username = profile.name
     staff =user.is_staff
-    tasks = Task.objects.filter(user=user).reverse()
+    tasks = Task.objects.filter(user=user).order_by("-id")
     return render(request, "viewtasks.html",{'tasks':tasks, "staff":staff,"user":username})
 
 @login_required(login_url="/login/")
@@ -133,6 +125,8 @@ def TaskView(request):
 @login_required(login_url="/login/")
 def DashView(request):
     user = request.user
+    dur = []
+    dur1 = []
     useronline_list = UserProfile.objects.filter(user=user)
     profile = useronline_list[0]
     username = profile.name
@@ -141,4 +135,15 @@ def DashView(request):
     member = UserProfile.objects.all()
     tasks = Task.objects.all()
     taskpending = Task.objects.filter(is_approved=False)
-    return render(request, "dashboard.html", {"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "worktypes":worktypes,"user":username})
+    data=[]
+    for pro in projects:
+        taskproject = Task.objects.filter(project = pro)
+        for i in taskproject:
+            duration = datetime.datetime.combine(date.min, i.endtime) - datetime.datetime.combine(date.min, i.starttime)
+            dur.append(duration)
+        sum = datetime.timedelta()
+        for i in dur:
+            sum += i
+        dur1.append(str(sum))
+        data.append({"name":pro.name,"duration":sum})
+    return render(request, "dashboard.html", {"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1})

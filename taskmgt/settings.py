@@ -76,13 +76,21 @@ ROOT_URLCONF = 'taskmgt.urls'
 WSGI_APPLICATION = 'taskmgt.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+#DATABASES = {
+ #   'default': {
+#      'ENGINE': 'django.db.backends.sqlite3',
+ #       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+  # }
+#}
 
+DATABASES = {
+            'default': {
+                        'ENGINE': 'django.db.backends.mysql',
+                                'NAME': 'task',
+                                        'USER': 'root',
+                                                'PASSWORD': 'root',
+                                                                    }
+            }
 
 LANGUAGE_CODE = 'en-us'
 
