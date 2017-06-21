@@ -6,4 +6,3 @@
 # @Last modified time: 2017-06-13T12:06:19+05:30
 
 PROFILE_CHANGABLE_FIELDS = frozenset(('name','address','pan_no'))
-TASK_VIEWABLE_FIELDS = frozenset(('name','description','assigned_by'))

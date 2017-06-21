@@ -11,5 +11,20 @@ from django.contrib import admin
 from .models import Task, WorkType, Project, UserProfile
 # Register your models here.
 
-for i in (Task, WorkType, Project, UserProfile):
-    admin.site.register(i)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('name', 'project', 'worktype' )
+    list_filter = ('created_at',)
+    search_fields = ('name', 'project', 'worktype')
+
+
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'name')
+
+
+admin.site.register(Task , TaskAdmin)
+admin.site.register(WorkType)
+admin.site.register(Project)
+admin.site.register(UserProfile , UserProfileAdmin)
+
+# for i in (Task, WorkType, Project, UserProfile):
+#     admin.site.register(i)

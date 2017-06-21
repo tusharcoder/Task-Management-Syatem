@@ -40,7 +40,7 @@
                 <th>Created At</th>
             </tr>
         </thead>
-      {% for task in tasks%}
+      {% for task in tasks %}
         <tbody>
             <tr>
                 <td>{{task.id}}</td>
@@ -53,7 +53,7 @@
                 <td>{{task.assigned_by}}</td>
                 <td>{{task.created_at}}</td>
             </tr>
-      {%endfor%}
+      {% endfor %}
       </tbody>
     </table>
 </div>
