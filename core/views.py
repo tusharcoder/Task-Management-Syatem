@@ -118,7 +118,6 @@ def TaskView(request):
         staff =user.is_staff
         task.save()
         tasks = Task.objects.filter(user=user)
-
         return render(request, "viewtasks.html",{"tasks":tasks,"staff":staff,"user":username})
         #return redirect('/viewtasks/')
 
@@ -138,6 +137,7 @@ def DashView(request):
     data=[]
     for pro in projects:
         taskproject = Task.objects.filter(project = pro)
+        sum=0
         for i in taskproject:
             duration = datetime.datetime.combine(date.min, i.endtime) - datetime.datetime.combine(date.min, i.starttime)
             dur.append(duration)
