@@ -13,7 +13,7 @@ from .models import Task, WorkType, Project, UserProfile
 
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('name', 'project', 'worktype' )
-    list_filter = ('created_at',)
+    list_filter = ('created_at','project', 'worktype','user',)
     search_fields = ('name', 'project', 'worktype')
 
 

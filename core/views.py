@@ -148,5 +148,6 @@ def DashView(request):
         if taskproject:
             data.append({"name":pro.name,"duration":sum})
         else:
-            data.append({"name":pro.name,"duration":0})
+            sum=0
+            data.append({"name":pro.name,"duration":sum})
     return render(request, "dashboard.html", {"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1})
