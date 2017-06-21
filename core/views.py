@@ -124,7 +124,6 @@ def TaskView(request):
 @login_required(login_url="/login/")
 def DashView(request):
     user = request.user
-    dur = []
     dur1 = []
     useronline_list = UserProfile.objects.filter(user=user)
     profile = useronline_list[0]
@@ -135,19 +134,30 @@ def DashView(request):
     tasks = Task.objects.all()
     taskpending = Task.objects.filter(is_approved=False)
     data=[]
+    intervals = (
+    ('weeks', 604800),  # 60 * 60 * 24 * 7
+    ('days', 86400),    # 60 * 60 * 24
+    ('hours', 3600),    # 60 * 60
+    ('minutes', 60),
+    ('seconds', 1),
+    )
+    def display_time(seconds, granularity=2):
+        result = []
+        for name, count in intervals:
+            value = seconds // count
+            if value:
+                seconds -= value * count
+                if value == 1:
+                    name = name.rstrip('s')
+                result.append("{} {}".format(value, name))
+        return ', '.join(result[:granularity])
     for pro in projects:
-        taskproject = Task.objects.filter(project = pro)
         sum=0
-        for i in taskproject:
-            duration = datetime.datetime.combine(date.min, i.endtime) - datetime.datetime.combine(date.min, i.starttime)
-            dur.append(duration)
-        sum = datetime.timedelta()
+        dur=[]
+        for i in Task.objects.filter(project = pro):
+            duration = datetime.datetime.combine(date.min,i.endtime) - datetime.datetime.combine(date.min,i.starttime)
+            dur.append(duration.seconds)
         for i in dur:
-            sum += i
-        dur1.append(str(sum))
-        if taskproject:
-            data.append({"name":pro.name,"duration":sum})
-        else:
-            sum=0
-            data.append({"name":pro.name,"duration":sum})
+            sum += int(i)
+        data.append({"name":pro.name,"duration":display_time(sum) or 0})
     return render(request, "dashboard.html", {"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1})
