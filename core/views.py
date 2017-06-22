@@ -11,11 +11,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from .models import *
 from .utils import *
+from django.http import HttpResponse
 from datetime import date  ,time ,datetime, timedelta
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.contrib import auth
 import datetime
+import random
+import time
 # Create your views here.
 
 def AboutView(request):
@@ -134,30 +137,38 @@ def DashView(request):
     tasks = Task.objects.all()
     taskpending = Task.objects.filter(is_approved=False)
     data=[]
-    intervals = (
-    ('weeks', 604800),  # 60 * 60 * 24 * 7
-    ('days', 86400),    # 60 * 60 * 24
-    ('hours', 3600),    # 60 * 60
-    ('minutes', 60),
-    ('seconds', 1),
-    )
-    def display_time(seconds, granularity=2):
-        result = []
-        for name, count in intervals:
-            value = seconds // count
-            if value:
-                seconds -= value * count
-                if value == 1:
-                    name = name.rstrip('s')
-                result.append("{} {}".format(value, name))
-        return ', '.join(result[:granularity])
+    q1 = []
+    q3 = []
+    q6 = []
+    members = User.objects.filter(is_staff=False)
+    for mem in members:
+        taskm = Task.objects.filter(user = mem)
+        q5 = 0
+        for j in taskm:
+            duration = datetime.datetime.combine(date.min, j.endtime) - datetime.datetime.combine(date.min, j.starttime)
+            q5 += ((duration.seconds)//3600)
+            print (q5)
+        q6.append({"name":mem.username,"duration":q5})
+    for work in worktypes:
+        taskpro = Task.objects.filter(worktype = work)
+        q2 = 0
+        for k in taskpro:
+            duration = datetime.datetime.combine(date.min, k.endtime) - datetime.datetime.combine(date.min, k.starttime)
+            q2 += ((duration.seconds)//3600)
+        q3.append({"name":work.name,"duration":q2})
     for pro in projects:
-        sum=0
-        dur=[]
-        for i in Task.objects.filter(project = pro):
-            duration = datetime.datetime.combine(date.min,i.endtime) - datetime.datetime.combine(date.min,i.starttime)
-            dur.append(duration.seconds)
+        dur = []
+        q=0
+        m=0
+        taskproject = Task.objects.filter(project = pro)
+        for i in taskproject:
+            duration = datetime.datetime.combine(date.min, i.endtime) - datetime.datetime.combine(date.min, i.starttime)
+            dur.append(duration)
+            q += ((duration.seconds)//3600)
+        q1.append({"name":pro.name,"duration":q})
+        sum = datetime.timedelta()
         for i in dur:
-            sum += int(i)
-        data.append({"name":pro.name,"duration":display_time(sum) or 0})
-    return render(request, "dashboard.html", {"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1})
+            sum += i
+        dur1.append(str(sum))
+        data.append({"name":pro.name,"duration":sum})
+    return render(request, "dashboard.html", {"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1,"q1":q1,"q3":q3,"q6":q6})
