@@ -1,0 +1,106 @@
+{%extends 'base.html'%}
+{%block content%}
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">ScaleDesk</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/task/">Tasks</a></li>
+      <li><a href="/viewtasks/">View Tasks</a></li>
+      <li><a href="/profile">Profile</a></li>
+      <li><a href="/dashboard/">DashBoard</a></li>
+      <li class="active"><a href="/userreport/">User Report</a></li>
+    </ul>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
+      <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+  <canvas id="myChart2" width="150px" height="150px"></canvas>
+    <script>
+    var memname=[];
+    var memhour=[];
+    {% for q in q6 %}
+      memname.push('{{q.name}}')
+      memhour.push('{{q.duration}}')
+    {% endfor %}
+    var ctx = document.getElementById("myChart2").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: memname,
+            datasets: [{
+              label: '# of hours',
+              data: memhour,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(156, 102, 255, 0.2)',
+                  'rgba(253, 159, 64, 0.2)',
+                  'rgba(150, 102, 255, 0.2)',
+                  'rgba(250, 159, 64, 0.2)',
+                  'rgba(151, 102, 255, 0.2)',
+                  'rgba(254, 159, 64, 0.2)',
+                  'rgba(154, 102, 255, 0.2)',
+                  'rgba(249, 159, 64, 0.2)',
+                  'rgba(144, 102, 255, 0.2)',
+                  'rgba(241, 159, 64, 0.2)',
+                  'rgba(142, 102, 255, 0.2)',
+                  'rgba(242, 159, 64, 0.2)',
+                  'rgba(146, 102, 255, 0.2)',
+                  'rgba(248, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255,99,132,1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)',
+                  'rgba(156, 102, 255, 0.2)',
+                  'rgba(253, 159, 64, 0.2)',
+                  'rgba(150, 102, 255, 0.2)',
+                  'rgba(250, 159, 64, 0.2)',
+                  'rgba(151, 102, 255, 0.2)',
+                  'rgba(254, 159, 64, 0.2)',
+                  'rgba(154, 102, 255, 0.2)',
+                  'rgba(249, 159, 64, 0.2)',
+                  'rgba(144, 102, 255, 0.2)',
+                  'rgba(241, 159, 64, 0.2)',
+                  'rgba(142, 102, 255, 0.2)',
+                  'rgba(242, 159, 64, 0.2)',
+                  'rgba(146, 102, 255, 0.2)',
+                  'rgba(248, 159, 64, 0.2)'
+      ],
+      borderWidth: 1
+  }]
+},
+options: {
+  scales: {
+      yAxes: [{
+          ticks: {
+              beginAtZero:true
+          }
+      }]
+  }
+}
+});
+</script>
+
+
+</div>
+</div>
+
+{%endblock%}

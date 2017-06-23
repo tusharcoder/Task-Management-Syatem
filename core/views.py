@@ -30,9 +30,6 @@ def AboutView(request):
     return render(request,"about.html",{"user":username,"staff":staff})
 
 def LoginView(request):
-    """
-    Login View
-    """
     if request.method=="GET":
         return render(request,"login.html",{"title":"Login"})
 
@@ -49,9 +46,6 @@ def LoginView(request):
 
 
 def RegisterView(request):
-    """
-    Registraion View
-    """
     if request.method=="GET":
         return render(request,"register.html",{"title":"Registration"})
 
@@ -62,9 +56,6 @@ def RegisterView(request):
 
 @login_required(login_url="/login/")
 def ProfileView(request):
-    """
-    Profile View
-    """
     user = request.user
     staff = user.is_staff
     useronline_list = UserProfile.objects.filter(user=user)
@@ -125,6 +116,28 @@ def TaskView(request):
         #return redirect('/viewtasks/')
 
 @login_required(login_url="/login/")
+def ReportView(request):
+    user = request.user
+    useronline_list = UserProfile.objects.filter(user=user)
+    profile = useronline_list[0]
+    username = profile.name
+    delivery_date = ""
+    q6 = []
+    if request.method == 'POST':
+        delivery_date = request.POST.get('date')
+        members = User.objects.filter(is_staff=False)
+        for mem in members:
+            taskm = Task.objects.filter(user=mem).filter(created_at__gt=delivery_date,created_at__lt=datetime.datetime(int(delivery_date.split("-")[0]),int(delivery_date.split("-")[1]),int(delivery_date.split("-")[2])+1))
+            q5 = 0
+            for j in taskm:
+                duration = datetime.datetime.combine(date.min, j.endtime) - datetime.datetime.combine(date.min, j.starttime)
+                q5 += (duration.seconds/60)/60
+            # import ipdb; ipdb.set_trace()
+            q6.append({"name":mem.username,"duration":q5})
+        return render(request, "userreport.html", { "user":username,"q6":q6})
+    return render(request, "userreport.html", { "user":username,"q6":q6})
+
+@login_required(login_url="/login/")
 def DashView(request):
     user = request.user
     dur1 = []
@@ -140,15 +153,6 @@ def DashView(request):
     q1 = []
     q3 = []
     q6 = []
-    members = User.objects.filter(is_staff=False)
-    for mem in members:
-        taskm = Task.objects.filter(user = mem)
-        q5 = 0
-        for j in taskm:
-            duration = datetime.datetime.combine(date.min, j.endtime) - datetime.datetime.combine(date.min, j.starttime)
-            q5 += ((duration.seconds)//3600)
-            print (q5)
-        q6.append({"name":mem.username,"duration":q5})
     for work in worktypes:
         taskpro = Task.objects.filter(worktype = work)
         q2 = 0

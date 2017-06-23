@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'taskmgt.wsgi.application'
 DATABASES = {
             'default': {
                         'ENGINE': 'django.db.backends.mysql',
-                                'NAME': 'task',
+                                'NAME': 'task1',
                                         'USER': 'root',
                                                 'PASSWORD': 'root',
                                                                     }

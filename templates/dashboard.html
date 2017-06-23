@@ -53,7 +53,6 @@
     margin-top: -1px;
 }
 </style>
-
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -65,6 +64,7 @@
       <li><a href="/task/">Tasks</a></li>
       <li><a href="/viewtasks/">View Tasks</a></li>
       <li><a href="/profile">Profile</a></li>
+      <li>
       <div class="dropdown">
         <button class="dropbtn">DashBoard</button>
         <div class="dropdown-content">
@@ -77,6 +77,8 @@
         <a data-toggle="pill" href="#menu7">User Report</a>
       </div>
     </div>
+  </li>
+    <li><a href="/userreport/">User Report</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
@@ -121,6 +123,11 @@
           {% endfor %}
           </tbody>
         </table>
+        <script>
+        $(document).ready(function() {
+            $('#example7').DataTable();
+        } );
+        </script>
     </div>
   </div>
 
@@ -152,6 +159,11 @@
           {% endfor %}
           </tbody>
         </table>
+        <script>
+        $(document).ready(function() {
+            $('#example1').DataTable();
+        } );
+        </script>
     </div>
   </div>
 
@@ -189,6 +201,11 @@
           {% endfor %}
           </tbody>
         </table>
+        <script>
+        $(document).ready(function() {
+            $('#example2').DataTable();
+        } );
+        </script>
     </div>
   </div>
 
@@ -213,20 +230,48 @@
                   label: '# of hours',
                   data: dat,
                   backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)',
-                      'rgba(255, 206, 86, 0.2)',
-                      'rgba(75, 192, 192, 0.2)',
-                      'rgba(153, 102, 255, 0.2)',
-                      'rgba(255, 159, 64, 0.2)'
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(156, 102, 255, 0.2)',
+                    'rgba(253, 159, 64, 0.2)',
+                    'rgba(150, 102, 255, 0.2)',
+                    'rgba(250, 159, 64, 0.2)',
+                    'rgba(151, 102, 255, 0.2)',
+                    'rgba(254, 159, 64, 0.2)',
+                    'rgba(154, 102, 255, 0.2)',
+                    'rgba(249, 159, 64, 0.2)',
+                    'rgba(144, 102, 255, 0.2)',
+                    'rgba(241, 159, 64, 0.2)',
+                    'rgba(142, 102, 255, 0.2)',
+                    'rgba(242, 159, 64, 0.2)',
+                    'rgba(146, 102, 255, 0.2)',
+                    'rgba(248, 159, 64, 0.2)'
                   ],
                   borderColor: [
-                      'rgba(255,99,132,1)',
-                      'rgba(54, 162, 235, 1)',
-                      'rgba(255, 206, 86, 1)',
-                      'rgba(75, 192, 192, 1)',
-                      'rgba(153, 102, 255, 1)',
-                      'rgba(255, 159, 64, 1)'
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(156, 102, 255, 0.2)',
+                    'rgba(253, 159, 64, 0.2)',
+                    'rgba(150, 102, 255, 0.2)',
+                    'rgba(250, 159, 64, 0.2)',
+                    'rgba(151, 102, 255, 0.2)',
+                    'rgba(254, 159, 64, 0.2)',
+                    'rgba(154, 102, 255, 0.2)',
+                    'rgba(249, 159, 64, 0.2)',
+                    'rgba(144, 102, 255, 0.2)',
+                    'rgba(241, 159, 64, 0.2)',
+                    'rgba(142, 102, 255, 0.2)',
+                    'rgba(242, 159, 64, 0.2)',
+                    'rgba(146, 102, 255, 0.2)',
+                    'rgba(248, 159, 64, 0.2)'
           ],
           borderWidth: 1
       }]
@@ -258,20 +303,48 @@
                   label: '# of hours',
                   data: workdat,
                   backgroundColor: [
-                      'rgba(255, 99, 132, 0.2)',
-                      'rgba(54, 162, 235, 0.2)',
-                      'rgba(255, 206, 86, 0.2)',
-                      'rgba(75, 192, 192, 0.2)',
-                      'rgba(153, 102, 255, 0.2)',
-                      'rgba(255, 159, 64, 0.2)'
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(156, 102, 255, 0.2)',
+                    'rgba(253, 159, 64, 0.2)',
+                    'rgba(150, 102, 255, 0.2)',
+                    'rgba(250, 159, 64, 0.2)',
+                    'rgba(151, 102, 255, 0.2)',
+                    'rgba(254, 159, 64, 0.2)',
+                    'rgba(154, 102, 255, 0.2)',
+                    'rgba(249, 159, 64, 0.2)',
+                    'rgba(144, 102, 255, 0.2)',
+                    'rgba(241, 159, 64, 0.2)',
+                    'rgba(142, 102, 255, 0.2)',
+                    'rgba(242, 159, 64, 0.2)',
+                    'rgba(146, 102, 255, 0.2)',
+                    'rgba(248, 159, 64, 0.2)'
                   ],
                   borderColor: [
-                      'rgba(255,99,132,1)',
-                      'rgba(54, 162, 235, 1)',
-                      'rgba(255, 206, 86, 1)',
-                      'rgba(75, 192, 192, 1)',
-                      'rgba(153, 102, 255, 1)',
-                      'rgba(255, 159, 64, 1)'
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(156, 102, 255, 0.2)',
+                    'rgba(253, 159, 64, 0.2)',
+                    'rgba(150, 102, 255, 0.2)',
+                    'rgba(250, 159, 64, 0.2)',
+                    'rgba(151, 102, 255, 0.2)',
+                    'rgba(254, 159, 64, 0.2)',
+                    'rgba(154, 102, 255, 0.2)',
+                    'rgba(249, 159, 64, 0.2)',
+                    'rgba(144, 102, 255, 0.2)',
+                    'rgba(241, 159, 64, 0.2)',
+                    'rgba(142, 102, 255, 0.2)',
+                    'rgba(242, 159, 64, 0.2)',
+                    'rgba(146, 102, 255, 0.2)',
+                    'rgba(248, 159, 64, 0.2)'
           ],
           borderWidth: 1
       }]
@@ -281,7 +354,6 @@
     </script>
     </div>
   </div>
-
 
   <div id="menu6" class="tab-pane fade">
     <h3>Total Project Hours for each project:</h3>
@@ -302,13 +374,27 @@
           {% endfor %}
           </tbody>
         </table>
+        <script>
+        $(document).ready(function() {
+            $('#example3').DataTable();
+        } );
+        </script>
     </div>
   </div>
 
     <div id="menu7" class="tab-pane fade">
       <h3>User Report:</h3>
+      <form action=/userreport/ method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <p align="right">Date: <input type="text" id="delivery_date"  name="date"> <input type="submit" value="submit" name="submit"></p>
+
+        </div>
+      </form>
+
       <div class="container2">
-        <canvas id="myChart2" width="250px" height="250px"></canvas>
+        <canvas id="myChart2" width="150px" height="150px"></canvas>
           <script>
           var memname=[];
           var memhour=[];
@@ -330,7 +416,21 @@
                         'rgba(255, 206, 86, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(156, 102, 255, 0.2)',
+                        'rgba(253, 159, 64, 0.2)',
+                        'rgba(150, 102, 255, 0.2)',
+                        'rgba(250, 159, 64, 0.2)',
+                        'rgba(151, 102, 255, 0.2)',
+                        'rgba(254, 159, 64, 0.2)',
+                        'rgba(154, 102, 255, 0.2)',
+                        'rgba(249, 159, 64, 0.2)',
+                        'rgba(144, 102, 255, 0.2)',
+                        'rgba(241, 159, 64, 0.2)',
+                        'rgba(142, 102, 255, 0.2)',
+                        'rgba(242, 159, 64, 0.2)',
+                        'rgba(146, 102, 255, 0.2)',
+                        'rgba(248, 159, 64, 0.2)'
                     ],
                     borderColor: [
                         'rgba(255,99,132,1)',
@@ -338,7 +438,21 @@
                         'rgba(255, 206, 86, 1)',
                         'rgba(75, 192, 192, 1)',
                         'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(156, 102, 255, 0.2)',
+                        'rgba(253, 159, 64, 0.2)',
+                        'rgba(150, 102, 255, 0.2)',
+                        'rgba(250, 159, 64, 0.2)',
+                        'rgba(151, 102, 255, 0.2)',
+                        'rgba(254, 159, 64, 0.2)',
+                        'rgba(154, 102, 255, 0.2)',
+                        'rgba(249, 159, 64, 0.2)',
+                        'rgba(144, 102, 255, 0.2)',
+                        'rgba(241, 159, 64, 0.2)',
+                        'rgba(142, 102, 255, 0.2)',
+                        'rgba(242, 159, 64, 0.2)',
+                        'rgba(146, 102, 255, 0.2)',
+                        'rgba(248, 159, 64, 0.2)'
             ],
             borderWidth: 1
         }]
@@ -354,35 +468,20 @@
     }
     });
       </script>
+
+      <script>
+      $('#delivery_date').datepicker({
+                        dateFormat: 'yy-mm-dd',
+                        changeMonth: true,
+                        changeYear: true,
+                        onSelect:  function(dateText, inst) {
+                        $(this).attr('value',dateText);
+                        }
+                });
+    </script>
     </div>
 </div>
 </div>
-
-
-
-<script>
-$(document).ready(function() {
-    $('#example7').DataTable();
-} );
-</script>
-
-<script>
-$(document).ready(function() {
-    $('#example1').DataTable();
-} );
-</script>
-
-<script>
-$(document).ready(function() {
-    $('#example2').DataTable();
-} );
-</script>
-
-<script>
-$(document).ready(function() {
-    $('#example3').DataTable();
-} );
-</script>
 
 
 {%endblock%}
