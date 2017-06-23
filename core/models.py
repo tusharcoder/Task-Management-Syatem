@@ -4,9 +4,6 @@
 # @Filename: models.py
 # @Last modified by:   tushar
 # @Last modified time: 2017-06-13T12:11:46+05:30
-
-
-
 from django.db import models
 from django.contrib.auth.models import User
 from .app_settings import PROFILE_CHANGABLE_FIELDS
@@ -22,7 +19,6 @@ class UserProfile(models.Model):
     address = models.TextField(max_length=500)
     pan_no= models.CharField(max_length=12)
     position= models.CharField(max_length=20)
-
     def __str__(self):
         """
         return the string representation of the Model
@@ -38,7 +34,6 @@ class UserProfile(models.Model):
             setattr(self,field,kwargs.get(field)[0])
         self.save()
         return True
-
 
 class Project(models.Model):
     """Model to store the Projet details"""
@@ -76,6 +71,7 @@ class Task(models.Model):
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
+    taskdate = models.DateField(null= True ,blank = True)
 
     def __str__(self):
         return self.name
