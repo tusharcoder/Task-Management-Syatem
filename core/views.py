@@ -108,8 +108,9 @@ def TaskView(request):
         staff = user.is_staff
         return render(request, "task.html", {"tasks": records,'projects':projects,"worktype":worktypes,"assigned_by":assigned, "staff":staff,"user":username})
     if request.method == 'POST':
-        task=Task(**{"name":request.POST.get("name"),"description":request.POST.get("description"),"starttime":request.POST.get("starttime"),"endtime":request.POST.get("endtime"),"project":Project.objects.get(pk=request.POST.get("project")),"worktype":WorkType.objects.get(pk=request.POST.get("worktype")),"assigned_by":User.objects.get(pk=request.POST.get("assigned_by")),"user":request.user, "taskdate":datetime.datetime.now()})
         staff =user.is_staff
+        task=Task(**{"name":request.POST.get("name"),"description":request.POST.get("description"),"starttime":request.POST.get("starttime"),"endtime":request.POST.get("endtime"),"project":Project.objects.get(pk=request.POST.get("project")),"worktype":WorkType.objects.get(pk=request.POST.get("worktype")),"assigned_by":User.objects.get(pk=request.POST.get("assigned_by")),"user":request.user, "taskdate":datetime.datetime.now()})
+        # task.duration = datetime.datetime.combine(date.min, datetime.datetime(task.endtime)) - datetime.datetime.combine(date.min, datetime.datetime(task.starttime))
         task.save()
         tasks = Task.objects.filter(user=user)
         return render(request, "viewtasks.html",{"tasks":tasks,"staff":staff,"user":username})
@@ -127,7 +128,7 @@ def ReportView(request):
         delivery_date = request.POST.get('date')
         members = User.objects.filter(is_staff=False)
         for mem in members:
-            taskm = Task.objects.filter(user=mem).filter(created_at__gt=delivery_date,created_at__lt=datetime.datetime(int(delivery_date.split("-")[0]),int(delivery_date.split("-")[1]),int(delivery_date.split("-")[2])+1))
+            taskm = Task.objects.filter(user=mem).filter(taskdate__gt=delivery_date,taskdate__lt=datetime.datetime(int(delivery_date.split("-")[0]),int(delivery_date.split("-")[1]),int(delivery_date.split("-")[2])+1))
             q5 = 0
             for j in taskm:
                 duration = datetime.datetime.combine(date.min, j.endtime) - datetime.datetime.combine(date.min, j.starttime)

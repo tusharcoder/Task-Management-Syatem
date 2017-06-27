@@ -12,10 +12,10 @@ from .models import Task, WorkType, Project, UserProfile
 # Register your models here.
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('name', 'project', 'worktype' )
-    list_filter = ('created_at','project', 'worktype','user',)
+    list_display = ('name', 'taskdate','duration','project', 'worktype' )
+    list_filter = ('created_at','user', 'project','worktype',)
     search_fields = ('name', 'project', 'worktype')
-
+    list_per_page = 10
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'name')

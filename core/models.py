@@ -8,6 +8,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from .app_settings import PROFILE_CHANGABLE_FIELDS
 # Create your models here.
+import datetime
 
 class UserProfile(models.Model):
     """
@@ -65,13 +66,14 @@ class Task(models.Model):
     description=models.CharField(max_length=500)
     starttime=models.TimeField()
     endtime=models.TimeField()
+    duration = models.DurationField(null =  True)
     project=models.ForeignKey(Project)
     worktype=models.ForeignKey(WorkType)
     assigned_by=models.ForeignKey(User)
     is_approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     update_at = models.DateTimeField(auto_now=True)
-    taskdate = models.DateField(null= True ,blank = True)
+    taskdate = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.name
