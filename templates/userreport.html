@@ -1,21 +1,72 @@
 {%extends 'base.html'%}
 {%block content%}
 
+<style>
+.dropbtn {
+    background-color: black;
+    color: white;
+    padding: 14.8px;
+    font-size: 14.8x;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 150px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 14px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: black;
+}
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+</style>
+
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">ScaleDesk</a>
     </div>
-      <ul class="nav navbar-nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/task/">Tasks</a></li>
-        <li><a href="/viewtasks/">View Tasks</a></li>
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="/dashboard/">DashBoard</a></li>
-        <li class="active"><a href="/userreport/">User Report</a></li>
-      </ul>
-    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href="/task/">Tasks</a></li>
+      <li><a href="/viewtasks/">View Tasks</a></li>
+      <li><a href="/profile">Profile</a></li>
+      <li><a href="/dashboard/">DashBoard</a></li>
+    <li class="active"><a href="/userreport/">User Report</a></li>
+    </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
       <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
@@ -23,8 +74,9 @@
   </div>
 </nav>
 
-<div class="container">
-  <canvas id="myChart2" width="150px" height="150px"></canvas>
+<div class="container" style=" height:30vh; width:50vw">
+  <h3>Date:{{delivery_date}}</h3>
+  <canvas id="myChart2" width="100px" height="100px"></canvas>
     <script>
     var memname=[];
     var memhour=[];

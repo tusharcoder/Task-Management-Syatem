@@ -19,6 +19,8 @@ class TaskAdmin(admin.ModelAdmin):
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'name')
+    list_per_page = 10
+
 
 
 admin.site.register(Task , TaskAdmin)

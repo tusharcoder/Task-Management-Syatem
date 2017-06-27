@@ -22,11 +22,11 @@ import time
 # Create your views here.
 
 def AboutView(request):
-    user = request.user
-    useronline_list = UserProfile.objects.filter(user=user)
-    profile = useronline_list[0]
-    username = profile.name
-    staff =user.is_staff
+    user=request.user
+    useronline_list=UserProfile.objects.filter(user=user)
+    profile=useronline_list[0]
+    username=profile.name
+    staff=user.is_staff
     return render(request,"about.html",{"user":username,"staff":staff})
 
 def LoginView(request):
@@ -56,12 +56,12 @@ def RegisterView(request):
 
 @login_required(login_url="/login/")
 def ProfileView(request):
-    user = request.user
-    staff = user.is_staff
-    useronline_list = UserProfile.objects.filter(user=user)
-    profile = useronline_list[0]
-    username = profile.name
-    profile = UserProfile.objects.filter(user=user)[0]
+    user=request.user
+    staff=user.is_staff
+    useronline_list=UserProfile.objects.filter(user=user)
+    profile=useronline_list[0]
+    username=profile.name
+    profile=UserProfile.objects.filter(user=user)[0]
     if request.method=="GET":
         return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email, "staff":staff,"user":username})
 
@@ -74,10 +74,10 @@ def ProfileView(request):
 @login_required(login_url="/login/")
 def HomeView(request):
     user=request.user
-    useronline_list = UserProfile.objects.filter(user=user)
-    profile = useronline_list[0]
-    username = profile.name
-    staff = user.is_staff
+    useronline_list=UserProfile.objects.filter(user=user)
+    profile=useronline_list[0]
+    username=profile.name
+    staff=user.is_staff
     return render(request,"home.html",{"title":"Welcome","user":username, "staff":staff, "user":username})
 
 def LogoutView(request):
@@ -87,30 +87,29 @@ def LogoutView(request):
 @login_required(login_url="/login/")
 def ViewTaskView(request):
     user=request.user
-    useronline_list = UserProfile.objects.filter(user=user)
-    profile = useronline_list[0]
-    username = profile.name
-    staff =user.is_staff
-    tasks = Task.objects.filter(user=user).order_by("-id")
+    useronline_list=UserProfile.objects.filter(user=user)
+    profile=useronline_list[0]
+    username=profile.name
+    staff=user.is_staff
+    tasks=Task.objects.filter(user=user).order_by("-id")
     return render(request, "viewtasks.html",{'tasks':tasks, "staff":staff,"user":username})
 
 @login_required(login_url="/login/")
 def TaskView(request):
     user=request.user
-    useronline_list = UserProfile.objects.filter(user=user)
-    profile = useronline_list[0]
-    username = profile.name
+    useronline_list=UserProfile.objects.filter(user=user)
+    profile=useronline_list[0]
+    username=profile.name
     if request.method == 'GET':
-        records = Task.objects.filter(user=user)
-        projects = Project.objects.all()
-        worktypes = WorkType.objects.all()
-        assigned = User.objects.filter(is_staff=True)
-        staff = user.is_staff
+        records=Task.objects.filter(user=user)
+        projects=Project.objects.all()
+        worktypes=WorkType.objects.all()
+        assigned=User.objects.filter(is_staff=True)
+        staff=user.is_staff
         return render(request, "task.html", {"tasks": records,'projects':projects,"worktype":worktypes,"assigned_by":assigned, "staff":staff,"user":username})
     if request.method == 'POST':
-        staff =user.is_staff
         task=Task(**{"name":request.POST.get("name"),"description":request.POST.get("description"),"starttime":request.POST.get("starttime"),"endtime":request.POST.get("endtime"),"project":Project.objects.get(pk=request.POST.get("project")),"worktype":WorkType.objects.get(pk=request.POST.get("worktype")),"assigned_by":User.objects.get(pk=request.POST.get("assigned_by")),"user":request.user, "taskdate":datetime.datetime.now()})
-        # task.duration = datetime.datetime.combine(date.min, datetime.datetime(task.endtime)) - datetime.datetime.combine(date.min, datetime.datetime(task.starttime))
+        staff =user.is_staff
         task.save()
         tasks = Task.objects.filter(user=user)
         return render(request, "viewtasks.html",{"tasks":tasks,"staff":staff,"user":username})
@@ -128,15 +127,16 @@ def ReportView(request):
         delivery_date = request.POST.get('date')
         members = User.objects.filter(is_staff=False)
         for mem in members:
-            taskm = Task.objects.filter(user=mem).filter(taskdate__gt=delivery_date,taskdate__lt=datetime.datetime(int(delivery_date.split("-")[0]),int(delivery_date.split("-")[1]),int(delivery_date.split("-")[2])+1))
+            taskm = Task.objects.filter(user=mem).filter(taskdate = delivery_date)
+            # taskm = Task.objects.filter(user=mem).filter(created_at__gt=delivery_date,created_at__lt=datetime.datetime(int(delivery_date.split("-")[0]),int(delivery_date.split("-")[1]),int(delivery_date.split("-")[2])+1))
             q5 = 0
             for j in taskm:
                 duration = datetime.datetime.combine(date.min, j.endtime) - datetime.datetime.combine(date.min, j.starttime)
                 q5 += (duration.seconds/60)/60
             # import ipdb; ipdb.set_trace()
             q6.append({"name":mem.username,"duration":q5})
-        return render(request, "userreport.html", { "user":username,"q6":q6})
-    return render(request, "userreport.html", { "user":username,"q6":q6})
+        return render(request, "userreport.html", { "user":username,"q6":q6,"delivery_date":delivery_date})
+    return render(request, "userreport.html", { "user":username,"q6":q6,"delivery_date":delivery_date})
 
 @login_required(login_url="/login/")
 def DashView(request):

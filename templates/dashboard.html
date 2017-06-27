@@ -53,6 +53,7 @@
     margin-top: -1px;
 }
 </style>
+
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -105,6 +106,7 @@
                     <th>WorkType</th>
                     <th>Assigned By</th>
                     <th>Created At</th>
+                    <th>Updated At</th>
                 </tr>
             </thead>
               <tbody>
@@ -119,6 +121,7 @@
                       <td>{{task.worktype}}</td>
                       <td>{{task.assigned_by}}</td>
                       <td>{{task.created_at}}</td>
+                      <td>{{task.taskdate}}</td>
                   </tr>
               {% endfor %}
             </tbody>
@@ -213,7 +216,7 @@
   <div id="menu4" class="tab-pane fade" style=" height:30vh; width:50vw">
     <h3>Project Report</h3>
     <div class="container">
-      <canvas id="myChart" width="250px" height="250px"></canvas>
+      <canvas id="myChart" width="100px" height="100px"></canvas>
         <script>
         var proj=[];
         var dat=[];

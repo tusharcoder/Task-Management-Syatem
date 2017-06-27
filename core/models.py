@@ -66,7 +66,7 @@ class Task(models.Model):
     description=models.CharField(max_length=500)
     starttime=models.TimeField()
     endtime=models.TimeField()
-    duration = models.DurationField(null =  True)
+    duration = models.DurationField(null = True )
     project=models.ForeignKey(Project)
     worktype=models.ForeignKey(WorkType)
     assigned_by=models.ForeignKey(User)
