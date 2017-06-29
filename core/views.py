@@ -1,11 +1,3 @@
-# @Author: Tushar Agarwal(tusharcoder) <tushar>
-# @Date:   2017-06-13T10:05:29+05:30
-# @Email:  tamyworld@gmail.com
-# @Filename: views.py
-# @Last modified by:   tushar
-# @Last modified time: 2017-06-13T12:19:30+05:30
-
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
@@ -108,10 +100,14 @@ def TaskView(request):
         staff=user.is_staff
         return render(request, "task.html", {"tasks": records,'projects':projects,"worktype":worktypes,"assigned_by":assigned, "staff":staff,"user":username})
     if request.method == 'POST':
-        task=Task(**{"name":request.POST.get("name"),"description":request.POST.get("description"),"starttime":request.POST.get("starttime"),"endtime":request.POST.get("endtime"),"project":Project.objects.get(pk=request.POST.get("project")),"worktype":WorkType.objects.get(pk=request.POST.get("worktype")),"assigned_by":User.objects.get(pk=request.POST.get("assigned_by")),"user":request.user, "taskdate":datetime.datetime.now()})
         staff =user.is_staff
+        task=Task(**{"name":request.POST.get("name"),"description":request.POST.get("description"),"starttime":request.POST.get("starttime"),"endtime":request.POST.get("endtime"),"project":Project.objects.get(pk=request.POST.get("project")),"worktype":WorkType.objects.get(pk=request.POST.get("worktype")),"assigned_by":User.objects.get(pk=request.POST.get("assigned_by")),"user":request.user, "taskdate":datetime.datetime.now()})
         task.save()
         tasks = Task.objects.filter(user=user)
+        for j in tasks:
+            duration = datetime.datetime.combine(date.min, j.endtime) - datetime.datetime.combine(date.min, j.starttime)
+            j.duration =int(duration.seconds/60)
+            j.save()
         return render(request, "viewtasks.html",{"tasks":tasks,"staff":staff,"user":username})
         #return redirect('/viewtasks/')
 
@@ -150,6 +146,8 @@ def DashView(request):
     member = UserProfile.objects.all()
     tasks = Task.objects.all()
     taskpending = Task.objects.filter(is_approved=False)
+    taskapproved = Task.objects.filter(is_approved=True)
+    taskrejected = Task.objects.filter(is_rejected=True)
     data=[]
     q1 = []
     q3 = []
@@ -176,4 +174,18 @@ def DashView(request):
             sum += i
         dur1.append(str(sum))
         data.append({"name":pro.name,"duration":sum})
-    return render(request, "dashboard.html", {"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1,"q1":q1,"q3":q3,"q6":q6})
+    return render(request, "dashboard.html", {"taskrejected":taskrejected,"taskapproved":taskapproved,"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1,"q1":q1,"q3":q3,"q6":q6})
+
+def Approved(request, id):
+      data=Task.objects.get(pk = id)
+      data.is_approved=True
+      data.is_pending=False
+      data.save()
+      return redirect('/dashboard/')
+
+def Rejected(request, id):
+    data=Task.objects.get(pk = id)
+    data.is_rejected=True
+    data.is_pending=False
+    data.save()
+    return redirect('/dashboard/')
