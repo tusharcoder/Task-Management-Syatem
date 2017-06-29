@@ -131,6 +131,7 @@ def ReportView(request):
                 q5 += (duration.seconds/60)/60
             # import ipdb; ipdb.set_trace()
             q6.append({"name":mem.username,"duration":q5})
+        return { "user":username,"q7":q6,"delivery_date":delivery_date}
         return render(request, "userreport.html", { "user":username,"q6":q6,"delivery_date":delivery_date})
     return render(request, "userreport.html", { "user":username,"q6":q6,"delivery_date":delivery_date})
 
@@ -174,6 +175,11 @@ def DashView(request):
             sum += i
         dur1.append(str(sum))
         data.append({"name":pro.name,"duration":sum})
+    if "date" in request.POST:
+       data_report=ReportView(request)
+       final_dict={"taskrejected":taskrejected,"taskapproved":taskapproved,"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1,"q1":q1,"q3":q3,"q6":q6}
+       final_dict.update(data_report)
+       return render(request, "dashboard.html", final_dict )
     return render(request, "dashboard.html", {"taskrejected":taskrejected,"taskapproved":taskapproved,"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1,"q1":q1,"q3":q3,"q6":q6})
 
 def Approved(request, id):
@@ -181,11 +187,11 @@ def Approved(request, id):
       data.is_approved=True
       data.is_pending=False
       data.save()
-      return redirect('/dashboard/')
+      return redirect('/dashboard/#menu3-2')
 
 def Rejected(request, id):
     data=Task.objects.get(pk = id)
     data.is_rejected=True
     data.is_pending=False
     data.save()
-    return redirect('/dashboard/')
+    return redirect('/dashboard/#menu3-2')

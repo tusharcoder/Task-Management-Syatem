@@ -73,17 +73,34 @@
         <div class="dropdown">
           <button class="dropbtn">DashBoard</button>
           <div class="dropdown-content">
+            <a  class="reload_it" href="/dashboard/#menu1">Daily tasks of all user</a>
+            <a  class="reload_it" href="/dashboard/#menu2">List of Users</a>
+            <a  class="reload_it" href="/dashboard/#menu3-1">Approved Tasks</a>
+            <a  class="reload_it" href="/dashboard/#menu3-2">Pending Tasks</a>
+            <a  class="reload_it" href="/dashboard/#menu3-3">Rejected Tasks</a>
+            <a  class="reload_it" href="/dashboard/#menu4">Project Report</a>
+            <a  class="reload_it" href="/dashboard/#menu5">WorkType Report</a>
+            <a  class="reload_it" href="/dashboard/#menu6">Toal Project Hours</a>
+            <a  class="reload_it" href="/dashboard/#menu7">User Report</a>
+          </div>
+          <script type="text/javascript">
+            $("a").click((event)=>{
+              target=$(event.target)
+              if(target.attr("class")=="reload_it")
+              window.location.reload();
+            })
+          </script>
+          <!-- <div class="dropdown-content">
             <a data-toggle="pill" href="#menu1">Daily tasks of all user</a>
             <a data-toggle="pill" href="#menu2">List of Users</a>
             <a data-toggle="pill" href="#menu3-1">Approved Tasks</a>
             <a data-toggle="pill" href="#menu3-2">Pending Tasks</a>
             <a data-toggle="pill" href="#menu3-3">Rejected Tasks</a>
-            <!-- <a data-toggle="pill" href="#menu3-3">Rejected Tasks</a> -->
             <a data-toggle="pill" href="#menu4">Project Report</a>
             <a data-toggle="pill" href="#menu5">WorkType Report</a>
             <a data-toggle="pill" href="#menu6">Toal Project Hours</a>
             <a data-toggle="pill" href="#menu7">User Report</a>
-          </div>
+          </div> -->
         </div>
       </li>
       <li><a href="/userreport/">User Report</a></li>
@@ -114,7 +131,7 @@
                     <th>WorkType</th>
                     <th>Assigned By</th>
                     <th>Created At</th>
-                    <th>Updated At</th>
+                    <th>Task Date</th>
                 </tr>
             </thead>
               <tbody>
@@ -267,7 +284,7 @@
                       </div>
                     </td>
                   </tr>
-              {% endfor %}
+                {% endfor %}
           </tbody>
         </table>
         <script>
@@ -374,8 +391,6 @@
                     'rgba(232, 159, 64, 0.2)',
                     'rgba(192, 102, 255, 0.2)',
                     'rgba(292, 159, 64, 0.2)'
-
-
                   ],
                   borderColor: [
                     'rgba(255, 99, 132, 1)',
@@ -528,21 +543,21 @@
 
     <div id="menu7" class="tab-pane fade">
       <h3>User Report:</h3>
-      <form action=/userreport/ method="post">
+      <form action="/dashboard/#menu7" method="post">
         {% csrf_token %}
         <div class="form-group">
           <label for="name">Choose the date for which the report should be generated:</label>
           <p align="right">Date: <input type="text" id="delivery_date"  name="date"> <input type="submit" value="submit" name="submit"></p>
-
         </div>
       </form>
 
-      <!-- <div class="container2"> -->
-        <!-- <canvas id="myChart2" width="150px" height="150px"></canvas>
+      <div class="container" style=" height:30vh; width:50vw">
+        <h3>Date:{{delivery_date}}</h3>
+        <canvas id="myChart2" width="100px" height="100px"></canvas>
           <script>
           var memname=[];
           var memhour=[];
-          {% for q in q6 %}
+          {% for q in q7 %}
             memname.push('{{q.name}}')
             memhour.push('{{q.duration}}')
           {% endfor %}
@@ -583,25 +598,25 @@
                         'rgba(75, 192, 192, 1)',
                         'rgba(153, 102, 255, 1)',
                         'rgba(255, 159, 64, 1)',
-                        'rgba(156, 102, 255, 0.2)',
-                        'rgba(253, 159, 64, 0.2)',
-                        'rgba(150, 102, 255, 0.2)',
-                        'rgba(250, 159, 64, 0.2)',
-                        'rgba(151, 102, 255, 0.2)',
-                        'rgba(254, 159, 64, 0.2)',
-                        'rgba(154, 102, 255, 0.2)',
-                        'rgba(249, 159, 64, 0.2)',
-                        'rgba(144, 102, 255, 0.2)',
-                        'rgba(241, 159, 64, 0.2)',
-                        'rgba(142, 102, 255, 0.2)',
-                        'rgba(242, 159, 64, 0.2)',
-                        'rgba(146, 102, 255, 0.2)',
-                        'rgba(248, 159, 64, 0.2)'
+                        'rgba(156, 102, 255, 1)',
+                        'rgba(253, 159, 64, 1)',
+                        'rgba(150, 102, 255, 1)',
+                        'rgba(250, 159, 64, 1)',
+                        'rgba(151, 102, 255, 1)',
+                        'rgba(254, 159, 64, 1)',
+                        'rgba(154, 102, 255, 1)',
+                        'rgba(249, 159, 64, 1)',
+                        'rgba(144, 102, 255, 1)',
+                        'rgba(241, 159, 64, 1)',
+                        'rgba(142, 102, 255, 1)',
+                        'rgba(242, 159, 64, 1)',
+                        'rgba(146, 102, 255, 1)',
+                        'rgba(248, 159, 64, 1)'
             ],
             borderWidth: 1
         }]
-    },
-    options: {
+      },
+      options: {
         scales: {
             yAxes: [{
                 ticks: {
@@ -609,8 +624,25 @@
                 }
             }]
         }
-    }
-    });
+      }
+      });
+      </script>
+
+
+      </div>
+      </div>
+
+      </script>
+      <script type="text/javascript">
+          if (location.hash) {
+              $(".active").removeClass("active")
+              $(location.hash).addClass("active in");
+          }
+      </script>
+<!--
+      <script type="text/javascript">
+        $('#menu1').removeClass("active");
+        $('#menu7').addClass("active in");
       </script> -->
 
       <script>
@@ -623,9 +655,6 @@
                         }
                 });
     </script>
-    <!-- </div> -->
-  </div>
-</div>
 
 
 {%endblock%}
