@@ -146,15 +146,15 @@ def DashView(request):
     worktypes = WorkType.objects.all()
     member = UserProfile.objects.all()
     tasks = Task.objects.all()
-    taskpending = Task.objects.filter(is_approved=False)
-    taskapproved = Task.objects.filter(is_approved=True)
-    taskrejected = Task.objects.filter(is_rejected=True)
+    taskpending = Task.objects.filter(is_approved=False).filter(assigned_by = user)
+    taskapproved = Task.objects.filter(is_approved=True).filter(assigned_by = user)
+    taskrejected = Task.objects.filter(is_rejected=True).filter(assigned_by = user)
     data=[]
     q1 = []
     q3 = []
     q6 = []
     for work in worktypes:
-        taskpro = Task.objects.filter(worktype = work)
+        taskpro = Task.objects.filter(worktype = work).filter(is_approved = True)
         q2 = 0
         for k in taskpro:
             duration = datetime.datetime.combine(date.min, k.endtime) - datetime.datetime.combine(date.min, k.starttime)
@@ -164,7 +164,7 @@ def DashView(request):
         dur = []
         q=0
         m=0
-        taskproject = Task.objects.filter(project = pro)
+        taskproject = Task.objects.filter(project = pro).filter(is_approved = True)
         for i in taskproject:
             duration = datetime.datetime.combine(date.min, i.endtime) - datetime.datetime.combine(date.min, i.starttime)
             dur.append(duration)

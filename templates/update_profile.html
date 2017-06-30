@@ -1,26 +1,82 @@
 {%extends 'base.html'%}
 {%block content%}
 
-<nav class="navbar navbar-inverse">
+<style>
+
+.body-wrap {
+  min-height: 700px;
+}
+
+.body-wrap {
+  position: relative;
+  z-index: 0;
+}
+
+.body-wrap:before,
+.body-wrap:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  height: 260px;
+}
+
+.body-wrap:after {
+  top: auto;
+  bottom: 0;
+}
+
+</style>
+
+<nav class="navbar navbar-inverse" role="navigation">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">ScaleDesk</a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Scaledesk</a>
     </div>
-    <ul class="nav navbar-nav">
-      <li><a href="/">Home</a></li>
-      <li><a href="/about/">About</a></li>
-      <li><a href="/task/">Tasks</a></li>
-      <li><a href="/viewtasks/">View Tasks</a></li>
-      <li class="active"><a href="/profile">Profile</a></li>
-      {% if staff %}
-        <li><a href="/dashboard/">DashBoard</a></li>
-        <li><a href="/userreport/">User Report</a></li>
-      {% endif %}
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
-      <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-    </ul>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/task/">Tasks</a></li>
+        <li><a href="/viewtasks/">View Tasks</a></li>
+        <li class="active"><a href="/profile">Profile</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard<b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a  class="reload_it" href="/dashboard/#menu2">List of Users</a></li>
+            <li class="divider"></li>
+            <li><a  class="reload_it" href="/dashboard/#menu3-1">Approved Tasks</a></li>
+            <li class="divider"></li>
+            <li><a  class="reload_it" href="/dashboard/#menu1">Daily tasks of all user</a></li>
+            <li class="divider"></li>
+            <li><a  class="reload_it" href="/dashboard/#menu3-2">Pending Tasks</a></li>
+            <li class="divider"></li>
+            <li><a  class="reload_it" href="/dashboard/#menu3-3">Rejected Tasks</a></li>
+            <li class="divider"></li>
+            <li><a  class="reload_it" href="/dashboard/#menu4">Project Report</a></li>
+            <li class="divider"></li>
+            <li><a  class="reload_it" href="/dashboard/#menu5">WorkType Report</a></li>
+            <li class="divider"></li>
+            <li><a  class="reload_it" href="/dashboard/#menu6">Toal Project Hours</a></li>
+            <li class="divider"></li>
+            <li><a  class="reload_it" href="/dashboard/#menu7">User Report</a></li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
+        <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+      </ul>
+    </div>
   </div>
 </nav>
 
@@ -68,4 +124,12 @@
     <button type="submit" name="Login" class="btn btn-primary">Update Profile</button>
   </form>
 </div>
+
+<script>
+$('ul.nav li.dropdown').hover(function() {
+  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+}, function() {
+  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+});
+</script>
 {%endblock%}

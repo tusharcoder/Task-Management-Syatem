@@ -21,7 +21,6 @@ urlpatterns = [
     url(r'^about/',AboutView, name="about"),
     url(r'^viewtasks/',ViewTaskView, name="viewtask"),
     url(r'^dashboard/',DashView, name='dashboard'),
-    url(r'^userreport/',ReportView, name='userreport'),
     url(r'^approved/(?P<id>[a-zA-Z0-9\-]+)/', Approved, name='approved'),
     url(r'^rejected/(?P<id>[a-zA-Z0-9\-]+)/', Rejected, name='rejected'),
 ]
