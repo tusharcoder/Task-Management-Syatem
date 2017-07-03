@@ -187,11 +187,11 @@ def Approved(request, id):
       data.is_approved=True
       data.is_pending=False
       data.save()
-      return redirect('/dashboard/#menu3-2')
+      return redirect('/d@shbo@rd/#menu3-2')
 
 def Rejected(request, id):
-    data=Task.objects.get(pk = id)
-    data.is_rejected=True
-    data.is_pending=False
-    data.save()
-    return redirect('/dashboard/#menu3-2')
+    data1=Task.objects.get(pk = id)
+    data1.is_rejected=True
+    data1.is_pending=False
+    data1.save()
+    return redirect('/d@shbo@rd/#menu3-2')
