@@ -146,9 +146,9 @@ def DashView(request):
     worktypes = WorkType.objects.all()
     member = UserProfile.objects.all()
     tasks = Task.objects.all()
-    taskpending = Task.objects.filter(is_approved=False).filter(assigned_by = user)
-    taskapproved = Task.objects.filter(is_approved=True).filter(assigned_by = user)
-    taskrejected = Task.objects.filter(is_rejected=True).filter(assigned_by = user)
+    taskpending = Task.objects.filter(is_approved=False).filter(assigned_by = user).filter(is_rejected=False)
+    taskapproved = Task.objects.filter(is_approved=True).filter(is_rejected=False).filter(assigned_by = user)
+    taskrejected = Task.objects.filter(is_rejected=True).filter(is_approved=False).filter(assigned_by = user)
     data=[]
     q1 = []
     q3 = []
@@ -183,15 +183,17 @@ def DashView(request):
     return render(request, "dashboard.html", {"taskrejected":taskrejected,"taskapproved":taskapproved,"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1,"q1":q1,"q3":q3,"q6":q6})
 
 def Approved(request, id):
-      data=Task.objects.get(pk = id)
-      data.is_approved=True
-      data.is_pending=False
-      data.save()
-      return redirect('/d@shbo@rd/#menu3-2')
+    data=Task.objects.get(pk = id)
+    data.is_approved=True
+    data.is_pending=False
+    data.is_rejected=False
+    data.save()
+    return redirect('/d@shbo@rd/#menu3-2')
 
 def Rejected(request, id):
-    data1=Task.objects.get(pk = id)
-    data1.is_rejected=True
-    data1.is_pending=False
-    data1.save()
+    data=Task.objects.get(pk = id)
+    data.is_rejected=True
+    data.is_pending=False
+    data.is_approved=False
+    data.save()
     return redirect('/d@shbo@rd/#menu3-2')
