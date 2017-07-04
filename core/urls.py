@@ -8,6 +8,7 @@
 
 from django.conf.urls import url
 from .views import *
+from django.conf.urls import include
 
 urlpatterns = [
     # Examples:
@@ -22,7 +23,7 @@ urlpatterns = [
     url(r'^viewtasks/',ViewTaskView, name="viewtask"),
     # url(r'^dashboard/',DashView, name='dashboard'),
 
-
+    url(r'^hook/', include('github_hook.urls')),
     url(r'^userstask/',UsersTaskView, name='userstask'),
     url(r'^userslist/',UsersListView, name='userslist'),
     url(r'^approvedtasks/',ApprovedTaskView, name='approvedtasks'),

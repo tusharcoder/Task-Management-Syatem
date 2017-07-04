@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core.apps.CoreConfig'
+    'core.apps.CoreConfig',
+    'github_hook',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -86,9 +87,9 @@ WSGI_APPLICATION = 'taskmgt.wsgi.application'
 DATABASES = {
             'default': {
                         'ENGINE': 'django.db.backends.mysql',
-                                'NAME': 'task1',
-                                        'USER': 'root',
-                                                'PASSWORD': 'root',
+                                'NAME': 'task',
+                                        'USER': 'admin',
+                                                'PASSWORD': 'qazplmq1w2e3r4',
                                                                     }
             }
 
