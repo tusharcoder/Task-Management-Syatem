@@ -20,7 +20,20 @@ urlpatterns = [
     url(r'^task/',TaskView, name="task"),
     url(r'^about/',AboutView, name="about"),
     url(r'^viewtasks/',ViewTaskView, name="viewtask"),
-    url(r'^d@shbo@rd/',DashView, name='dashboard'),
+    # url(r'^dashboard/',DashView, name='dashboard'),
+
+
+    url(r'^userstask/',UsersTaskView, name='userstask'),
+    url(r'^userslist/',UsersListView, name='userslist'),
+    url(r'^approvedtasks/',ApprovedTaskView, name='approvedtasks'),
+    url(r'^pendingtasks/',PendingTaskView, name='pendingtasks'),
+    url(r'^rejectedtasks/',RejectedTaskView, name='rejectedtasks'),
+    url(r'^projectreport/',ProjectReportView, name='projectreport'),
+    url(r'^worktypereport/',WorkTypeReportView, name='worktypereport'),
+    url(r'^totalprojecthours/',ProjectHourView, name='totalprojecthours'),
+    url(r'^userreport/',UserReportView, name='userreport'),
+
+
     url(r'^approved/(?P<id>[a-zA-Z0-9\-]+)/', Approved, name='approved'),
     url(r'^rejected/(?P<id>[a-zA-Z0-9\-]+)/', Rejected, name='rejected'),
 ]

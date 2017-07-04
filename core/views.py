@@ -11,7 +11,14 @@ from django.contrib import auth
 import datetime
 import random
 import time
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+
+# import ipdb; ipdb.set_trace()
+
 # Create your views here.
+
 
 def AboutView(request):
     user=request.user
@@ -21,16 +28,14 @@ def AboutView(request):
     staff=user.is_staff
     return render(request,"about.html",{"user":username,"staff":staff})
 
+
 def LoginView(request):
     if request.method=="GET":
         return render(request,"login.html",{"title":"Login"})
 
     if request.method=="POST":
         user = authenticate(username=request.POST.get("email"), password=request.POST.get("password"))
-        # result=login_util(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"request":request})
-        # import ipdb; ipdb.set_trace()
         auth.login(request,user)
-
         if user:
             return redirect('home', permanent=True)
         else:
@@ -63,6 +68,7 @@ def ProfileView(request):
         profile.updateProfile(**request.POST)
         return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email,"staff":staff,"user":username})
 
+
 @login_required(login_url="/login/")
 def HomeView(request):
     user=request.user
@@ -72,9 +78,11 @@ def HomeView(request):
     staff=user.is_staff
     return render(request,"home.html",{"title":"Welcome","user":username, "staff":staff, "user":username})
 
+
 def LogoutView(request):
     logout(request)
     return redirect('/login/')
+
 
 @login_required(login_url="/login/")
 def ViewTaskView(request):
@@ -85,6 +93,7 @@ def ViewTaskView(request):
     staff=user.is_staff
     tasks=Task.objects.filter(user=user).order_by("-id")
     return render(request, "viewtasks.html",{'tasks':tasks, "staff":staff,"user":username})
+
 
 @login_required(login_url="/login/")
 def TaskView(request):
@@ -109,10 +118,124 @@ def TaskView(request):
             j.duration =int(duration.seconds/60)
             j.save()
         return render(request, "viewtasks.html",{"tasks":tasks,"staff":staff,"user":username})
-        #return redirect('/viewtasks/')
+
 
 @login_required(login_url="/login/")
-def ReportView(request):
+def UsersTaskView(request):
+    user = request.user
+    useronline_list = UserProfile.objects.filter(user=user)
+    profile = useronline_list[0]
+    username = profile.name
+    tasks = Task.objects.all()
+    return render(request,"userstask.html",{"user":username,"tasks":tasks})
+
+
+
+@login_required(login_url="/login/")
+def UsersListView(request):
+    user = request.user
+    useronline_list = UserProfile.objects.filter(user=user)
+    profile = useronline_list[0]
+    username = profile.name
+    member = UserProfile.objects.all()
+    return render(request,"userslist.html",{"user":username,"member":member})
+
+
+
+@login_required(login_url="/login/")
+def ApprovedTaskView(request):
+    user = request.user
+    useronline_list = UserProfile.objects.filter(user=user)
+    profile = useronline_list[0]
+    username = profile.name
+    taskapproved = Task.objects.filter(is_approved=True).filter(is_rejected=False).filter(is_pending=False).filter(user = user)
+    return render(request, "approvedtasks.html",{"taskapproved":taskapproved,"user":username})
+
+
+@login_required(login_url="/login/")
+def PendingTaskView(request):
+    user = request.user
+    useronline_list = UserProfile.objects.filter(user=user)
+    profile = useronline_list[0]
+    username = profile.name
+    taskpending = Task.objects.filter(is_approved=False).filter(is_rejected=False).filter(is_pending=True).filter(user = user)
+    return render(request, "pendingtasks.html",{"taskpending":taskpending,"user":username})
+
+
+@login_required(login_url="/login/")
+def RejectedTaskView(request):
+    user = request.user
+    useronline_list = UserProfile.objects.filter(user=user)
+    profile = useronline_list[0]
+    username = profile.name
+    taskrejected = Task.objects.filter(is_approved=False).filter(is_rejected=True).filter(is_pending=False).filter(user = user)
+    return render(request, "rejectedtasks.html",{"taskrejected":taskrejected,"user":username})
+
+
+@login_required(login_url="/login/")
+def ProjectReportView(request):
+    user = request.user
+    useronline_list = UserProfile.objects.filter(user=user)
+    profile = useronline_list[0]
+    username = profile.name
+    projects = Project.objects.all()
+    q1 = []
+    for pro in projects:
+        q=0
+        taskproject = Task.objects.filter(project = pro).filter(is_approved = True)
+        for i in taskproject:
+            duration = datetime.datetime.combine(date.min, i.endtime) - datetime.datetime.combine(date.min, i.starttime)
+            q += ((duration.seconds)//3600)
+        q1.append({"name":pro.name,"duration":q})
+    return render(request,"projectreport.html",{"user":username,"q1":q1})
+
+
+@login_required(login_url="/login/")
+def WorkTypeReportView(request):
+    user = request.user
+    useronline_list = UserProfile.objects.filter(user=user)
+    profile = useronline_list[0]
+    username = profile.name
+    worktypes = WorkType.objects.all()
+    q3 = []
+    for work in worktypes:
+        taskpro = Task.objects.filter(worktype = work).filter(is_approved = True)
+        q2 = 0
+        for k in taskpro:
+            duration = datetime.datetime.combine(date.min, k.endtime) - datetime.datetime.combine(date.min, k.starttime)
+            q2 += ((duration.seconds)//3600)
+        q3.append({"name":work.name,"duration":q2})
+    return render(request,"worktypereport.html",{"user":username,"q3":q3})
+
+
+
+@login_required(login_url="/login/")
+def ProjectHourView(request):
+    user = request.user
+    useronline_list = UserProfile.objects.filter(user=user)
+    profile = useronline_list[0]
+    username = profile.name
+    projects = Project.objects.all()
+    data=[]
+    dur1 = []
+    for pro in projects:
+        dur = []
+        q=0
+        taskproject = Task.objects.filter(project = pro).filter(is_approved = True)
+        for i in taskproject:
+            duration = datetime.datetime.combine(date.min, i.endtime) - datetime.datetime.combine(date.min, i.starttime)
+            dur.append(duration)
+            q += ((duration.seconds)//3600)
+        sum = datetime.timedelta()
+        for i in dur:
+            sum += i
+        dur1.append(str(sum))
+        data.append({"name":pro.name,"duration":sum})
+    return render(request,"totalprojecthours.html",{"data":data,"user":username})
+
+
+@login_required(login_url="/login/")
+def UserReportView(request):
     user = request.user
     useronline_list = UserProfile.objects.filter(user=user)
     profile = useronline_list[0]
@@ -123,7 +246,7 @@ def ReportView(request):
         delivery_date = request.POST.get('date')
         members = User.objects.filter(is_staff=False)
         for mem in members:
-            taskm = Task.objects.filter(user=mem).filter(taskdate = delivery_date)
+            taskm = Task.objects.filter(user=mem).filter(taskdate = delivery_date).filter(is_approved=True)
             # taskm = Task.objects.filter(user=mem).filter(created_at__gt=delivery_date,created_at__lt=datetime.datetime(int(delivery_date.split("-")[0]),int(delivery_date.split("-")[1]),int(delivery_date.split("-")[2])+1))
             q5 = 0
             for j in taskm:
@@ -131,56 +254,8 @@ def ReportView(request):
                 q5 += (duration.seconds/60)/60
             # import ipdb; ipdb.set_trace()
             q6.append({"name":mem.username,"duration":q5})
-        return { "user":username,"q7":q6,"delivery_date":delivery_date}
-        return render(request, "userreport.html", { "user":username,"q6":q6,"delivery_date":delivery_date})
-    return render(request, "userreport.html", { "user":username,"q6":q6,"delivery_date":delivery_date})
+    return render(request,"userreport.html",{"user":username,"q7":q6})
 
-@login_required(login_url="/login/")
-def DashView(request):
-    user = request.user
-    dur1 = []
-    useronline_list = UserProfile.objects.filter(user=user)
-    profile = useronline_list[0]
-    username = profile.name
-    projects = Project.objects.all()
-    worktypes = WorkType.objects.all()
-    member = UserProfile.objects.all()
-    tasks = Task.objects.all()
-    taskpending = Task.objects.filter(is_approved=False).filter(assigned_by = user).filter(is_rejected=False)
-    taskapproved = Task.objects.filter(is_approved=True).filter(is_rejected=False).filter(assigned_by = user)
-    taskrejected = Task.objects.filter(is_rejected=True).filter(is_approved=False).filter(assigned_by = user)
-    data=[]
-    q1 = []
-    q3 = []
-    q6 = []
-    for work in worktypes:
-        taskpro = Task.objects.filter(worktype = work).filter(is_approved = True)
-        q2 = 0
-        for k in taskpro:
-            duration = datetime.datetime.combine(date.min, k.endtime) - datetime.datetime.combine(date.min, k.starttime)
-            q2 += ((duration.seconds)//3600)
-        q3.append({"name":work.name,"duration":q2})
-    for pro in projects:
-        dur = []
-        q=0
-        m=0
-        taskproject = Task.objects.filter(project = pro).filter(is_approved = True)
-        for i in taskproject:
-            duration = datetime.datetime.combine(date.min, i.endtime) - datetime.datetime.combine(date.min, i.starttime)
-            dur.append(duration)
-            q += ((duration.seconds)//3600)
-        q1.append({"name":pro.name,"duration":q})
-        sum = datetime.timedelta()
-        for i in dur:
-            sum += i
-        dur1.append(str(sum))
-        data.append({"name":pro.name,"duration":sum})
-    if "date" in request.POST:
-       data_report=ReportView(request)
-       final_dict={"taskrejected":taskrejected,"taskapproved":taskapproved,"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1,"q1":q1,"q3":q3,"q6":q6}
-       final_dict.update(data_report)
-       return render(request, "dashboard.html", final_dict )
-    return render(request, "dashboard.html", {"taskrejected":taskrejected,"taskapproved":taskapproved,"taskpending":taskpending,"tasks":tasks, "member":member, "projects":projects, "data":data, "worktypes":worktypes,"user":username,"dur1":dur1,"q1":q1,"q3":q3,"q6":q6})
 
 def Approved(request, id):
     data=Task.objects.get(pk = id)
@@ -188,7 +263,7 @@ def Approved(request, id):
     data.is_pending=False
     data.is_rejected=False
     data.save()
-    return redirect('/d@shbo@rd/#menu3-2')
+    return redirect('/pendingtasks/')
 
 def Rejected(request, id):
     data=Task.objects.get(pk = id)
@@ -196,4 +271,4 @@ def Rejected(request, id):
     data.is_pending=False
     data.is_approved=False
     data.save()
-    return redirect('/d@shbo@rd/#menu3-2')
+    return redirect('/pendingtasks/')

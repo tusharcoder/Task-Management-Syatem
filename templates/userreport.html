@@ -30,62 +30,152 @@
 
 </style>
 
-<div class="body-wrap">
-  <div class="container">
-    <nav class="navbar navbar-inverse" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Scaledesk</a>
-        </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
-            <li><a href="/about/">About</a></li>
-            <li><a href="/task/">Tasks</a></li>
-            <li><a href="/viewtasks/">View Tasks</a></li>
-            <li><a href="/profile">Profile</a></li>
-            {% if staff %}
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a  class="reload_it" href="/d@shbo@rd/#menu1">Daily tasks of all user</a></li>
-                <li class="divider"></li>
-                <li><a  class="reload_it" href="/d@shbo@rd/#menu2">List of Users</a></li>
-                <li class="divider"></li>
-                <li><a  class="reload_it" href="/d@shbo@rd/#menu3-1">Approved Tasks</a></li>
-                <li class="divider"></li>
-                <li><a  class="reload_it" href="/d@shbo@rd/#menu3-2">Pending Tasks</a></li>
-                <li class="divider"></li>
-                <li><a  class="reload_it" href="/d@shbo@rd/#menu3-3">Rejected Tasks</a></li>
-                <li class="divider"></li>
-                <li><a  class="reload_it" href="/d@shbo@rd/#menu4">Project Report</a></li>
-                <li class="divider"></li>
-                <li><a  class="reload_it" href="/d@shbo@rd/#menu5">WorkType Report</a></li>
-                <li class="divider"></li>
-                <li><a  class="reload_it" href="/d@shbo@rd/#menu6">Toal Project Hours</a></li>
-                <li class="divider"></li>
-                <li><a  class="reload_it" href="/d@shbo@rd/#menu7">User Report</a></li>
-              </ul>
-            </li>
-            {% endif %}
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Scaledesk</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/task/">Tasks</a></li>
+        <li><a href="/viewtasks/">View Tasks</a></li>
+        <li><a href="/profile">Profile</a></li>
+        {% if staff %}
+        <li class="dropdown" class="active">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/userstask/">Daily tasks of all user</a></li>
+            <li class="divider"></li>
+            <li><a href="/userslist/">List of Users</a></li>
+            <li class="divider"></li>
+            <li><a href="/approvedtasks/">Approved Tasks</a></li>
+            <li class="divider"></li>
+            <li><a href="/pendingtasks/">Pending Tasks</a></li>
+            <li class="divider"></li>
+            <li><a href="/rejectedtasks/">Rejected Tasks</a></li>
+            <li class="divider"></li>
+            <li><a href="/projectreport/">Project Report</a></li>
+            <li class="divider"></li>
+            <li><a href="/worktypereport/">WorkType Report</a></li>
+            <li class="divider"></li>
+            <li><a href="/totalprojecthours/">Toal Project Hours</a></li>
+            <li class="divider"></li>
+            <li><a href="/userreport/">User Report</a></li>
           </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
-            <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+        </li>
+        {% endif %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
+        <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+      </ul>
+    </div>
   </div>
-</div>
+</nav>
+
+{% if staff %}
+<h3>User Report:</h3>
+  <form action="/userreport/" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="name">Choose the date for which the report should be generated:</label>
+      <p align="right">Date: <input type="text" id="delivery_date"  name="date"> <input type="submit" value="submit" name="submit"></p>
+    </div>
+  </form>
+
+  <div class="container" style=" height:30vh; width:50vw">
+    <h3 >Date:{{delivery_date}}</h3>
+    <canvas id="myChart2" width="100px" height="100px"></canvas>
+      <script>
+      var memname=[];
+      var memhour=[];
+      {% for q in q7 %}
+        memname.push('{{q.name}}')
+        memhour.push('{{q.duration}}')
+      {% endfor %}
+      var ctx = document.getElementById("myChart2").getContext('2d');
+      var myChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: memname,
+              datasets: [{
+                label: '# of hours',
+                data: memhour,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(156, 102, 255, 0.2)',
+                    'rgba(253, 159, 64, 0.2)',
+                    'rgba(150, 102, 255, 0.2)',
+                    'rgba(250, 159, 64, 0.2)',
+                    'rgba(151, 102, 255, 0.2)',
+                    'rgba(254, 159, 64, 0.2)',
+                    'rgba(154, 102, 255, 0.2)',
+                    'rgba(249, 159, 64, 0.2)',
+                    'rgba(144, 102, 255, 0.2)',
+                    'rgba(241, 159, 64, 0.2)',
+                    'rgba(142, 102, 255, 0.2)',
+                    'rgba(242, 159, 64, 0.2)',
+                    'rgba(146, 102, 255, 0.2)',
+                    'rgba(248, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(156, 102, 255, 1)',
+                    'rgba(253, 159, 64, 1)',
+                    'rgba(150, 102, 255, 1)',
+                    'rgba(250, 159, 64, 1)',
+                    'rgba(151, 102, 255, 1)',
+                    'rgba(254, 159, 64, 1)',
+                    'rgba(154, 102, 255, 1)',
+                    'rgba(249, 159, 64, 1)',
+                    'rgba(144, 102, 255, 1)',
+                    'rgba(241, 159, 64, 1)',
+                    'rgba(142, 102, 255, 1)',
+                    'rgba(242, 159, 64, 1)',
+                    'rgba(146, 102, 255, 1)',
+                    'rgba(248, 159, 64, 1)'
+        ],
+        borderWidth: 1
+    }]
+  },
+  options: {
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero:true
+            }
+        }]
+    }
+  }
+  });
+  </script>
+
+
+  </div>
+{% endif %}
+
+
 
 <script>
 $('ul.nav li.dropdown').hover(function() {
@@ -94,6 +184,18 @@ $('ul.nav li.dropdown').hover(function() {
   $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
 });
 </script>
+
+<script>
+$('#delivery_date').datepicker({
+                  dateFormat: 'yy-mm-dd',
+                  changeMonth: true,
+                  changeYear: true,
+                  onSelect:  function(dateText, inst) {
+                  $(this).attr('value',dateText);
+                  }
+          });
+</script>
+
 
 
 {%endblock%}

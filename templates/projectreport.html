@@ -1,0 +1,181 @@
+{%extends 'base.html'%}
+{%block content%}
+
+<style>
+
+.body-wrap {
+  min-height: 700px;
+}
+
+.body-wrap {
+  position: relative;
+  z-index: 0;
+}
+
+.body-wrap:before,
+.body-wrap:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  height: 260px;
+}
+
+.body-wrap:after {
+  top: auto;
+  bottom: 0;
+}
+
+</style>
+
+<nav class="navbar navbar-inverse" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Scaledesk</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/task/">Tasks</a></li>
+        <li><a href="/viewtasks/">View Tasks</a></li>
+        <li><a href="/profile">Profile</a></li>
+        {% if staff %}
+        <li class="dropdown" class="active">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/userstask/">Daily tasks of all user</a></li>
+            <li class="divider"></li>
+            <li><a href="/userslist/">List of Users</a></li>
+            <li class="divider"></li>
+            <li><a href="/approvedtasks/">Approved Tasks</a></li>
+            <li class="divider"></li>
+            <li><a href="/pendingtasks/">Pending Tasks</a></li>
+            <li class="divider"></li>
+            <li><a href="/rejectedtasks/">Rejected Tasks</a></li>
+            <li class="divider"></li>
+            <li><a href="/projectreport/">Project Report</a></li>
+            <li class="divider"></li>
+            <li><a href="/worktypereport/">WorkType Report</a></li>
+            <li class="divider"></li>
+            <li><a href="/totalprojecthours/">Toal Project Hours</a></li>
+            <li class="divider"></li>
+            <li><a href="/userreport/">User Report</a></li>
+          </ul>
+        </li>
+        {% endif %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
+        <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% if staff %}
+<h3>Project Report</h3>
+<div class="container" style=" height:30vh; width:50vw">
+  <canvas id="myChart" width="100px" height="100px"></canvas>
+    <script>
+    var proj=[];
+    var dat=[];
+    {% for p in q1 %}
+      proj.push('{{p.name}}')
+      dat.push('{{p.duration}}')
+    {% endfor %}
+      var ctx = document.getElementById("myChart");
+      var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data:
+        {
+            labels: proj,
+            datasets:
+            [{
+              label: '# of hours',
+              data: dat,
+              backgroundColor:
+              [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(156, 102, 255, 0.2)',
+                'rgba(253, 159, 64, 0.2)',
+                'rgba(150, 102, 255, 0.2)',
+                'rgba(250, 159, 64, 0.2)',
+                'rgba(151, 102, 255, 0.2)',
+                'rgba(254, 159, 64, 0.2)',
+                'rgba(154, 102, 255, 0.2)',
+                'rgba(249, 159, 64, 0.2)',
+                'rgba(144, 102, 255, 0.2)',
+                'rgba(241, 159, 64, 0.2)',
+                'rgba(142, 102, 255, 0.2)',
+                'rgba(242, 159, 64, 0.2)',
+                'rgba(146, 102, 255, 0.2)',
+                'rgba(248, 159, 64, 0.2)',
+                'rgba(122, 102, 255, 0.2)',
+                'rgba(222, 159, 64, 0.2)',
+                'rgba(132, 102, 255, 0.2)',
+                'rgba(232, 159, 64, 0.2)',
+                'rgba(192, 102, 255, 0.2)',
+                'rgba(292, 159, 64, 0.2)'
+              ],
+              borderColor:
+              [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(156, 102, 255, 1)',
+                'rgba(253, 159, 64, 1)',
+                'rgba(150, 102, 255, 1)',
+                'rgba(250, 159, 64, 1)',
+                'rgba(151, 102, 255, 1)',
+                'rgba(254, 159, 64, 1)',
+                'rgba(154, 102, 255, 1)',
+                'rgba(249, 159, 64, 1)',
+                'rgba(144, 102, 255, 1)',
+                'rgba(241, 159, 64, 1)',
+                'rgba(142, 102, 255, 1)',
+                'rgba(242, 159, 64, 1)',
+                'rgba(146, 102, 255, 1)',
+                'rgba(248, 159, 64, 1)',
+                'rgba(122, 102, 255, 1)',
+                'rgba(222, 159, 64, 1)',
+                'rgba(132, 102, 255, 1)',
+                'rgba(232, 159, 64, 1)',
+                'rgba(192, 102, 255, 1)',
+                'rgba(292, 159, 64, 1)'
+              ],
+              borderWidth: 1
+            }]
+          },
+          options: {}
+        });
+   </script>
+</div>
+{% endif %}
+
+<script>
+$('ul.nav li.dropdown').hover(function() {
+  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
+}, function() {
+  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
+});
+</script>
+
+{%endblock%}
