@@ -107,7 +107,13 @@
 
     <div class="form-group">
       <label for="endtime">End Time:(In 24-hour format)</label>
-      <input type="time" name="endtime" class="form-control" id="endtime" placeholder="Enter the end time of task" value="{{task.endtime}}">
+      <input type="time" name="endtime" class="form-control" id="endtime" onchange="calculate_duration()" placeholder="Enter the end time of task" value="{{task.endtime}}">
+
+    </div>
+
+    <div class="form-group">
+      <label for="duration">Duration:</label>
+      <input type="number" class="form-control" name="duration" id="diff" readonly>
 
     </div>
 
@@ -159,6 +165,24 @@
     }, function() {
       $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
     });
+    </script>
+
+    <script>
+
+    function calculate_duration() {
+      var start = document.getElementById("starttime").value;
+      var end = document.getElementById("endtime").value;
+      start = start.split(":");
+      end = end.split(":");
+      var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+      var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+      var diff = endDate.getTime() - startDate.getTime();
+      var hours = Math.floor(diff / 1000 / 60 / 60);
+      diff -= hours * 1000 * 60 * 60;
+      var minutes = Math.floor(diff / 1000 / 60);
+      document.getElementById("diff").setAttribute('value',hours*60+minutes)
+    }
+
     </script>
 
 {%endblock%}
