@@ -14,7 +14,7 @@ import time
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-
+from django.http import Http404
 # import ipdb; ipdb.set_trace()
 
 # Create your views here.
@@ -127,7 +127,11 @@ def UsersTaskView(request):
     profile = useronline_list[0]
     username = profile.name
     tasks = Task.objects.all()
-    return render(request,"userstask.html",{"user":username,"tasks":tasks})
+    staff=user.is_staff
+    if staff:
+        return render(request,"userstask.html",{"user":username,"tasks":tasks,"staff":staff})
+    else:
+        raise Http404("You are not authorized to access this page")
 
 
 
@@ -137,9 +141,12 @@ def UsersListView(request):
     useronline_list = UserProfile.objects.filter(user=user)
     profile = useronline_list[0]
     username = profile.name
+    staff=user.is_staff
     member = UserProfile.objects.all()
-    return render(request,"userslist.html",{"user":username,"member":member})
-
+    if staff:
+        return render(request,"userslist.html",{"user":username,"member":member,"staff":staff})
+    else:
+        raise Http404("You are not authorized to access this page")
 
 
 @login_required(login_url="/login/")
@@ -148,9 +155,12 @@ def ApprovedTaskView(request):
     useronline_list = UserProfile.objects.filter(user=user)
     profile = useronline_list[0]
     username = profile.name
+    staff=user.is_staff
     taskapproved = Task.objects.filter(is_approved=True).filter(is_rejected=False).filter(is_pending=False).filter(user = user)
-    return render(request, "approvedtasks.html",{"taskapproved":taskapproved,"user":username})
-
+    if staff:
+        return render(request, "approvedtasks.html",{"taskapproved":taskapproved,"user":username,"staff":staff})
+    else:
+        raise Http404("You are not authorized to access this page")
 
 @login_required(login_url="/login/")
 def PendingTaskView(request):
@@ -158,9 +168,12 @@ def PendingTaskView(request):
     useronline_list = UserProfile.objects.filter(user=user)
     profile = useronline_list[0]
     username = profile.name
+    staff=user.is_staff
     taskpending = Task.objects.filter(is_approved=False).filter(is_rejected=False).filter(is_pending=True).filter(user = user)
-    return render(request, "pendingtasks.html",{"taskpending":taskpending,"user":username})
-
+    if staff:
+        return render(request, "pendingtasks.html",{"taskpending":taskpending,"user":username,"staff":staff})
+    else:
+        raise Http404("You are not authorized to access this page")
 
 @login_required(login_url="/login/")
 def RejectedTaskView(request):
@@ -168,9 +181,12 @@ def RejectedTaskView(request):
     useronline_list = UserProfile.objects.filter(user=user)
     profile = useronline_list[0]
     username = profile.name
+    staff=user.is_staff
     taskrejected = Task.objects.filter(is_approved=False).filter(is_rejected=True).filter(is_pending=False).filter(user = user)
-    return render(request, "rejectedtasks.html",{"taskrejected":taskrejected,"user":username})
-
+    if staff:
+        return render(request, "rejectedtasks.html",{"taskrejected":taskrejected,"user":username,"staff":staff})
+    else:
+        raise Http404("You are not authorized to access this page")
 
 @login_required(login_url="/login/")
 def ProjectReportView(request):
@@ -178,6 +194,7 @@ def ProjectReportView(request):
     useronline_list = UserProfile.objects.filter(user=user)
     profile = useronline_list[0]
     username = profile.name
+    staff=user.is_staff
     projects = Project.objects.all()
     q1 = []
     for pro in projects:
@@ -187,8 +204,10 @@ def ProjectReportView(request):
             duration = datetime.datetime.combine(date.min, i.endtime) - datetime.datetime.combine(date.min, i.starttime)
             q += ((duration.seconds)//3600)
         q1.append({"name":pro.name,"duration":q})
-    return render(request,"projectreport.html",{"user":username,"q1":q1})
-
+    if staff:
+        return render(request,"projectreport.html",{"user":username,"q1":q1,"staff":staff})
+    else:
+        raise Http404("You are not authorized to access this page")
 
 @login_required(login_url="/login/")
 def WorkTypeReportView(request):
@@ -197,6 +216,7 @@ def WorkTypeReportView(request):
     profile = useronline_list[0]
     username = profile.name
     worktypes = WorkType.objects.all()
+    staff=user.is_staff
     q3 = []
     for work in worktypes:
         taskpro = Task.objects.filter(worktype = work).filter(is_approved = True)
@@ -205,8 +225,10 @@ def WorkTypeReportView(request):
             duration = datetime.datetime.combine(date.min, k.endtime) - datetime.datetime.combine(date.min, k.starttime)
             q2 += ((duration.seconds)//3600)
         q3.append({"name":work.name,"duration":q2})
-    return render(request,"worktypereport.html",{"user":username,"q3":q3})
-
+    if staff:
+        return render(request,"worktypereport.html",{"user":username,"q3":q3,"staff":staff})
+    else:
+        raise Http404("You are not authorized to access this page")
 
 
 @login_required(login_url="/login/")
@@ -215,6 +237,7 @@ def ProjectHourView(request):
     useronline_list = UserProfile.objects.filter(user=user)
     profile = useronline_list[0]
     username = profile.name
+    staff=user.is_staff
     projects = Project.objects.all()
     data=[]
     dur1 = []
@@ -231,8 +254,10 @@ def ProjectHourView(request):
             sum += i
         dur1.append(str(sum))
         data.append({"name":pro.name,"duration":sum})
-    return render(request,"totalprojecthours.html",{"data":data,"user":username})
-
+    if staff:
+        return render(request,"totalprojecthours.html",{"data":data,"user":username,"staff":staff})
+    else:
+        raise Http404("You are not authorized to access this page")
 
 @login_required(login_url="/login/")
 def UserReportView(request):
@@ -240,6 +265,7 @@ def UserReportView(request):
     useronline_list = UserProfile.objects.filter(user=user)
     profile = useronline_list[0]
     username = profile.name
+    staff=user.is_staff
     delivery_date = ""
     q6 = []
     if request.method == 'POST':
@@ -254,8 +280,10 @@ def UserReportView(request):
                 q5 += (duration.seconds/60)/60
             # import ipdb; ipdb.set_trace()
             q6.append({"name":mem.username,"duration":q5})
-    return render(request,"userreport.html",{"user":username,"q7":q6})
-
+    if staff:
+        return render(request,"userreport.html",{"user":username,"q7":q6,"staff":staff})
+    else:
+        raise Http404("You are not authorized to access this page")
 
 def Approved(request, id):
     data=Task.objects.get(pk = id)
