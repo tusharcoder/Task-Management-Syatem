@@ -152,7 +152,7 @@ def ApprovedTaskView(request):
     profile = useronline_list[0]
     username = profile.name
     staff=user.is_staff
-    taskapproved = Task.objects.filter(is_approved=True).filter(is_rejected=False).filter(is_pending=False).filter(user = user)
+    taskapproved = Task.objects.filter(is_approved=True).filter(is_rejected=False).filter(is_pending=False).filter(assigned_by = user)
     if staff:
         return render(request, "approvedtasks.html",{"taskapproved":taskapproved,"user":username,"staff":staff})
     else:
@@ -165,7 +165,7 @@ def PendingTaskView(request):
     profile = useronline_list[0]
     username = profile.name
     staff=user.is_staff
-    taskpending = Task.objects.filter(is_approved=False).filter(is_rejected=False).filter(is_pending=True).filter(user = user)
+    taskpending = Task.objects.filter(is_approved=False).filter(is_rejected=False).filter(is_pending=True).filter(assigned_by=user)
     if staff:
         return render(request, "pendingtasks.html",{"taskpending":taskpending,"user":username,"staff":staff})
     else:
@@ -178,7 +178,7 @@ def RejectedTaskView(request):
     profile = useronline_list[0]
     username = profile.name
     staff=user.is_staff
-    taskrejected = Task.objects.filter(is_approved=False).filter(is_rejected=True).filter(is_pending=False).filter(user = user)
+    taskrejected = Task.objects.filter(is_approved=False).filter(is_rejected=True).filter(is_pending=False).filter(assigned_by = user)
     if staff:
         return render(request, "rejectedtasks.html",{"taskrejected":taskrejected,"user":username,"staff":staff})
     else:
