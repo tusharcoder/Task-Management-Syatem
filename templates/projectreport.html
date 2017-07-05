@@ -41,14 +41,12 @@
       </button>
       <a class="navbar-brand" href="#">Scaledesk</a>
     </div>
-
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="/">Home</a></li>
         <li><a href="/about/">About</a></li>
         <li><a href="/task/">Tasks</a></li>
         <li><a href="/viewtasks/">View Tasks</a></li>
-        <li><a href="/profile">Profile</a></li>
         {% if staff %}
         <li class="dropdown" class="active">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
@@ -75,7 +73,7 @@
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
+        <li><a href="/profile/"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
         <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
       </ul>
     </div>

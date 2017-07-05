@@ -20,6 +20,10 @@ urlpatterns = [
     url(r'^task/',TaskView, name="task"),
     url(r'^about/',AboutView, name="about"),
     url(r'^viewtasks/',ViewTaskView, name="viewtask"),
+
+    url(r'^approvedtaskuser/',ApprovedTaskUserView, name="approvedtaskuser"),
+    url(r'^pendingtaskuser/',PendingTaskUserView, name="pendingtaskuser"),
+    url(r'^rejectedtaskuser/',RejectedTaskUserView, name="rejectedtaskuser"),
     # url(r'^dashboard/',DashView, name='dashboard'),
 
 

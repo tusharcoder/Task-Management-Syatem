@@ -30,13 +30,14 @@ def AboutView(request):
 
 
 def LoginView(request):
+    is_auth = False
     if request.method=="GET":
         return render(request,"login.html",{"title":"Login"})
 
     if request.method=="POST":
         user = authenticate(username=request.POST.get("email"), password=request.POST.get("password"))
-        auth.login(request,user)
         if user:
+            auth.login(request,user)
             return redirect('home', permanent=True)
         else:
             return redirect('login', permanent=True)
@@ -63,8 +64,8 @@ def ProfileView(request):
         return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email, "staff":staff,"user":username})
 
     if request.method=="POST":
-        user = request.user
-        staff = user.is_staff
+        # user = request.user
+        # staff = user.is_staff
         profile.updateProfile(**request.POST)
         return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email,"staff":staff,"user":username})
 
@@ -83,6 +84,36 @@ def LogoutView(request):
     logout(request)
     return redirect('/login/')
 
+@login_required(login_url="/login/")
+def ApprovedTaskUserView(request):
+    user=request.user
+    useronline_list=UserProfile.objects.filter(user=user)
+    profile=useronline_list[0]
+    username=profile.name
+    staff=user.is_staff
+    taskapproved = Task.objects.filter(is_approved = True).filter(user=user)
+    return render(request, "approvedtaskuser.html",{"taskapproved":taskapproved,"user":username,"staff":staff})
+
+
+@login_required(login_url="/login/")
+def PendingTaskUserView(request):
+    user=request.user
+    useronline_list=UserProfile.objects.filter(user=user)
+    profile=useronline_list[0]
+    username=profile.name
+    staff=user.is_staff
+    taskpending = Task.objects.filter(is_pending = True).filter(user=user)
+    return render(request, "pendingtaskuser.html",{"taskpending":taskpending,"user":username,"staff":staff})
+
+@login_required(login_url="/login/")
+def RejectedTaskUserView(request):
+    user=request.user
+    useronline_list=UserProfile.objects.filter(user=user)
+    profile=useronline_list[0]
+    username=profile.name
+    staff=user.is_staff
+    taskrejected = Task.objects.filter(is_rejected = True).filter(user=user)
+    return render(request, "pendingtaskuser.html",{"taskrejected":taskrejected,"user":username,"staff":staff})
 
 @login_required(login_url="/login/")
 def ViewTaskView(request):

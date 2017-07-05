@@ -48,7 +48,19 @@
         <li><a href="/about/">About</a></li>
         <li><a href="/task/">Tasks</a></li>
         <li class="active"><a href="/viewtasks/">View Tasks</a></li>
-        <li><a href="/profile">Profile</a></li>
+        {% if not staff %}
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Task Status <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="/approvedtaskuser/">Approved</a></li>
+            <li class="divider"></li>
+            <li><a href="/pendingtaskuser/">Pending</a></li>
+            <li class="divider"></li>
+            <li><a href="/rejectedtaskuser/">Rejected</a></li>
+            <li class="divider"></li>
+          </ul>
+        </li>
+        {% endif %}
         {% if staff %}
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
@@ -75,7 +87,7 @@
         {% endif %}
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
+        <li><a href="/profile/"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
         <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
       </ul>
     </div>
@@ -99,6 +111,7 @@
                 <th>Assigned By</th>
                 <th>Created At</th>
                 <th>Updated At</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -115,6 +128,15 @@
                 <td>{{task.assigned_by}}</td>
                 <td>{{task.created_at}}</td>
                 <td>{{task.taskdate}}</td>
+                {% if task.is_pending %}
+                <td>Pending</td>
+                {% endif %}
+                {% if task.is_approved %}
+                <td>Approved</td>
+                {% endif %}
+                {% if task.is_rejected %}
+                <td>Rejected</td>
+                {% endif %}
             </tr>
           {% endfor %}
         </tbody>

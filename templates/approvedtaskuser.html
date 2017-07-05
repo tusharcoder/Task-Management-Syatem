@@ -44,7 +44,7 @@
 
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
+        <li><a href="/">Home</a></li>
         <li><a href="/about/">About</a></li>
         <li><a href="/task/">Tasks</a></li>
         <li><a href="/viewtasks/">View Tasks</a></li>
@@ -94,7 +94,49 @@
   </div>
 </nav>
 
-<h1>Hello {{user}},</h1>
+<h2>Approved <small>Tasks</small></h2>
+<div class="container">
+  <table id="example2" class="table table-striped table-bordered" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+              <th>User</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Duration</th>
+              <th>Project</th>
+              <th>WorkType</th>
+              <th>Assigned By</th>
+              <th>Created At</th>
+              <th>Status</th>
+            </tr>
+        </thead>
+          <tbody>
+            {% for taska in taskapproved %}
+              <tr>
+                <td>{{taska.user}}</td>
+                <td>{{taska.name}}</td>
+                <td>{{taska.description}}</td>
+                <td>{{taska.starttime}}</td>
+                <td>{{taska.endtime}}</td>
+                <td>{{taska.duration}}</td>
+                <td>{{taska.project}}</td>
+                <td>{{taska.worktype}}</td>
+                <td>{{taska.assigned_by}}</td>
+                <td>{{taska.taskdate}}</td>
+                <td>Approved</td>
+              </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+    <script>
+    $(document).ready(function() {
+        $('#example2').DataTable();
+    } );
+    </script>
+</div>
+
 
 <script>
 $('ul.nav li.dropdown').hover(function() {

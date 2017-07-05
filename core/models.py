@@ -63,7 +63,7 @@ class Task(models.Model):
     """Model to store the task assigned to the user"""
     user = models.ForeignKey(User,related_name="taskuser")
     name=models.CharField(max_length=100, null= True)
-    description=models.CharField(max_length=500)
+    description=models.CharField(max_length=500, blank=False)
     starttime=models.TimeField()
     endtime=models.TimeField()
     duration = models.IntegerField(null = True )
