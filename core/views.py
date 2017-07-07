@@ -89,7 +89,7 @@ def HomeView(request):
     sum = 0
     for task in todaytask:
         sum += task.duration
-    hour = sum/60
+    hour = sum//60
     return render(request,"home.html",{"title":"Welcome","user":username,'a':a,'b':b,'c':c,'hour':hour, "staff":staff, "user":username})
 
 
@@ -114,7 +114,7 @@ def ApprovedTaskUserView(request):
     sum = 0
     for task in taskapproved:
         sum += task.duration
-    hour = sum/60
+    hour = sum//60
     return render(request, "approvedtaskuser.html",{"taskapproved":taskapproved,'a':a,'b':b,'c':c,'hour':hour,"user":username,"staff":staff})
 
 
@@ -135,7 +135,7 @@ def PendingTaskUserView(request):
     sum = 0
     for task in taskapproved:
         sum += task.duration
-    hour = sum/60
+    hour = sum//60
     return render(request, "pendingtaskuser.html",{"taskpending":taskpending,'a':a,'b':b,'c':c,'hour':hour,"user":username,"staff":staff})
 
 @login_required(login_url="/login/")
@@ -155,7 +155,7 @@ def RejectedTaskUserView(request):
     sum = 0
     for task in taskapproved:
         sum += task.duration
-    hour = sum//60
+    hour = int(sum//60)
     return render(request, "rejectedtaskuser.html",{"taskrejected":taskrejected,'a':a,'b':b,'c':c,'hour':hour,"user":username,"staff":staff})
 
 @login_required(login_url="/login/")
