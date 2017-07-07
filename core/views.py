@@ -155,7 +155,7 @@ def RejectedTaskUserView(request):
     sum = 0
     for task in taskapproved:
         sum += task.duration
-    hour = sum/60
+    hour = sum//60
     return render(request, "rejectedtaskuser.html",{"taskrejected":taskrejected,'a':a,'b':b,'c':c,'hour':hour,"user":username,"staff":staff})
 
 @login_required(login_url="/login/")
@@ -342,14 +342,13 @@ def UserReportView(request):
         delivery_date = request.POST.get('date')
         members = User.objects.filter(is_staff=False)
         for mem in members:
+            t_hr = 0
             taskm = Task.objects.filter(user=mem).filter(taskdate = delivery_date).filter(is_approved=True)
-            # taskm = Task.objects.filter(user=mem).filter(created_at__gt=delivery_date,created_at__lt=datetime.datetime(int(delivery_date.split("-")[0]),int(delivery_date.split("-")[1]),int(delivery_date.split("-")[2])+1))
             q5 = 0
             for j in taskm:
-                duration = datetime.datetime.combine(date.min, j.endtime) - datetime.datetime.combine(date.min, j.starttime)
-                q5 += (duration.seconds/60)/60
-            # import ipdb; ipdb.set_trace()
-            q6.append({"name":mem.username,"duration":q5})
+                q5 += j.duration
+            t_hr = (q5/60)
+            q6.append({"name":mem.username,"duration":t_hr})
     if staff:
         return render(request,"userreport.html",{"user":username,"q7":q6,"staff":staff})
     else:
