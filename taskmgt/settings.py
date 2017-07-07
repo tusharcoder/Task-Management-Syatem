@@ -21,56 +21,61 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
+import environ
+root = environ.Path(__file__) - 0 # three folder back (/a/b/c/ - 3 = /)
+env = environ.Env(DEBUG=(bool, False),) # set default values and casting
+environ.Env.read_env()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v%eda&(*cwrkcgjqjqfn%z%)l^4&0*wv_)(%$s-f7qa6%3tnr&'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['35.154.58.91']
 
 
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'core.apps.CoreConfig'
-)
+            'django.contrib.admin',
+                'django.contrib.auth',
+                    'django.contrib.contenttypes',
+                        'django.contrib.sessions',
+                            'django.contrib.messages',
+                                'django.contrib.staticfiles',
+                                    'core.apps.CoreConfig',
+                                        'github_hook'
+
+                                        )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+            'django.contrib.sessions.middleware.SessionMiddleware',
+                'django.middleware.common.CommonMiddleware',
+                    'django.middleware.csrf.CsrfViewMiddleware',
+                        'django.contrib.auth.middleware.AuthenticationMiddleware',
+                            'django.contrib.messages.middleware.MessageMiddleware',
+                                'django.middleware.clickjacking.XFrameOptionsMiddleware',
+                                )
 
 #templates settings
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    }
-]
+            {
+                        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                                'DIRS': ['templates'],
+                                        'APP_DIRS': True,
+                                                'OPTIONS': {
+                                                                'context_processors': [
+                                                                                    'django.template.context_processors.debug',
+                                                                                                    'django.template.context_processors.request',
+                                                                                                                    'django.contrib.auth.context_processors.auth',
+                                                                                                                                    'django.contrib.messages.context_processors.messages',
+                                                                                                                                                ],
+                                                                        },
+                                                    }
+            ]
 ROOT_URLCONF = 'taskmgt.urls'
 
 WSGI_APPLICATION = 'taskmgt.wsgi.application'
@@ -78,19 +83,14 @@ WSGI_APPLICATION = 'taskmgt.wsgi.application'
 
 #DATABASES = {
  #   'default': {
-#      'ENGINE': 'django.db.backends.sqlite3',
- #       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-  # }
-#}
+ #      'ENGINE': 'django.db.backends.sqlite3',
+  #       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+    #}
 
 DATABASES = {
-            'default': {
-                        'ENGINE': 'django.db.backends.mysql',
-                                'NAME': 'task1',
-                                        'USER': 'root',
-                                                'PASSWORD': 'root',
-                                                                    }
-            }
+     'default': env.db(),
+     }                                
 
 LANGUAGE_CODE = 'en-us'
 
@@ -103,8 +103,8 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
+    # Static files (CSS, JavaScript, Images)
+    # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 
 STATIC_ROOT=os.path.join(BASE_DIR,'static/')
