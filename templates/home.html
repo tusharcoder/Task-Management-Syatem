@@ -1,107 +1,284 @@
 {%extends 'base.html'%}
 {%block content%}
+{% load staticfiles %}
 
-<style>
+<div class="wrapper">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
-.body-wrap {
-  min-height: 700px;
-}
+    <!--
+		Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+		Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+	-->
 
-.body-wrap {
-  position: relative;
-  z-index: 0;
-}
+    	<div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="/about/" class="simple-text">
+                    Scaledesk
+                </a>
+            </div>
 
-.body-wrap:before,
-.body-wrap:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: -1;
-  height: 260px;
-}
-
-.body-wrap:after {
-  top: auto;
-  bottom: 0;
-}
-
-</style>
-
-<nav class="navbar navbar-inverse" role="navigation">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Scaledesk</a>
+            <ul class="nav">
+                <li class="active">
+                    <a href="/">
+                        <i class="ti-panel"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/profile/">
+                        <i class="ti-user"></i>
+                        <p>User Profile</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/task/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Add Task</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/viewtasks/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Task List</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <i class="ti-close"></i>
+                        <p>Log Out</p>
+                    </a>
+                </li>
+            </ul>
+    	</div>
     </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="/">Home</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/task/">Tasks</a></li>
-        <li><a href="/viewtasks/">View Tasks</a></li>
-        {% if not staff %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Task Status <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="/approvedtaskuser/">Approved</a></li>
-            <li class="divider"></li>
-            <li><a href="/pendingtaskuser/">Pending</a></li>
-            <li class="divider"></li>
-            <li><a href="/rejectedtaskuser/">Rejected</a></li>
-            <li class="divider"></li>
-          </ul>
-        </li>
-        {% endif %}
-        {% if staff %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="/userstask/">Daily tasks of all user</a></li>
-            <li class="divider"></li>
-            <li><a href="/userslist/">List of Users</a></li>
-            <li class="divider"></li>
-            <li><a href="/approvedtasks/">Approved Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/pendingtasks/">Pending Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/rejectedtasks/">Rejected Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/projectreport/">Project Report</a></li>
-            <li class="divider"></li>
-            <li><a href="/worktypereport/">WorkType Report</a></li>
-            <li class="divider"></li>
-            <li><a href="/totalprojecthours/">Toal Project Hours</a></li>
-            <li class="divider"></li>
-            <li><a href="/userreport/">User Report</a></li>
-          </ul>
-        </li>
-        {% endif %}
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/profile/"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
-        <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-      </ul>
+    <div class="main-panel">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Dashboard</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="ti-user"></i>
+																			<p>{{user}}</p>
+                            </a>
+                        </li>
+						            <li>
+                            <a href="#">
+								                <i class="ti-settings"></i>
+								                      <p>Settings</p>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-success text-center">
+                                            <i class="ti-server"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/approvedtaskuser/"><p>Approved Tasks</p></a>
+                                            {{a}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-reload"></i> Updated now
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-warning text-center">
+                                            <i class="ti-server"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/pendingtaskuser/"><p>Pending Tasks</p></a>
+                                            {{b}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-calendar"></i> Last day
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-danger text-center">
+                                            <i class="ti-server"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/rejectedtaskuser/"><p>Rejected Tasks</p></a>
+                                            {{c}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-timer"></i> In the last hour
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-info text-center">
+                                            <i class="ti-twitter-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="#"><p>Working Hours</p></a>
+                                            {{hour}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-reload"></i> Updated now
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Users Behavior</h4>
+                                <p class="category">24 Hours performance</p>
+                            </div>
+                            <div class="content">
+                                <div id="chartHours" class="ct-chart"></div>
+                                <div class="footer">
+                                    <div class="chart-legend">
+                                        <i class="fa fa-circle text-info"></i> Open
+                                        <i class="fa fa-circle text-danger"></i> Click
+                                        <i class="fa fa-circle text-warning"></i> Click Second Time
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="ti-reload"></i> Updated 3 minutes ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Email Statistics</h4>
+                                <p class="category">Last Campaign Performance</p>
+                            </div>
+                            <div class="content">
+                                <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
+
+                                <div class="footer">
+                                    <div class="chart-legend">
+                                        <i class="fa fa-circle text-info"></i> Open
+                                        <i class="fa fa-circle text-danger"></i> Bounce
+                                        <i class="fa fa-circle text-warning"></i> Unsubscribe
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="ti-timer"></i> Campaign sent 2 days ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">2015 Sales</h4>
+                                <p class="category">All products including Taxes</p>
+                            </div>
+                            <div class="content">
+                                <div id="chartActivity" class="ct-chart"></div>
+
+                                <div class="footer">
+                                    <div class="chart-legend">
+                                        <i class="fa fa-circle text-info"></i> Tesla Model S
+                                        <i class="fa fa-circle text-warning"></i> BMW 5 Series
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="ti-check"></i> Data information certified
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</nav>
+</div>
 
-<h1>Hello {{user}},</h1>
-
-<script>
-$('ul.nav li.dropdown').hover(function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-}, function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
-});
+<script type="text/javascript">
+  	$(document).ready(function(){
+      	demo.initChartist();
+      	$.notify({
+          	icon: 'ti-gift',
+          	message: "Welcome to <b>Your Dashboard</b>"
+          },{
+              type: 'success',
+              timer: 4000
+          });
+  	});
 </script>
+
+
+
 
 {%endblock%}

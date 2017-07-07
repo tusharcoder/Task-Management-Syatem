@@ -1,147 +1,180 @@
 {%extends 'base.html'%}
 {%block content%}
+{% load staticfiles %}
 
-<style>
 
-.body-wrap {
-  min-height: 700px;
-}
+<div class="wrapper">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
-.body-wrap {
-  position: relative;
-  z-index: 0;
-}
+    <!--
+		Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+		Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+	-->
 
-.body-wrap:before,
-.body-wrap:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: -1;
-  height: 260px;
-}
+    	<div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="/about/" class="simple-text">
+                    Scaledesk
+                </a>
+            </div>
 
-.body-wrap:after {
-  top: auto;
-  bottom: 0;
-}
-
-</style>
-
-<nav class="navbar navbar-inverse" role="navigation">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Scaledesk</a>
+            <ul class="nav">
+                <li>
+                    <a href="/">
+                        <i class="ti-panel"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/profile/">
+                        <i class="ti-user"></i>
+                        <p>User Profile</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/task/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Add Task</p>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/viewtasks/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Task List</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <i class="ti-close"></i>
+                        <p>Log Out</p>
+                    </a>
+                </li>
+            </ul>
+    	</div>
     </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/task/">Tasks</a></li>
-        <li class="active"><a href="/viewtasks/">View Tasks</a></li>
-        {% if not staff %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Task Status <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="/approvedtaskuser/">Approved</a></li>
-            <li class="divider"></li>
-            <li><a href="/pendingtaskuser/">Pending</a></li>
-            <li class="divider"></li>
-            <li><a href="/rejectedtaskuser/">Rejected</a></li>
-            <li class="divider"></li>
-          </ul>
-        </li>
-        {% endif %}
-        {% if staff %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="/userstask/">Daily tasks of all user</a></li>
-            <li class="divider"></li>
-            <li><a href="/userslist/">List of Users</a></li>
-            <li class="divider"></li>
-            <li><a href="/approvedtasks/">Approved Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/pendingtasks/">Pending Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/rejectedtasks/">Rejected Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/projectreport/">Project Report</a></li>
-            <li class="divider"></li>
-            <li><a href="/worktypereport/">WorkType Report</a></li>
-            <li class="divider"></li>
-            <li><a href="/totalprojecthours/">Toal Project Hours</a></li>
-            <li class="divider"></li>
-            <li><a href="/userreport/">User Report</a></li>
-          </ul>
-        </li>
-        {% endif %}
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/profile/"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
-        <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-      </ul>
+    <div class="main-panel">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Task List</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="ti-user"></i>
+																			<p>{{user}}</p>
+                            </a>
+                        </li>
+						            <li>
+                            <a href="#">
+								                <i class="ti-settings"></i>
+								                      <p>Settings</p>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Your Tasks</h4>
+                            </div>
+                            <div class="content table-responsive table-full-width" style="overflow:scroll;">
+                                <table id="example1" class="table table-striped table-bordered">
+                                  <thead>
+                                      <tr>
+                                          <th>User</th>
+                                          <th>Name</th>
+                                          <th>Description</th>
+                                          <th>Start Time</th>
+                                          <th>End Time</th>
+                                          <th>Duration</th>
+                                          <th>Project</th>
+                                          <th>WorkType</th>
+                                          <th>Assigned By</th>
+                                          <th>Created At</th>
+                                          <th>Updated At</th>
+                                          <th>Status</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                    {% for task in tasks %}
+                                      <tr>
+                                          <td>{{task.id}}</td>
+                                          <td>{{task.name}}</td>
+                                          <td>{{task.description}}</td>
+                                          <td>{{task.starttime}}</td>
+                                          <td>{{task.endtime}}</td>
+                                          <td>{{task.duration}}</td>
+                                          <td>{{task.project}}</td>
+                                          <td>{{task.worktype}}</td>
+                                          <td>{{task.assigned_by}}</td>
+                                          <td>{{task.created_at}}</td>
+                                          <td>{{task.taskdate}}</td>
+                                          {% if task.is_pending %}
+                                          <td>Pending</td>
+                                          {% endif %}
+                                          {% if task.is_approved %}
+                                          <td>Approved</td>
+                                          {% endif %}
+                                          {% if task.is_rejected %}
+                                          <td>Rejected</td>
+                                          {% endif %}
+                                      </tr>
+                                    {% endfor %}
+                                  </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <nav class="pull-left">
+                            <ul>
+
+                                <li>
+                                    <a href="http://www.creative-tim.com">
+                                        Creative Tim
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="http://blog.creative-tim.com">
+                                       Blog
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="http://www.creative-tim.com/license">
+                                        Licenses
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+        				        <div class="copyright pull-right">
+                            &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+      </div>
     </div>
-  </div>
-</nav>
-
-<h1>Your Tasks for <small>Today</small></h1>
-
-<div class="container">
-  <table id="example1" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>User</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Duration</th>
-                <th>Project</th>
-                <th>WorkType</th>
-                <th>Assigned By</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-          {% for task in tasks %}
-            <tr>
-                <td>{{task.id}}</td>
-                <td>{{task.name}}</td>
-                <td>{{task.description}}</td>
-                <td>{{task.starttime}}</td>
-                <td>{{task.endtime}}</td>
-                <td>{{task.duration}}</td>
-                <td>{{task.project}}</td>
-                <td>{{task.worktype}}</td>
-                <td>{{task.assigned_by}}</td>
-                <td>{{task.created_at}}</td>
-                <td>{{task.taskdate}}</td>
-                {% if task.is_pending %}
-                <td>Pending</td>
-                {% endif %}
-                {% if task.is_approved %}
-                <td>Approved</td>
-                {% endif %}
-                {% if task.is_rejected %}
-                <td>Rejected</td>
-                {% endif %}
-            </tr>
-          {% endfor %}
-        </tbody>
-    </table>
-</div>
 
 <script>
 $(document).ready(function() {
@@ -149,12 +182,6 @@ $(document).ready(function() {
 } );
 </script>
 
-<script>
-$('ul.nav li.dropdown').hover(function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-}, function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
-});
-</script>
+
 
 {%endblock%}

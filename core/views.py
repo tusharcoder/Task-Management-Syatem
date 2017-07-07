@@ -78,7 +78,19 @@ def HomeView(request):
     profile=useronline_list[0]
     username=profile.name
     staff=user.is_staff
-    return render(request,"home.html",{"title":"Welcome","user":username, "staff":staff, "user":username})
+    taskapproved = Task.objects.filter(is_approved = True).filter(user=user)
+    taskpending = Task.objects.filter(is_pending = True).filter(user=user)
+    taskrejected = Task.objects.filter(is_rejected = True).filter(user=user)
+    todaytask = Task.objects.filter(is_approved = True).filter(user=user)
+    a = taskapproved.count()
+    b = taskpending.count()
+    c = taskrejected.count()
+    hour = 0
+    sum = 0
+    for task in todaytask:
+        sum += task.duration
+    hour = sum/60
+    return render(request,"home.html",{"title":"Welcome","user":username,'a':a,'b':b,'c':c,'hour':hour, "staff":staff, "user":username})
 
 
 def LogoutView(request):
@@ -93,7 +105,17 @@ def ApprovedTaskUserView(request):
     username=profile.name
     staff=user.is_staff
     taskapproved = Task.objects.filter(is_approved = True).filter(user=user)
-    return render(request, "approvedtaskuser.html",{"taskapproved":taskapproved,"user":username,"staff":staff})
+    taskpending = Task.objects.filter(is_pending = True).filter(user=user)
+    taskrejected = Task.objects.filter(is_rejected = True).filter(user=user)
+    a = taskapproved.count()
+    b = taskpending.count()
+    c = taskrejected.count()
+    hour = 0
+    sum = 0
+    for task in taskapproved:
+        sum += task.duration
+    hour = sum/60
+    return render(request, "approvedtaskuser.html",{"taskapproved":taskapproved,'a':a,'b':b,'c':c,'hour':hour,"user":username,"staff":staff})
 
 
 @login_required(login_url="/login/")
@@ -103,8 +125,18 @@ def PendingTaskUserView(request):
     profile=useronline_list[0]
     username=profile.name
     staff=user.is_staff
+    taskapproved = Task.objects.filter(is_approved = True).filter(user=user)
     taskpending = Task.objects.filter(is_pending = True).filter(user=user)
-    return render(request, "pendingtaskuser.html",{"taskpending":taskpending,"user":username,"staff":staff})
+    taskrejected = Task.objects.filter(is_rejected = True).filter(user=user)
+    a = taskapproved.count()
+    b = taskpending.count()
+    c = taskrejected.count()
+    hour = 0
+    sum = 0
+    for task in taskapproved:
+        sum += task.duration
+    hour = sum/60
+    return render(request, "pendingtaskuser.html",{"taskpending":taskpending,'a':a,'b':b,'c':c,'hour':hour,"user":username,"staff":staff})
 
 @login_required(login_url="/login/")
 def RejectedTaskUserView(request):
@@ -113,8 +145,18 @@ def RejectedTaskUserView(request):
     profile=useronline_list[0]
     username=profile.name
     staff=user.is_staff
+    taskapproved = Task.objects.filter(is_approved = True).filter(user=user)
+    taskpending = Task.objects.filter(is_pending = True).filter(user=user)
     taskrejected = Task.objects.filter(is_rejected = True).filter(user=user)
-    return render(request, "pendingtaskuser.html",{"taskrejected":taskrejected,"user":username,"staff":staff})
+    a = taskapproved.count()
+    b = taskpending.count()
+    c = taskrejected.count()
+    hour = 0
+    sum = 0
+    for task in taskapproved:
+        sum += task.duration
+    hour = sum/60
+    return render(request, "rejectedtaskuser.html",{"taskrejected":taskrejected,'a':a,'b':b,'c':c,'hour':hour,"user":username,"staff":staff})
 
 @login_required(login_url="/login/")
 def ViewTaskView(request):

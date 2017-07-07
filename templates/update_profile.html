@@ -1,101 +1,299 @@
 {%extends 'base.html'%}
 {%block content%}
+{% load staticfiles %}
 
-<style>
+<div class="wrapper">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
-.body-wrap {
-  min-height: 700px;
-}
+    <!--
+		Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
+		Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+	-->
 
-.body-wrap {
-  position: relative;
-  z-index: 0;
-}
+    	<div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="/about/" class="simple-text">
+                    Scaledesk
+                </a>
+            </div>
 
-.body-wrap:before,
-.body-wrap:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: -1;
-  height: 260px;
-}
-
-.body-wrap:after {
-  top: auto;
-  bottom: 0;
-}
-
-</style>
-
-<nav class="navbar navbar-inverse" role="navigation">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Scaledesk</a>
+            <ul class="nav">
+                <li>
+                    <a href="/">
+                        <i class="ti-panel"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/profile/">
+                        <i class="ti-user"></i>
+                        <p>User Profile</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/task/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Add Task</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/viewtasks/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Task List</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <i class="ti-close"></i>
+                        <p>Log Out</p>
+                    </a>
+                </li>
+            </ul>
+    	</div>
     </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/task/">Tasks</a></li>
-        <li><a href="/viewtasks/">View Tasks</a></li>
-        {% if not staff %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Task Status <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="/approvedtaskuser/">Approved</a></li>
-            <li class="divider"></li>
-            <li><a href="/pendingtaskuser/">Pending</a></li>
-            <li class="divider"></li>
-            <li><a href="/rejectedtaskuser/">Rejected</a></li>
-            <li class="divider"></li>
-          </ul>
-        </li>
-        {% endif %}
-        {% if staff %}
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="/userstask/">Daily tasks of all user</a></li>
-            <li class="divider"></li>
-            <li><a href="/userslist/">List of Users</a></li>
-            <li class="divider"></li>
-            <li><a href="/approvedtasks/">Approved Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/pendingtasks/">Pending Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/rejectedtasks/">Rejected Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/projectreport/">Project Report</a></li>
-            <li class="divider"></li>
-            <li><a href="/worktypereport/">WorkType Report</a></li>
-            <li class="divider"></li>
-            <li><a href="/totalprojecthours/">Toal Project Hours</a></li>
-            <li class="divider"></li>
-            <li><a href="/userreport/">User Report</a></li>
-          </ul>
-        </li>
-        {% endif %}
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/profile/"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
-        <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-      </ul>
+    <div class="main-panel">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Dashboard</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="ti-user"></i>
+																			<p>{{user}}</p>
+                            </a>
+                        </li>
+						            <li>
+                            <a href="#">
+								                <i class="ti-settings"></i>
+								                      <p>Settings</p>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-4 col-md-5">
+                        <div class="card card-user">
+                            <div class="image">
+                                <img src="{% static 'assets/img/background.jpg' %}" alt="..."/>
+                            </div>
+                            <div class="content">
+                                <div class="author">
+                                  <img class=" avatar border-white" src="{% static 'assets/img/faces/face-2.jpg' %}" alt="..."/>
+                                  <h4 class="title">{{profile.name}}<br />
+                                  </h4>
+                                </div>
+                                <p class="description text-center">
+                                    "I like the way you work it <br>
+                                    No diggity <br>
+                                    I wanna bag it up"
+                                </p>
+                            </div>
+                            <hr>
+                            <div class="text-center">
+                                <div class="row">
+                                    <div class="col-md-3 col-md-offset-1">
+                                        <h5>12<br /><small>Files</small></h5>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h5>2GB<br /><small>Used</small></h5>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <h5>24,6$<br /><small>Spent</small></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Team Members</h4>
+                            </div>
+                            <div class="content">
+                                <ul class="list-unstyled team-members">
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <div class="avatar">
+                                                            <img src="{% static 'assets/img/faces/face-0.jpg' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        DJ Tushar
+                                                        <br />
+                                                        <span class="text-muted"><small>Do Not Disturb</small></span>
+                                                    </div>
+
+                                                    <div class="col-xs-3 text-right">
+                                                        <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <div class="avatar">
+                                                            <img src="{% static 'assets/img/faces/face-1.jpg' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        DJ Javed
+                                                        <br />
+                                                        <span class="text-success"><small>Available</small></span>
+                                                    </div>
+
+                                                    <div class="col-xs-3 text-right">
+                                                        <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        <div class="avatar">
+                                                            <img src="{% static 'assets/img/faces/face-3.jpg' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        DJ Adil
+                                                        <br />
+                                                        <span class="text-danger"><small>Busy</small></span>
+                                                    </div>
+
+                                                    <div class="col-xs-3 text-right">
+                                                        <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-7">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Edit Profile</h4>
+                            </div>
+                            <div class="content">
+                                <form class="" action="update_profile.html" method="post">
+                                  {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label>Employee Id</label>
+                                                <input type="text" class="form-control border-input" id="emp_id" name=emp_id placeholder="Your Employid" disabled value="{{profile.emp_id}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Email address</label>
+                                                <input type="email" name="email" class="form-control border-input" id="email" placeholder="Enter your email" disabled value={{email}}>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input type="text" name="name" class="form-control border-input" id="name" placeholder="Enter your name" value="{{profile.name}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Position</label>
+                                                <input type="text" class="form-control border-input" id="pan_no" placeholder="Your Position" name="position" disabled value="{{profile.position}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <textarea name="address" rows="8" cols="80" placeholder="Enter your address" class="form-control border-input">{{profile.address}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Pan Number</label>
+                                                <input type="text" class="form-control border-input" id="pan_no" placeholder="Enter your pan no" name="pan_no" value="{{profile.pan_no}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-info btn-fill btn-wd">Update Profile</button>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <footer class="footer">
+            <div class="container-fluid">
+                <nav class="pull-left">
+                    <ul>
+
+                        <li>
+                            <a href="/about/">
+                                Scaledesk Web Studio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                               Blog
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Licenses
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+				<div class="copyright pull-right">
+                    &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="/about/">Scaledesk Web Studio</a>
+                </div>
+            </div>
+        </footer>
+
     </div>
-  </div>
-</nav>
+</div>
 
 
-<div class="container">
+
+
+
+
+
+
+
+
+<!-- <div class="container">
   <h1>Update <small>Your profile</small></h1>
   <form class="" action="index.html" method="post">
     {% csrf_token %}
@@ -137,13 +335,7 @@
 
     <button type="submit" name="Login" class="btn btn-primary">Update Profile</button>
   </form>
-</div>
+</div> -->
 
-<script>
-$('ul.nav li.dropdown').hover(function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-}, function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
-});
-</script>
+
 {%endblock%}
