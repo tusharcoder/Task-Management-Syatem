@@ -12,12 +12,12 @@ from .models import Task, WorkType, Project, UserProfile
 # Register your models here.
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('name', 'taskdate','duration','project', 'worktype' )
+    list_display = ('name', 'taskdate','duration','project', 'worktype','user' )
     list_filter = ('created_at','user','is_approved','is_pending','is_rejected', 'project','worktype',)
     search_fields = ('name', 'project', 'worktype')
     ordering = ['taskdate']
     list_per_page = 10
-
+    readonly_fields = ('created_at','update_at',)
 
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'name')
