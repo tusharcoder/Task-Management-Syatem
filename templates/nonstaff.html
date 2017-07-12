@@ -187,130 +187,92 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Approved Tasks</h4>
+                                <h4 class="title">Users Behavior</h4>
+                                <p class="category">24 Hours performance</p>
                             </div>
-                            <div class="content table-responsive table-full-width" style="overflow:scroll;">
-                                <table id="example1" class="table table-striped table-bordered">
-                                  <thead>
-                                      <tr>
-                                        <th>User</th>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Start Time</th>
-                                        <th>End Time</th>
-                                        <th>Duration</th>
-                                        <th>Project</th>
-                                        <th>WorkType</th>
-                                        <th>Assigned By</th>
-                                        <th>Created At</th>
-                                        <th>Status</th>
-                                      </tr>
-                                  </thead>
-                                    <tbody>
-                                      {% for taska in taskapproved %}
-                                        <tr>
-                                          <td>{{taska.user}}</td>
-                                          <td>{{taska.name}}</td>
-                                          <td>{{taska.description}}</td>
-                                          <td>{{taska.starttime}}</td>
-                                          <td>{{taska.endtime}}</td>
-                                          <td>{{taska.duration}}</td>
-                                          <td>{{taska.project}}</td>
-                                          <td>{{taska.worktype}}</td>
-                                          <td>{{taska.assigned_by}}</td>
-                                          <td>{{taska.taskdate}}</td>
-                                          <td>Approved</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                                </table>
-                          </div>
+                            <div class="content">
+                                <div id="chartHours" class="ct-chart"></div>
+                                <div class="footer">
+                                    <div class="chart-legend">
+                                        <i class="fa fa-circle text-info"></i> Open
+                                        <i class="fa fa-circle text-danger"></i> Click
+                                        <i class="fa fa-circle text-warning"></i> Click Second Time
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="ti-reload"></i> Updated 3 minutes ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <script>
-                    $(document).ready(function() {
-                        $('#example1').DataTable();
-                    } );
-                    </script>
                 </div>
-              </div>
-              <footer class="footer">
-                  <div class="container-fluid">
-                      <nav class="pull-left">
-                          <ul>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Email Statistics</h4>
+                                <p class="category">Last Campaign Performance</p>
+                            </div>
+                            <div class="content">
+                                <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
 
-                              <li>
-                                  <a href="http://www.creative-tim.com">
-                                      Creative Tim
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="http://blog.creative-tim.com">
-                                     Blog
-                                  </a>
-                              </li>
-                              <li>
-                                  <a href="http://www.creative-tim.com/license">
-                                      Licenses
-                                  </a>
-                              </li>
-                          </ul>
-                      </nav>
-                      <div class="copyright pull-right">
-                          &copy; <script>document.write(new Date().getFullYear())</script>, made with <i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
-                      </div>
-                  </div>
-              </footer>
+                                <div class="footer">
+                                    <div class="chart-legend">
+                                        <i class="fa fa-circle text-info"></i> Open
+                                        <i class="fa fa-circle text-danger"></i> Bounce
+                                        <i class="fa fa-circle text-warning"></i> Unsubscribe
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="ti-timer"></i> Campaign sent 2 days ago
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card ">
+                            <div class="header">
+                                <h4 class="title">2015 Sales</h4>
+                                <p class="category">All products including Taxes</p>
+                            </div>
+                            <div class="content">
+                                <div id="chartActivity" class="ct-chart"></div>
+
+                                <div class="footer">
+                                    <div class="chart-legend">
+                                        <i class="fa fa-circle text-info"></i> Tesla Model S
+                                        <i class="fa fa-circle text-warning"></i> BMW 5 Series
+                                    </div>
+                                    <hr>
+                                    <div class="stats">
+                                        <i class="ti-check"></i> Data information certified
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+  	$(document).ready(function(){
+      	demo.initChartist();
+      	$.notify({
+          	icon: 'ti-gift',
+          	message: "Welcome to <b>Your Dashboard</b>"
+          },{
+              type: 'success',
+              timer: 4000
+          });
+  	});
+</script>
 
 
-
-
-
-
-
-<!-- <h2>Approved Tasks</h2>
-<div class="container">
-  <table id="example2" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-              <th>User</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Duration</th>
-              <th>Project</th>
-              <th>WorkType</th>
-              <th>Assigned By</th>
-              <th>Created At</th>
-              <th>Status</th>
-            </tr>
-        </thead>
-          <tbody>
-            {% for taska in taskapproved %}
-              <tr>
-                <td>{{taska.user}}</td>
-                <td>{{taska.name}}</td>
-                <td>{{taska.description}}</td>
-                <td>{{taska.starttime}}</td>
-                <td>{{taska.endtime}}</td>
-                <td>{{taska.duration}}</td>
-                <td>{{taska.project}}</td>
-                <td>{{taska.worktype}}</td>
-                <td>{{taska.assigned_by}}</td>
-                <td>{{taska.taskdate}}</td>
-                <td>Approved</td>
-              </tr>
-          {% endfor %}
-      </tbody>
-    </table>
-    <script>
-    $(document).ready(function() {
-        $('#example2').DataTable();
-    } );
-    </script>
-</div> -->
 
 
 {%endblock%}

@@ -19,7 +19,11 @@
 
             <ul class="nav">
                 <li>
-                    <a href="/">
+                  {% if staff %}
+                    <a href="/staff/">
+                  {% else %}
+                    <a href="/nonstaff/">
+                  {% endif %}
                         <i class="ti-panel"></i>
                         <p>Dashboard</p>
                     </a>
@@ -31,22 +35,30 @@
                     </a>
                 </li>
                 <li>
+                  {% if staff %}
+                    <a href="/projectreport/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Project Report</p>
+                    </a>
+                    {% else %}
                     <a href="/task/">
                         <i class="ti-view-list-alt"></i>
                         <p>Add Task</p>
                     </a>
+                    {% endif %}
                 </li>
                 <li>
-                    <a href="/viewtasks/">
+                  {% if staff %}
+                    <a href="/worktypereport/">
                         <i class="ti-view-list-alt"></i>
-                        <p>Task List</p>
+                        <p>WorkType Report</p>
                     </a>
-                </li>
-                <li>
-                    <a href="{% url 'logout' %}">
-                        <i class="ti-close"></i>
-                        <p>Log Out</p>
-                    </a>
+                  {% else %}
+                  <a href="/task/">
+                      <i class="ti-view-list-alt"></i>
+                      <p>Task List</p>
+                  </a>
+                    {% endif %}
                 </li>
             </ul>
     	</div>
@@ -72,10 +84,10 @@
 																			<p>{{user}}</p>
                             </a>
                         </li>
-						            <li>
-                            <a href="#">
-								                <i class="ti-settings"></i>
-								                      <p>Settings</p>
+                        <li>
+                            <a href="{% url 'logout' %}">
+                                <i class="ti-close"></i>
+                                <p>Log Out</p>
                             </a>
                         </li>
                     </ul>
@@ -257,7 +269,6 @@
             <div class="container-fluid">
                 <nav class="pull-left">
                     <ul>
-
                         <li>
                             <a href="/about/">
                                 Scaledesk Web Studio

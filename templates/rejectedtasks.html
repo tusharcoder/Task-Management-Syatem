@@ -1,145 +1,242 @@
 {%extends 'base.html'%}
 {%block content%}
+{% load staticfiles %}
 
-<style>
+<div class="wrapper">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
-.body-wrap {
-  min-height: 700px;
-}
+    	<div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="/about/" class="simple-text">
+                    Scaledesk
+                </a>
+            </div>
 
-.body-wrap {
-  position: relative;
-  z-index: 0;
-}
-
-.body-wrap:before,
-.body-wrap:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: -1;
-  height: 260px;
-}
-
-.body-wrap:after {
-  top: auto;
-  bottom: 0;
-}
-
-</style>
-
-<nav class="navbar navbar-inverse" role="navigation">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Scaledesk</a>
+            <ul class="nav">
+                <li class="active">
+                    <a href="/staff/">
+                        <i class="ti-panel"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/profile/">
+                        <i class="ti-user"></i>
+                        <p>User Profile</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/projectreport/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Project Report</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/worktypereport/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>WorkType Report</p>
+                    </a>
+                </li>
+            </ul>
+    	</div>
     </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/task/">Tasks</a></li>
-        <li><a href="/viewtasks/">View Tasks</a></li>
-        {% if staff %}
-        <li class="dropdown" class="active">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="/userstask/">Daily tasks of all user</a></li>
-            <li class="divider"></li>
-            <li><a href="/userslist/">List of Users</a></li>
-            <li class="divider"></li>
-            <li><a href="/approvedtasks/">Approved Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/pendingtasks/">Pending Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/rejectedtasks/">Rejected Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/projectreport/">Project Report</a></li>
-            <li class="divider"></li>
-            <li><a href="/worktypereport/">WorkType Report</a></li>
-            <li class="divider"></li>
-            <li><a href="/totalprojecthours/">Toal Project Hours</a></li>
-            <li class="divider"></li>
-            <li><a href="/userreport/">User Report</a></li>
-          </ul>
-        </li>
-        {% endif %}
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/profile/"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
-        <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+    <div class="main-panel">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Dashboard</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="ti-user"></i>
+																			<p>{{user}}</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'logout' %}">
+                                <i class="ti-close"></i>
+                                <p>Log Out</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
 
-{% if staff %}
-<h2>Tasks rejected</h2>
-<div class="container">
-  <table id="example10" class="table table-striped table-bordered" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-              <th>User</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Duration</th>
-              <th>Project</th>
-              <th>WorkType</th>
-              <th>Assigned By</th>
-              <th>Created At</th>
-              <th>Status</th>
-              <th>Update</th>
-            </tr>
-        </thead>
-          <tbody>
-            {% for taskp in taskrejected %}
-              <tr>
-                <td>{{taskp.user}}</td>
-                <td>{{taskp.name}}</td>
-                <td>{{taskp.description}}</td>
-                <td>{{taskp.starttime}}</td>
-                <td>{{taskp.endtime}}</td>
-                <td>{{taskp.duration}}</td>
-                <td>{{taskp.project}}</td>
-                <td>{{taskp.worktype}}</td>
-                <td>{{taskp.assigned_by}}</td>
-                <td>{{taskp.taskdate}}</td>
-                <td>Rejected</td>
-                <td>
-                  <div>
-                    <a href="/approved/{{taskp.id}}">Approve</a>
-                  </div>
-                </td>
-              </tr>
-          {% endfor %}
-      </tbody>
-    </table>
-    <script>
-    $(document).ready(function() {
-        $('#example10').DataTable();
-    } );
-    </script>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-success text-center">
+                                            <i class="ti-server"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/approvedtasks/"><p>Approved Tasks</p></a>
+                                            {{a}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-reload"></i> Updated now
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-warning text-center">
+                                            <i class="ti-server"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/pendingtasks/"><p>Pending Tasks</p></a>
+                                            {{b}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-calendar"></i> Last day
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-danger text-center">
+                                            <i class="ti-server"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/rejectedtasks/"><p>Rejected Tasks</p></a>
+                                            {{c}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-timer"></i> In the last hour
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-info text-center">
+                                            <i class="ti-twitter-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/userreport/"><p>Users Daily Report</p></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-reload"></i> Updated now
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Rejected Tasks</h4>
+                            </div>
+                            <div class="content table-responsive table-full-width" style="overflow:scroll;">
+                                <table id="example1" class="table table-striped table-bordered">
+                                  <thead>
+                                      <tr>
+                                        <th>User</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
+                                        <th>Duration</th>
+                                        <th>Project</th>
+                                        <th>WorkType</th>
+                                        <th>Assigned By</th>
+                                        <th>Created At</th>
+                                        <th>Status</th>
+                                        <th>Update</th>
+                                      </tr>
+                                  </thead>
+                                    <tbody>
+                                      {% for taskp in taskrejected %}
+                                        <tr>
+                                          <td>{{taskp.user}}</td>
+                                          <td>{{taskp.name}}</td>
+                                          <td>{{taskp.description}}</td>
+                                          <td>{{taskp.starttime}}</td>
+                                          <td>{{taskp.endtime}}</td>
+                                          <td>{{taskp.duration}}</td>
+                                          <td>{{taskp.project}}</td>
+                                          <td>{{taskp.worktype}}</td>
+                                          <td>{{taskp.assigned_by}}</td>
+                                          <td>{{taskp.taskdate}}</td>
+                                          <td>Rejected</td>
+                                          <td>
+                                            <div>
+                                              <a href="/approved/{{taskp.id}}">Approve</a>
+                                            </div>
+                                          </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                </table>
+                          </div>
+                        </div>
+                    </div>
+                    <script>
+                    $(document).ready(function() {
+                        $('#example1').DataTable();
+                    } );
+                    </script>
+                </div>
+
+              </div>
+          </div>
+      </div>
 </div>
-{% endif %}
 
-
-<script>
-$('ul.nav li.dropdown').hover(function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-}, function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
-});
-</script>
 
 {%endblock%}

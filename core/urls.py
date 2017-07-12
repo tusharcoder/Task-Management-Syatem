@@ -12,7 +12,8 @@ from .views import *
 urlpatterns = [
     # Examples:
     # url(r'^$', 'taskmgt.views.home', name='home'),
-    url(r'^$',HomeView, name="home"),
+    url(r'^staff',StaffView, name="staff"),
+    url(r'^nonstaff',NonStaffView, name="nonstaff"),
     url(r'^login/',LoginView, name="login"),
     url(r'^register/',RegisterView, name="register"),
     url(r'^profile/',ProfileView, name="profile"),

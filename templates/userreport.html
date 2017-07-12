@@ -1,200 +1,290 @@
 {%extends 'base.html'%}
 {%block content%}
+{% load staticfiles %}
 
-<style>
+<div class="wrapper">
+    <div class="sidebar" data-background-color="white" data-active-color="danger">
 
-.body-wrap {
-  min-height: 700px;
-}
+    	<div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="/about/" class="simple-text">
+                    Scaledesk
+                </a>
+            </div>
 
-.body-wrap {
-  position: relative;
-  z-index: 0;
-}
-
-.body-wrap:before,
-.body-wrap:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: -1;
-  height: 260px;
-}
-
-.body-wrap:after {
-  top: auto;
-  bottom: 0;
-}
-
-</style>
-
-
-<nav class="navbar navbar-inverse" role="navigation">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Scaledesk</a>
+            <ul class="nav">
+                <li class="active">
+                    <a href="/staff/">
+                        <i class="ti-panel"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/profile/">
+                        <i class="ti-user"></i>
+                        <p>User Profile</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/projectreport/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>Project Report</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/worktypereport/">
+                        <i class="ti-view-list-alt"></i>
+                        <p>WorkType Report</p>
+                    </a>
+                </li>
+            </ul>
+    	</div>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/task/">Tasks</a></li>
-        <li><a href="/viewtasks/">View Tasks</a></li>
-        {% if staff %}
-        <li class="dropdown" class="active">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="/userstask/">Daily tasks of all user</a></li>
-            <li class="divider"></li>
-            <li><a href="/userslist/">List of Users</a></li>
-            <li class="divider"></li>
-            <li><a href="/approvedtasks/">Approved Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/pendingtasks/">Pending Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/rejectedtasks/">Rejected Tasks</a></li>
-            <li class="divider"></li>
-            <li><a href="/projectreport/">Project Report</a></li>
-            <li class="divider"></li>
-            <li><a href="/worktypereport/">WorkType Report</a></li>
-            <li class="divider"></li>
-            <li><a href="/totalprojecthours/">Toal Project Hours</a></li>
-            <li class="divider"></li>
-            <li><a href="/userreport/">User Report</a></li>
-          </ul>
-        </li>
-        {% endif %}
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/profile/"><span class="glyphicon glyphicon-user"></span>{{user}}</a></li>
-        <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-{% if staff %}
-<h3>User Report:</h3>
-  <form action="/userreport/" method="post">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="name">Choose the date for which the report should be generated:</label>
-      <p align="right">Date: <input type="text" id="delivery_date"  name="date"> <input type="submit" value="submit" name="submit"></p>
-    </div>
-  </form>
-
-  <div class="container" style=" height:30vh; width:50vw">
-    <h3 >Date:{{delivery_date}}</h3>
-    <canvas id="myChart2" width="100px" height="100px"></canvas>
-      <script>
-      var memname=[];
-      var memhour=[];
-      {% for q in q7 %}
-        memname.push('{{q.name}}')
-        memhour.push('{{q.duration}}')
-      {% endfor %}
-      var ctx = document.getElementById("myChart2").getContext('2d');
-      var myChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: memname,
-              datasets: [{
-                label: '# of hours',
-                data: memhour,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(156, 102, 255, 0.2)',
-                    'rgba(253, 159, 64, 0.2)',
-                    'rgba(150, 102, 255, 0.2)',
-                    'rgba(250, 159, 64, 0.2)',
-                    'rgba(151, 102, 255, 0.2)',
-                    'rgba(254, 159, 64, 0.2)',
-                    'rgba(154, 102, 255, 0.2)',
-                    'rgba(249, 159, 64, 0.2)',
-                    'rgba(144, 102, 255, 0.2)',
-                    'rgba(241, 159, 64, 0.2)',
-                    'rgba(142, 102, 255, 0.2)',
-                    'rgba(242, 159, 64, 0.2)',
-                    'rgba(146, 102, 255, 0.2)',
-                    'rgba(248, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(156, 102, 255, 1)',
-                    'rgba(253, 159, 64, 1)',
-                    'rgba(150, 102, 255, 1)',
-                    'rgba(250, 159, 64, 1)',
-                    'rgba(151, 102, 255, 1)',
-                    'rgba(254, 159, 64, 1)',
-                    'rgba(154, 102, 255, 1)',
-                    'rgba(249, 159, 64, 1)',
-                    'rgba(144, 102, 255, 1)',
-                    'rgba(241, 159, 64, 1)',
-                    'rgba(142, 102, 255, 1)',
-                    'rgba(242, 159, 64, 1)',
-                    'rgba(146, 102, 255, 1)',
-                    'rgba(248, 159, 64, 1)'
-        ],
-        borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-        yAxes: [{
-            ticks: {
-                beginAtZero:true
-            }
-        }]
-    }
-  }
-  });
-  </script>
+    <div class="main-panel">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar bar1"></span>
+                        <span class="icon-bar bar2"></span>
+                        <span class="icon-bar bar3"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Dashboard</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="ti-user"></i>
+																			<p>{{user}}</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'logout' %}">
+                                <i class="ti-close"></i>
+                                <p>Log Out</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
 
 
-  </div>
-{% endif %}
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-success text-center">
+                                            <i class="ti-server"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/approvedtasks/"><p>Approved Tasks</p></a>
+                                            {{a}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-reload"></i> Updated now
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-warning text-center">
+                                            <i class="ti-server"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/pendingtasks/"><p>Pending Tasks</p></a>
+                                            {{b}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-calendar"></i> Last day
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-danger text-center">
+                                            <i class="ti-server"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/rejectedtasks/"><p>Rejected Tasks</p></a>
+                                            {{c}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-timer"></i> In the last hour
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card">
+                            <div class="content">
+                                <div class="row">
+                                    <div class="col-xs-5">
+                                        <div class="icon-big icon-info text-center">
+                                            <i class="ti-twitter-alt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-7">
+                                        <div class="numbers">
+                                            <a href="/userreport/"><p>Users Daily Report</p></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <hr />
+                                    <div class="stats">
+                                        <i class="ti-reload"></i> Updated now
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title" align="left">User Report</h4>
+                            </div>
+                            <div class="content">
+                              <form action="/userreport/" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                  <label>Choose the date for which the report should be generated:</label>
+                                  <p align="right">Date: <input type="text" id="delivery_date"  name="date"> <input type="submit" value="submit" name="submit"></p>
+                                </div>
+                              </form>
+                              <h3 align="left">Date:{{delivery_date}}</h3>
+                              <!-- <div class="container" style=" height:30vh; width:50vw"> -->
 
-
-
-<script>
-$('ul.nav li.dropdown').hover(function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeIn(500);
-}, function() {
-  $(this).find('.dropdown-menu').stop(true, true).delay(200).fadeOut(500);
-});
-</script>
-
-<script>
-$('#delivery_date').datepicker({
-                  dateFormat: 'yy-mm-dd',
-                  changeMonth: true,
-                  changeYear: true,
-                  onSelect:  function(dateText, inst) {
-                  $(this).attr('value',dateText);
-                  }
-          });
-</script>
-
-
+                                <canvas id="myChart2" width="100px" height="100px"></canvas>
+                                  <script>
+                                  var memname=[];
+                                  var memhour=[];
+                                  {% for q in q7 %}
+                                    memname.push('{{q.name}}')
+                                    memhour.push('{{q.duration}}')
+                                  {% endfor %}
+                                  var ctx = document.getElementById("myChart2").getContext('2d');
+                                  var myChart = new Chart(ctx, {
+                                      type: 'bar',
+                                      data: {
+                                          labels: memname,
+                                          datasets: [{
+                                            label: '# of hours',
+                                            data: memhour,
+                                            backgroundColor: [
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(54, 162, 235, 0.2)',
+                                                'rgba(255, 206, 86, 0.2)',
+                                                'rgba(75, 192, 192, 0.2)',
+                                                'rgba(153, 102, 255, 0.2)',
+                                                'rgba(255, 159, 64, 0.2)',
+                                                'rgba(156, 102, 255, 0.2)',
+                                                'rgba(253, 159, 64, 0.2)',
+                                                'rgba(150, 102, 255, 0.2)',
+                                                'rgba(250, 159, 64, 0.2)',
+                                                'rgba(151, 102, 255, 0.2)',
+                                                'rgba(254, 159, 64, 0.2)',
+                                                'rgba(154, 102, 255, 0.2)',
+                                                'rgba(249, 159, 64, 0.2)',
+                                                'rgba(144, 102, 255, 0.2)',
+                                                'rgba(241, 159, 64, 0.2)',
+                                                'rgba(142, 102, 255, 0.2)',
+                                                'rgba(242, 159, 64, 0.2)',
+                                                'rgba(146, 102, 255, 0.2)',
+                                                'rgba(248, 159, 64, 0.2)'
+                                            ],
+                                            borderColor: [
+                                                'rgba(255,99,132,1)',
+                                                'rgba(54, 162, 235, 1)',
+                                                'rgba(255, 206, 86, 1)',
+                                                'rgba(75, 192, 192, 1)',
+                                                'rgba(153, 102, 255, 1)',
+                                                'rgba(255, 159, 64, 1)',
+                                                'rgba(156, 102, 255, 1)',
+                                                'rgba(253, 159, 64, 1)',
+                                                'rgba(150, 102, 255, 1)',
+                                                'rgba(250, 159, 64, 1)',
+                                                'rgba(151, 102, 255, 1)',
+                                                'rgba(254, 159, 64, 1)',
+                                                'rgba(154, 102, 255, 1)',
+                                                'rgba(249, 159, 64, 1)',
+                                                'rgba(144, 102, 255, 1)',
+                                                'rgba(241, 159, 64, 1)',
+                                                'rgba(142, 102, 255, 1)',
+                                                'rgba(242, 159, 64, 1)',
+                                                'rgba(146, 102, 255, 1)',
+                                                'rgba(248, 159, 64, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                              },
+                              options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero:true
+                                        }
+                                    }]
+                                }
+                              }
+                              });
+                              </script>
+                        <!-- </div> -->
+                    </div>
+                  </div>
+                </div>
+                <script>
+                $('#delivery_date').datepicker({
+                                  dateFormat: 'yy-mm-dd',
+                                  changeMonth: true,
+                                  changeYear: true,
+                                  onSelect:  function(dateText, inst) {
+                                  $(this).attr('value',dateText);
+                                  }
+                          });
+                </script>
+              </div>
+          </div>
+      </div>
+</div>
+</div>
 
 {%endblock%}

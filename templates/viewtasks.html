@@ -20,7 +20,11 @@
 
             <ul class="nav">
                 <li>
-                    <a href="/">
+                  {% if staff %}
+                    <a href="/staff/">
+                  {% else %}
+                    <a href="/nonstaff/">
+                  {% endif %}
                         <i class="ti-panel"></i>
                         <p>Dashboard</p>
                     </a>
@@ -41,12 +45,6 @@
                     <a href="/viewtasks/">
                         <i class="ti-view-list-alt"></i>
                         <p>Task List</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'logout' %}">
-                        <i class="ti-close"></i>
-                        <p>Log Out</p>
                     </a>
                 </li>
             </ul>
@@ -73,10 +71,10 @@
 																			<p>{{user}}</p>
                             </a>
                         </li>
-						            <li>
-                            <a href="#">
-								                <i class="ti-settings"></i>
-								                      <p>Settings</p>
+                        <li>
+                            <a href="{% url 'logout' %}">
+                                <i class="ti-close"></i>
+                                <p>Log Out</p>
                             </a>
                         </li>
                     </ul>

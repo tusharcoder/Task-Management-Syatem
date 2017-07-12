@@ -19,7 +19,7 @@
 
             <ul class="nav">
                 <li class="active">
-                    <a href="/">
+                    <a href="/staff/">
                         <i class="ti-panel"></i>
                         <p>Dashboard</p>
                     </a>
@@ -31,21 +31,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/task/">
+                    <a href="/projectreport/">
                         <i class="ti-view-list-alt"></i>
-                        <p>Add Task</p>
+                        <p>Project Report</p>
                     </a>
                 </li>
                 <li>
-                    <a href="/viewtasks/">
+                    <a href="/worktypereport/">
                         <i class="ti-view-list-alt"></i>
-                        <p>Task List</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'logout' %}">
-                        <i class="ti-close"></i>
-                        <p>Log Out</p>
+                        <p>WorkType Report</p>
                     </a>
                 </li>
             </ul>
@@ -72,10 +66,10 @@
 																			<p>{{user}}</p>
                             </a>
                         </li>
-						            <li>
-                            <a href="#">
-								                <i class="ti-settings"></i>
-								                      <p>Settings</p>
+                        <li>
+                            <a href="{% url 'logout' %}">
+                                <i class="ti-close"></i>
+                                <p>Log Out</p>
                             </a>
                         </li>
                     </ul>
@@ -99,7 +93,7 @@
                                     </div>
                                     <div class="col-xs-7">
                                         <div class="numbers">
-                                            <a href="/approvedtaskuser/"><p>Approved Tasks</p></a>
+                                            <a href="/approvedtasks/"><p>Approved Tasks</p></a>
                                             {{a}}
                                         </div>
                                     </div>
@@ -124,7 +118,7 @@
                                     </div>
                                     <div class="col-xs-7">
                                         <div class="numbers">
-                                            <a href="/pendingtaskuser/"><p>Pending Tasks</p></a>
+                                            <a href="/pendingtasks/"><p>Pending Tasks</p></a>
                                             {{b}}
                                         </div>
                                     </div>
@@ -149,7 +143,7 @@
                                     </div>
                                     <div class="col-xs-7">
                                         <div class="numbers">
-                                            <a href="/rejectedtaskuser/"><p>Rejected Tasks</p></a>
+                                            <a href="/rejectedtasks/"><p>Rejected Tasks</p></a>
                                             {{c}}
                                         </div>
                                     </div>
@@ -174,8 +168,8 @@
                                     </div>
                                     <div class="col-xs-7">
                                         <div class="numbers">
-                                            <a href="#"><p>Working Hours</p></a>
-                                            {{hour}}
+                                            <a href="/userreport/"><p>Users Daily Report</p></a>
+                                            User
                                         </div>
                                     </div>
                                 </div>
@@ -193,21 +187,84 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Users Behavior</h4>
-                                <p class="category">24 Hours performance</p>
+                              <h2>Total Project Hours for each project:</h2>
                             </div>
-                            <div class="content">
-                                <div id="chartHours" class="ct-chart"></div>
-                                <div class="footer">
-                                    <div class="chart-legend">
-                                        <i class="fa fa-circle text-info"></i> Open
-                                        <i class="fa fa-circle text-danger"></i> Click
-                                        <i class="fa fa-circle text-warning"></i> Click Second Time
-                                    </div>
-                                    <hr>
-                                    <div class="stats">
-                                        <i class="ti-reload"></i> Updated 3 minutes ago
-                                    </div>
+                            <div class="content" style="overflow:scroll;">
+                                <div class="container">
+                                  <canvas id="myChart2" width="100px" height="100px"></canvas>
+                                    <script>
+                                    var memname=[];
+                                    var memhour=[];
+                                    {% for q in data %}
+                                      memname.push('{{q.name}}')
+                                      memhour.push('{{q.duration}}')
+                                    {% endfor %}
+                                    var ctx = document.getElementById("myChart2").getContext('2d');
+                                    var myChart = new Chart(ctx, {
+                                        type: 'bar',
+                                        data: {
+                                            labels: memname,
+                                            datasets: [{
+                                              label: '# of hours',
+                                              data: memhour,
+                                              backgroundColor: [
+                                                  'rgba(255, 99, 132, 0.2)',
+                                                  'rgba(54, 162, 235, 0.2)',
+                                                  'rgba(255, 206, 86, 0.2)',
+                                                  'rgba(75, 192, 192, 0.2)',
+                                                  'rgba(153, 102, 255, 0.2)',
+                                                  'rgba(255, 159, 64, 0.2)',
+                                                  'rgba(156, 102, 255, 0.2)',
+                                                  'rgba(253, 159, 64, 0.2)',
+                                                  'rgba(150, 102, 255, 0.2)',
+                                                  'rgba(250, 159, 64, 0.2)',
+                                                  'rgba(151, 102, 255, 0.2)',
+                                                  'rgba(254, 159, 64, 0.2)',
+                                                  'rgba(154, 102, 255, 0.2)',
+                                                  'rgba(249, 159, 64, 0.2)',
+                                                  'rgba(144, 102, 255, 0.2)',
+                                                  'rgba(241, 159, 64, 0.2)',
+                                                  'rgba(142, 102, 255, 0.2)',
+                                                  'rgba(242, 159, 64, 0.2)',
+                                                  'rgba(146, 102, 255, 0.2)',
+                                                  'rgba(248, 159, 64, 0.2)'
+                                              ],
+                                              borderColor: [
+                                                  'rgba(255,99,132,1)',
+                                                  'rgba(54, 162, 235, 1)',
+                                                  'rgba(255, 206, 86, 1)',
+                                                  'rgba(75, 192, 192, 1)',
+                                                  'rgba(153, 102, 255, 1)',
+                                                  'rgba(255, 159, 64, 1)',
+                                                  'rgba(156, 102, 255, 1)',
+                                                  'rgba(253, 159, 64, 1)',
+                                                  'rgba(150, 102, 255, 1)',
+                                                  'rgba(250, 159, 64, 1)',
+                                                  'rgba(151, 102, 255, 1)',
+                                                  'rgba(254, 159, 64, 1)',
+                                                  'rgba(154, 102, 255, 1)',
+                                                  'rgba(249, 159, 64, 1)',
+                                                  'rgba(144, 102, 255, 1)',
+                                                  'rgba(241, 159, 64, 1)',
+                                                  'rgba(142, 102, 255, 1)',
+                                                  'rgba(242, 159, 64, 1)',
+                                                  'rgba(146, 102, 255, 1)',
+                                                  'rgba(248, 159, 64, 1)'
+                                      ],
+                                      borderWidth: 1
+                                  }]
+                                },
+                                options: {
+                                  scales: {
+                                      yAxes: [{
+                                          ticks: {
+                                              beginAtZero:true
+                                          }
+                                      }]
+                                  }
+                                }
+                                });
+                                </script>
                                 </div>
                             </div>
                         </div>

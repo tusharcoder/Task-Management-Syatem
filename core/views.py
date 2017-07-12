@@ -39,7 +39,11 @@ def LoginView(request):
         user = authenticate(username=request.POST.get("email"), password=request.POST.get("password"))
         if user:
             auth.login(request,user)
-            return redirect('home', permanent=True)
+            if user.is_staff:
+                return redirect('staff', permanent=True)
+            else:
+                return redirect('nonstaff', permanent=True)
+
         else:
             return redirect('login', permanent=True)
 
@@ -72,7 +76,7 @@ def ProfileView(request):
 
 
 @login_required(login_url="/login/")
-def HomeView(request):
+def NonStaffView(request):
     user=request.user
     useronline_list=UserProfile.objects.filter(user=user)
     profile=useronline_list[0]
@@ -90,7 +94,34 @@ def HomeView(request):
     for task in todaytask:
         sum += task.duration
     hour = sum//60
-    return render(request,"home.html",{"title":"Welcome","user":username,'a':a,'b':b,'c':c,'hour':hour, "staff":staff, "user":username})
+    return render(request,"nonstaff.html",{"title":"Welcome","user":username,'a':a,'b':b,'c':c,'hour':hour, "staff":staff, "user":username})
+
+@login_required(login_url="/login/")
+def StaffView(request):
+    user=request.user
+    useronline_list=UserProfile.objects.filter(user=user)
+    profile=useronline_list[0]
+    username=profile.name
+    staff=user.is_staff
+    taskapproved = Task.objects.filter(is_approved = True).filter(assigned_by=user)
+    taskpending = Task.objects.filter(is_pending = True).filter(assigned_by=user)
+    taskrejected = Task.objects.filter(is_rejected = True).filter(assigned_by=user)
+    a = taskapproved.count()
+    b = taskpending.count()
+    c = taskrejected.count()
+    projects = Project.objects.all()
+    data=[]
+    dur1 = []
+    for pro in projects:
+        dur = []
+        t_hr = 0
+        q5 = 0
+        taskproject = Task.objects.filter(project = pro).filter(is_approved = True)
+        for i in taskproject:
+            q5 += i.duration
+        t_hr = (q5/60)
+        data.append({"name":pro.name,"duration":t_hr})
+    return render(request,"staff.html",{"title":"Welcome","user":username,'a':a,'b':b,'c':c, "staff":staff, "user":username,"data":data})
 
 
 def LogoutView(request):
@@ -177,8 +208,8 @@ def TaskView(request):
     username=profile.name
     if request.method == 'GET':
         records=Task.objects.filter(user=user)
-        projects=Project.objects.all()
-        worktypes=WorkType.objects.all()
+        projects=Project.objects.all().order_by("name")
+        worktypes=WorkType.objects.all().order_by("name")
         assigned=User.objects.filter(is_staff=True)
         staff=user.is_staff
         return render(request, "task.html", {"tasks": records,'projects':projects,"worktype":worktypes,"assigned_by":assigned, "staff":staff,"user":username})
@@ -340,6 +371,7 @@ def UserReportView(request):
     q6 = []
     if request.method == 'POST':
         delivery_date = request.POST.get('date')
+        print(delivery_date)
         members = User.objects.filter(is_staff=False)
         for mem in members:
             t_hr = 0
@@ -350,7 +382,7 @@ def UserReportView(request):
             t_hr = (q5/60)
             q6.append({"name":mem.username,"duration":t_hr})
     if staff:
-        return render(request,"userreport.html",{"user":username,"q7":q6,"staff":staff})
+        return render(request,"userreport.html",{"user":username,"q7":q6,"staff":staff,"delivery_date":delivery_date})
     else:
         raise Http404("You are not authorized to access this page")
 
