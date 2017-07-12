@@ -260,10 +260,18 @@ def ApprovedTaskView(request):
     username = profile.name
     staff=user.is_staff
     taskapproved = Task.objects.filter(is_approved=True).filter(is_rejected=False).filter(is_pending=False).filter(assigned_by = user)
+    taskapproved1 = Task.objects.filter(is_approved = True).filter(assigned_by=user)
+    taskpending1 = Task.objects.filter(is_pending = True).filter(assigned_by=user)
+    taskrejected1 = Task.objects.filter(is_rejected = True).filter(assigned_by=user)
+    a = taskapproved1.count()
+    b = taskpending1.count()
+    c = taskrejected1.count()
     if staff:
-        return render(request, "approvedtasks.html",{"taskapproved":taskapproved,"user":username,"staff":staff})
+        return render(request, "approvedtasks.html",{"taskapproved":taskapproved,'a':a,'b':b,'c':c,"user":username,"staff":staff})
     else:
         raise Http404("You are not authorized to access this page")
+
+
 
 @login_required(login_url="/login/")
 def PendingTaskView(request):
@@ -272,11 +280,28 @@ def PendingTaskView(request):
     profile = useronline_list[0]
     username = profile.name
     staff=user.is_staff
+    some_var = []
     taskpending = Task.objects.filter(is_approved=False).filter(is_rejected=False).filter(is_pending=True).filter(assigned_by=user)
+    taskapproved1 = Task.objects.filter(is_approved = True).filter(assigned_by=user)
+    taskpending1 = Task.objects.filter(is_pending = True).filter(assigned_by=user)
+    taskrejected1 = Task.objects.filter(is_rejected = True).filter(assigned_by=user)
+    a = taskapproved1.count()
+    b = taskpending1.count()
+    c = taskrejected1.count()
+    if request.method == 'POST':
+        some_var = request.POST.getlist('checks')
+    for i in some_var:
+        task = Task.objects.get(pk=i)
+        task.is_approved=True
+        task.is_pending=False
+        task.is_rejected=False
+        task.save()
     if staff:
-        return render(request, "pendingtasks.html",{"taskpending":taskpending,"user":username,"staff":staff})
+        return render(request, "pendingtasks.html",{"taskpending":taskpending,'a':a,'b':b,'c':c,"user":username,"staff":staff})
     else:
         raise Http404("You are not authorized to access this page")
+
+
 
 @login_required(login_url="/login/")
 def RejectedTaskView(request):
@@ -286,8 +311,14 @@ def RejectedTaskView(request):
     username = profile.name
     staff=user.is_staff
     taskrejected = Task.objects.filter(is_approved=False).filter(is_rejected=True).filter(is_pending=False).filter(assigned_by = user)
+    taskapproved1 = Task.objects.filter(is_approved = True).filter(assigned_by=user)
+    taskpending1 = Task.objects.filter(is_pending = True).filter(assigned_by=user)
+    taskrejected1 = Task.objects.filter(is_rejected = True).filter(assigned_by=user)
+    a = taskapproved1.count()
+    b = taskpending1.count()
+    c = taskrejected1.count()
     if staff:
-        return render(request, "rejectedtasks.html",{"taskrejected":taskrejected,"user":username,"staff":staff})
+        return render(request, "rejectedtasks.html",{"taskrejected":taskrejected,'a':a,'b':b,'c':c,"user":username,"staff":staff})
     else:
         raise Http404("You are not authorized to access this page")
 
