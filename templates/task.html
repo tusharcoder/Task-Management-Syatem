@@ -108,7 +108,7 @@
 
                                 <div class="form-group">
                                   <label for="starttime">Start Time:(In 24-hour format)</label>
-                                  <input type="time" name="starttime" class="form-control border-input" id="starttime" placeholder="Enter the start time of task" value="{{task.starttime}}">
+                                  <input type="time" name="starttime" class="form-control border-input" id="starttime" onchange="calculate_duration()" placeholder="Enter the start time of task" value="{{task.starttime}}">
 
                                 </div>
 
