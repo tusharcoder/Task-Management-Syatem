@@ -20,7 +20,7 @@ from django.contrib import messages
 
 # Create your views here.
 
-
+@login_required(login_url="/login/")
 def AboutView(request):
     user=request.user
     useronline_list=UserProfile.objects.filter(user=user)
@@ -121,8 +121,10 @@ def StaffView(request):
             q5 += i.duration
         t_hr = (q5/60)
         data.append({"name":pro.name,"duration":t_hr})
-    return render(request,"staff.html",{"title":"Welcome","user":username,'a':a,'b':b,'c':c, "staff":staff, "user":username,"data":data})
-
+    if staff:
+        return render(request,"staff.html",{"title":"Welcome","user":username,'a':a,'b':b,'c':c, "staff":staff, "user":username,"data":data})
+    else:
+        raise Http404("You are not authorized to access this page")
 
 def LogoutView(request):
     logout(request)
