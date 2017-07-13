@@ -13,8 +13,8 @@
             </div>
 
             <ul class="nav">
-                <li class="active">
-                    <a href="/">
+                <li>
+                    <a href="/nonstaff/">
                         <i class="ti-panel"></i>
                         <p>Dashboard</p>
                     </a>
@@ -37,16 +37,10 @@
                         <p>Task List</p>
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a href="/feedback/">
                         <i class="ti-text"></i>
                         <p>Feedback</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'logout' %}">
-                        <i class="ti-close"></i>
-                        <p>Log Out</p>
                     </a>
                 </li>
             </ul>
@@ -69,17 +63,16 @@
                         <li>
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="ti-user"></i>
-                                                                            <p>{{user}}</p>
+                                <p>{{user}}</p>
                             </a>
                         </li>
-                                    <li>
+                        <li>
                             <a href="#">
-                                                <i class="ti-settings"></i>
-                                                      <p>Settings</p>
+                                <i class="ti-settings"></i>
+                                <p>Settings</p>
                             </a>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </nav>
