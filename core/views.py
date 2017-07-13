@@ -80,8 +80,11 @@ def NonStaffView(request):
     user=request.user
     useronline_list=UserProfile.objects.filter(user=user)
     profile=useronline_list[0]
+    # import ipdb; ipdb.set_trace()
+
     username=profile.name
-    staff=user.is_staff
+    staff=request.user.is_staff
+    user = request.user
     taskapproved = Task.objects.filter(is_approved = True).filter(user=user)
     taskpending = Task.objects.filter(is_pending = True).filter(user=user)
     taskrejected = Task.objects.filter(is_rejected = True).filter(user=user)
@@ -200,6 +203,17 @@ def ViewTaskView(request):
     staff=user.is_staff
     tasks=Task.objects.filter(user=user).order_by("-id")
     return render(request, "viewtasks.html",{'tasks':tasks, "staff":staff,"user":username})
+
+
+@login_required(login_url="/login/")
+def ViewfeedbackView(request):
+    user=request.user
+    useronline_list=UserProfile.objects.filter(user=user)
+    profile=useronline_list[0]
+    username=profile.name
+    staff=user.is_staff
+    tasks=Task.objects.filter(user=user).order_by("-id")
+    return render(request, "feedback.html",{'tasks':tasks, "staff":staff,"user":username})
 
 
 @login_required(login_url="/login/")

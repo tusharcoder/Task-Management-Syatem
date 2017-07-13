@@ -19,7 +19,12 @@ class UserProfile(models.Model):
     emp_id = models.CharField(max_length=10)
     address = models.TextField(max_length=500)
     pan_no= models.CharField(max_length=12)
+    zip_no = models.CharField(max_length=6)
     position= models.CharField(max_length=20)
+    qualification = models.CharField(max_length=50, default="12th")
+    skills = models.CharField(max_length=1000)
+    phone_number = models.IntegerField(null=True)
+
     def __str__(self):
         """
         return the string representation of the Model

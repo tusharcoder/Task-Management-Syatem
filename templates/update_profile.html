@@ -60,6 +60,12 @@
                   </a>
                     {% endif %}
                 </li>
+		<li>
+                    <a href="/feedback/">
+                        <i class="ti-text"></i>
+                        <p>Feedback</p>
+                    </a>
+                </li>
             </ul>
     	</div>
     </div>
@@ -132,61 +138,57 @@
                         </div>
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Team Members</h4>
+                                <h4 class="title">Documents</h4>
                             </div>
                             <div class="content">
                                 <ul class="list-unstyled team-members">
                                             <li>
                                                 <div class="row">
-                                                    <div class="col-xs-3">
-                                                        <div class="avatar">
-                                                            <img src="{% static 'assets/img/faces/face-0.jpg' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-6">
-                                                        Mr. Tushar
-                                                        <br />
-                                                        <span class="text-success"><small>Sr. Web Developer</small></span>
-                                                    </div>
-
-                                                    <div class="col-xs-3 text-right">
-                                                        <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
+                                                    <div class="col-xs-1"></div>
+                                                    <div class="col-xs-10">
+                                                        <span style="font-family: Courier; font-weight: 400;">Offer Letter</span>
+                                                        <br>
+                                                        <div style="text-align: right; cursor: pointer;"><a target="_blank" href="/static/assets/media/pdf/1.pdf">Downlaod</a></div>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="row">
-                                                    <div class="col-xs-3">
-                                                        <div class="avatar">
-                                                            <img src="{% static 'assets/img/faces/face-1.jpg' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xs-6">
-                                                        Mr. Javed
-                                                        <br />
-                                                        <span class="text-success"><small>Sr. Web Developer</small></span>
-                                                    </div>
-
-                                                    <div class="col-xs-3 text-right">
-                                                        <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
+                                                    <div class="col-xs-1"></div>
+                                                    <div class="col-xs-10">
+                                                        <span style="font-family: Courier; font-weight: 400;">Appointment Letter</span>
+                                                        <br>
+                                                        <div style="text-align: right; cursor: pointer;"><a target="_blank" href="/static/assets/media/pdf/1.pdf">Downlaod</a></div>
                                                     </div>
                                                 </div>
                                             </li>
                                             <li>
                                                 <div class="row">
-                                                    <div class="col-xs-3">
-                                                        <div class="avatar">
-                                                            <img src="{% static 'assets/img/faces/face-3.jpg' %}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                                        </div>
+                                                    <div class="col-xs-1"></div>
+                                                    <div class="col-xs-10">
+                                                        <span style="font-family: Courier; font-weight: 400;">Acknowledge</span>
+                                                        <br>
+                                                        <div style="text-align: right; cursor: pointer;"><a target="_blank" href="/static/assets/media/pdf/1.pdf">Downlaod</a></div>
                                                     </div>
-                                                    <div class="col-xs-6">
-                                                        Mr. Adil
-                                                        <br />
-                                                        <span class="text-danger"><small>Graphic Designer</small></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-1"></div>
+                                                    <div class="col-xs-10">
+                                                        <span style="font-family: Courier; font-weight: 400;">Increment Letter</span>
+                                                        <br>
+                                                        <div style="text-align: right; cursor: pointer;"><a target="_blank" href="/static/assets/media/pdf/1.pdf">Downlaod</a></div>
                                                     </div>
-
-                                                    <div class="col-xs-3 text-right">
-                                                        <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-envelope"></i></btn>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-xs-1"></div>
+                                                    <div class="col-xs-10">
+                                                        <span style="font-family: Courier; font-weight: 400;">Appraisal</span>
+                                                        <br>
+                                                        <div style="text-align: right; cursor: pointer;"><a target="_blank" href="/static/assets/media/pdf/1.pdf">Downlaod</a></div>
                                                     </div>
                                                 </div>
                                             </li>
@@ -242,10 +244,44 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Pan Number</label>
                                                 <input type="text" class="form-control border-input" id="pan_no" placeholder="Enter your pan no" name="pan_no" value="{{profile.pan_no}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Zip code</label>
+                                                <input type="text" class="form-control border-input" id="zip_no" placeholder="Enter your zip code no" name="zip_no" value="{{profile.zip_no}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Phone Number</label>
+                                                <input type="text" class="form-control border-input" id="phone_number" placeholder="Enter your phone_number" name="phone_number" value="{{profile.phone_number}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Qualification</label>
+                                                <input type="text" class="form-control border-input" id="qualification" placeholder="Enter your qualification" name="qualification" value="{{profile.qualification}}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>Skills</label>
+                                                <input type="text" class="form-control border-input" id="skills" placeholder="Enter your skills here" name="skills" value="{{profile.skills}}">
                                             </div>
                                         </div>
                                     </div>

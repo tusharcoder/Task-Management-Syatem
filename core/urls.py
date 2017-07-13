@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^task/',TaskView, name="task"),
     url(r'^about/',AboutView, name="about"),
     url(r'^viewtasks/',ViewTaskView, name="viewtask"),
+    url(r'^feedback/',ViewfeedbackView, name="feedback"),
 
     url(r'^approvedtaskuser/',ApprovedTaskUserView, name="approvedtaskuser"),
     url(r'^pendingtaskuser/',PendingTaskUserView, name="pendingtaskuser"),
