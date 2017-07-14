@@ -60,12 +60,14 @@
                   </a>
                     {% endif %}
                 </li>
-		<li>
+                {% if not staff %}
+		            <li>
                     <a href="/feedback/">
                         <i class="ti-text"></i>
                         <p>Feedback</p>
                     </a>
                 </li>
+                {% endif %}
             </ul>
     	</div>
     </div>

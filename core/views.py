@@ -45,7 +45,7 @@ def LoginView(request):
                 return redirect('nonstaff', permanent=True)
 
         else:
-            return redirect('login', permanent=True)
+            return redirect('/', permanent=True)
 
 
 def RegisterView(request):
@@ -54,7 +54,7 @@ def RegisterView(request):
 
     if request.method=="POST":
         register(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"name":request.POST.get("name")})
-        return redirect('/login/', permanent=True)
+        return redirect('/', permanent=True)
 
 
 @login_required(login_url="/login/")
@@ -131,7 +131,7 @@ def StaffView(request):
 
 def LogoutView(request):
     logout(request)
-    return redirect('/login/')
+    return redirect('/')
 
 @login_required(login_url="/login/")
 def ApprovedTaskUserView(request):
@@ -416,6 +416,12 @@ def UserReportView(request):
     staff=user.is_staff
     delivery_date = ""
     q6 = []
+    taskapproved1 = Task.objects.filter(is_approved = True).filter(assigned_by=user)
+    taskpending1 = Task.objects.filter(is_pending = True).filter(assigned_by=user)
+    taskrejected1 = Task.objects.filter(is_rejected = True).filter(assigned_by=user)
+    a = taskapproved1.count()
+    b = taskpending1.count()
+    c = taskrejected1.count()
     if request.method == 'POST':
         delivery_date = request.POST.get('date')
         print(delivery_date)
@@ -429,7 +435,7 @@ def UserReportView(request):
             t_hr = (q5/60)
             q6.append({"name":mem.username,"duration":t_hr})
     if staff:
-        return render(request,"userreport.html",{"user":username,"q7":q6,"staff":staff,"delivery_date":delivery_date})
+        return render(request,"userreport.html",{"user":username,"q7":q6,'a':a,'b':b,'c':c,"staff":staff,"delivery_date":delivery_date})
     else:
         raise Http404("You are not authorized to access this page")
 
