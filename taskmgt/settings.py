@@ -34,7 +34,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['35.154.58.91']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -81,16 +81,16 @@ ROOT_URLCONF = 'taskmgt.urls'
 WSGI_APPLICATION = 'taskmgt.wsgi.application'
 
 
-#DATABASES = {
- #   'default': {
- #      'ENGINE': 'django.db.backends.sqlite3',
-  #       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
-    #}
-
 DATABASES = {
-     'default': env.db(),
-     }                                
+    'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+     }
+    }
+
+#DATABASES = {
+ #    'default': env.db(),
+  #   }                                
 
 LANGUAGE_CODE = 'en-us'
 
@@ -110,5 +110,5 @@ USE_TZ = True
 STATIC_ROOT=os.path.join(BASE_DIR,'static/')
 STATIC_URL = '/static/'
 STATICFILES_DIRS=['static_files',]
-MEDIA_ROOT=os.path.join(BASE_DIR,'media/')
+MEDIA_ROOT=os.path.join(BASE_DIR,'/Task-Managment-System/static_files/assets/media/')
 MEDIA_URL='/media/'
