@@ -1,4 +1,4 @@
-# Task-Management-Syatem
+# Task-Management-System
 Task Management System
 ```
 virtualvenv venv -p python3
