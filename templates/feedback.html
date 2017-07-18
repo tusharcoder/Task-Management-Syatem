@@ -1,23 +1,16 @@
 {%extends 'base.html'%}
 {%block content%}
 {% load staticfiles %}
-
 <div class="wrapper">
     <div class="sidebar" data-background-color="white" data-active-color="danger">
-
-    	<div class="sidebar-wrapper">
+        <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="/about/" class="simple-text">
                     Scaledesk
                 </a>
             </div>
-
             <ul class="nav">
-<<<<<<< HEAD
-                <li class="active">
-=======
                 <li>
->>>>>>> 33db70a7f16ea58294b028ccf0acae51d9795809
                     <a href="/nonstaff/">
                         <i class="ti-panel"></i>
                         <p>Dashboard</p>
@@ -47,12 +40,8 @@
                         <p>Feedback</p>
                     </a>
                 </li>
-<<<<<<< HEAD
-           </ul>
-=======
             </ul>
->>>>>>> 33db70a7f16ea58294b028ccf0acae51d9795809
-    	</div>
+        </div>
     </div>
         <div class="main-panel">
             <nav class="navbar navbar-default">
@@ -75,15 +64,9 @@
                             </a>
                         </li>
                         <li>
-<<<<<<< HEAD
                             <a href="{% url 'logout' %}">
                                 <i class="ti-close"></i>
                                 <p>Log Out</p>
-=======
-                            <a href="#">
-                                <i class="ti-settings"></i>
-                                <p>Settings</p>
->>>>>>> 33db70a7f16ea58294b028ccf0acae51d9795809
                             </a>
                         </li>
                     </ul>
@@ -101,13 +84,10 @@
                 </ul>
             <a href="#"><h1>Documents</h1></a>
         </div>
-
-
         <footer class="footer">
             <div class="container-fluid">
                 <nav class="pull-left">
                     <ul>
-
                         <li>
                             <a href="/about/">
                                 Scaledesk Web Studio
@@ -131,6 +111,5 @@
             </div>
         </footer>
     </div>
-
 </div>
 {%endblock%}
