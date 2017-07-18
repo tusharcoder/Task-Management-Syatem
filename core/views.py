@@ -424,7 +424,6 @@ def UserReportView(request):
     c = taskrejected1.count()
     if request.method == 'POST':
         delivery_date = request.POST.get('date')
-        print(delivery_date)
         members = User.objects.filter(is_staff=False)
         for mem in members:
             t_hr = 0
