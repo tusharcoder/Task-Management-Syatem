@@ -3,77 +3,18 @@
 {% load staticfiles %}
 
 <div class="wrapper">
-    <div class="sidebar" data-background-color="white" data-active-color="danger">
-
-    <!--
-		Tip 1: you can change the color of the sidebar's background using: data-background-color="white | black"
-		Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
-	-->
-
-    	<div class="sidebar-wrapper">
-            <div class="logo">
-                <a href="/about/" class="simple-text">
-                    Scaledesk
-                </a>
-            </div>
-
-            <ul class="nav">
-                <li>
-                  {% if staff %}
-                    <a href="/staff/">
-                  {% else %}
-                    <a href="/nonstaff/">
-                  {% endif %}
-                        <i class="ti-panel"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="/profile/">
-                        <i class="ti-user"></i>
-                        <p>User Profile</p>
-                    </a>
-                </li>
-                <li>
-                  {% if staff %}
-                    <a href="/projectreport/">
-                        <i class="ti-view-list-alt"></i>
-                        <p>Project Report</p>
-                    </a>
-                    {% else %}
-                    <a href="/task/">
-                        <i class="ti-view-list-alt"></i>
-                        <p>Add Task</p>
-                    </a>
-                    {% endif %}
-                </li>
-                <li>
-                  {% if staff %}
-                    <a href="/worktypereport/">
-                        <i class="ti-view-list-alt"></i>
-                        <p>WorkType Report</p>
-                    </a>
-                  {% else %}
-                  <a href="/task/">
-                      <i class="ti-view-list-alt"></i>
-                      <p>Task List</p>
-                  </a>
-                    {% endif %}
-                </li>
-                {% if not staff %}
-		            <li>
-                    <a href="/feedback/">
-                        <i class="ti-text"></i>
-                        <p>Feedback</p>
-                    </a>
-                </li>
-                {% endif %}
-            </ul>
-    	</div>
+    <div id="mySidenav" class="sidenav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <a href="/staff/">DashBoard</a>
+      <a href="/profile/">Profile</a>
+      <a href="/projectreport/">Project Report</a>
+      <a href="/worktypereport/">WorkType Report</a>
     </div>
 
-    <div class="main-panel">
-        <nav class="navbar navbar-default">
+
+    <div id="main">
+    <!-- <div class="main-panel"> -->
+        <nav class="navbar navbar-default" style="background-color:white;">
             <div class="container-fluid">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle">
@@ -82,14 +23,14 @@
                         <span class="icon-bar bar2"></span>
                         <span class="icon-bar bar3"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Dashboard</a>
+                    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a href="/profile/" class="dropdown-toggle">
                                 <i class="ti-user"></i>
-																			<p>{{user}}</p>
+								<p>{{user}}</p>
                             </a>
                         </li>
                         <li>
@@ -103,26 +44,32 @@
                 </div>
             </div>
         </nav>
+        
         <div class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-4 col-md-5">
                         <div class="card card-user">
-                            <div class="image">
-                                <img src="{% static 'assets/img/background.jpg' %}" alt="..."/>
-                            </div>
-                            <div class="content">
-                                <div class="author">
-                                  <img class=" avatar border-white" src="{% static 'assets/img/faces/face-2.jpg' %}" alt="..."/>
-                                  <h4 class="title">{{profile.name}}<br />
-                                  </h4>
+                            <form action="/profile/" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="image">
+                                    <img src="{% static 'assets/media/image/background.jpg' %}" alt="..."/>
                                 </div>
-                                <p class="description text-center">
-                                    "I like the way you work it <br>
-                                    No diggity <br>
-                                    I wanna bag it up"
-                                </p>
-                            </div>
+                                <div class="content">
+                                    <div class="author">
+                                        <img class=" avatar border-white" src="/media/{{profile.image}}" alt="..."/>
+                                        <input type="file" name="myfile" />
+                                        <input type="submit" name="submit" value="Upload" />
+                                        <h4 class="title">{{profile.name}}<br />
+                                        </h4>
+                                    </div>
+                                    <p class="description text-center">
+                                        "I like the way you work it <br>
+                                        No diggity <br>
+                                        I wanna bag it up"
+                                    </p>
+                                </div>
+                            </form>
                             <hr>
                             <div class="text-center">
                                 <div class="row">
@@ -335,54 +282,6 @@
 
 
 
-
-
-
-
-
-<!-- <div class="container">
-  <h1>Update <small>Your profile</small></h1>
-  <form class="" action="index.html" method="post">
-    {% csrf_token %}
-    <div class="form-group">
-      <label for="name">Name:</label>
-      <input type="text" name="name" class="form-control" id="name" placeholder="Enter your name" value="{{profile.name}}">
-
-    </div>
-
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" disabled value={{email}}>
-
-    </div>
-
-    <div class="form-group">
-      <label for="emp_id">Employee Id:</label>
-      <input type="text" class="form-control" id="emp_id" name=emp_id placeholder="Your Employid" disabled value="{{profile.emp_id}}">
-
-    </div>
-
-    <div class="form-group">
-      <label for="address">Address:</label>
-      <textarea name="address" rows="8" cols="80" placeholder="Enter your address" class="form-control">{{profile.address}}</textarea>
-
-    </div>
-
-    <div class="form-group">
-      <label for="pan_no">Pan No:</label>
-      <input type="text" class="form-control" id="pan_no" placeholder="Enter your pan no" name="pan_no" value="{{profile.pan_no}}">
-
-    </div>
-
-    <div class="form-group">
-      <label for="position">Position:</label>
-      <input type="text" class="form-control" id="pan_no" placeholder="Your Position" name="position" disabled value="{{profile.position}}">
-
-    </div>
-
-    <button type="submit" name="Login" class="btn btn-primary">Update Profile</button>
-  </form>
-</div> -->
 
 
 {%endblock%}

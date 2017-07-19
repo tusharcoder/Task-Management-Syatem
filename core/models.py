@@ -24,6 +24,7 @@ class UserProfile(models.Model):
     qualification = models.CharField(max_length=50, default="12th")
     skills = models.CharField(max_length=1000)
     phone_number = models.IntegerField(null=True)
+    image = models.ImageField(upload_to='image/')
 
     def __str__(self):
         """
