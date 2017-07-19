@@ -16,6 +16,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 from django.http import Http404
 from django.contrib import messages
+from django.core.files.storage import FileSystemStorage
 # import ipdb; ipdb.set_trace()
 
 # Create your views here.
@@ -73,6 +74,7 @@ def ProfileView(request):
     useronline_list=UserProfile.objects.filter(user=user)
     profile=useronline_list[0]
     username=profile.name
+    profile_image = profile.image
     profile=UserProfile.objects.filter(user=user)[0]
     if request.method=="GET":
         return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email, "staff":staff,"user":username})
@@ -81,7 +83,13 @@ def ProfileView(request):
         # user = request.user
         # staff = user.is_staff
         profile.updateProfile(**request.POST)
-        return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email,"staff":staff,"user":username})
+        a=UserProfile.objects.get(user=user)                
+        pic=request.FILES.get('myfile')
+        fss = FileSystemStorage()
+        pic = fss.save(pic.name, pic)
+        photo_url = fss.url(pic)
+        # import ipdb; ipdb.set_trace()        
+        return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email,"staff":staff,"user":username, 'image':photo_url})
 
 
 @login_required(login_url="/login/")
