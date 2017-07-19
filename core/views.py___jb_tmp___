@@ -20,7 +20,7 @@ from django.contrib import messages
 
 # Create your views here.
 
-@login_required(login_url="/login/")
+
 def AboutView(request):
     user=request.user
     useronline_list=UserProfile.objects.filter(user=user)
@@ -39,31 +39,18 @@ def LoginView(request):
         user = authenticate(username=request.POST.get("email"), password=request.POST.get("password"))
         if user:
             auth.login(request,user)
-            if user.is_staff:
-                return redirect('staff', permanent=True)
-            else:
-                return redirect('nonstaff', permanent=True)
+            return redirect('home', permanent=True)
         else:
-            try:
-                user1 = User.objects.get(username=request.POST.get("email"))
-                messages.info(request, 'Please enter correct password.')
-                return redirect('/')
-            except:
-                messages.info(request, 'Username and Password do not match.')
-                return redirect('/')
+            return redirect('login', permanent=True)
+
 
 def RegisterView(request):
     if request.method=="GET":
-       return render(request,"register.html",{"title":"Registration"})
+        return render(request,"register.html",{"title":"Registration"})
 
     if request.method=="POST":
-        try:
-            user1 = User.objects.get(username=request.POST.get("email"))
-            messages.warning(request, 'username already exist please enter diffrent username.')
-            return render(request,"register.html",{"title":"Registration"})
-        except:
-            register(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"name":request.POST.get("name")})
-            return redirect('/', permanent=True)
+        register(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"name":request.POST.get("name")})
+        return redirect('/login/', permanent=True)
 
 
 @login_required(login_url="/login/")
@@ -85,9 +72,9 @@ def ProfileView(request):
 
 
 @login_required(login_url="/login/")
-def NonStaffView(request):
-    user=request.user
-    useronline_list=UserProfile.objects.filter(user=user)
+def HomeView(request):
+    # user=request.user
+    useronline_list=UserProfile.objects.filter(user =request.user)
     profile=useronline_list[0]
     # import ipdb; ipdb.set_trace()
 
@@ -106,41 +93,12 @@ def NonStaffView(request):
     for task in todaytask:
         sum += task.duration
     hour = sum//60
-    return render(request,"nonstaff.html",{"title":"Welcome","user":username,'a':a,'b':b,'c':c,'hour':hour, "staff":staff, "user":username})
+    return render(request,"home.html",{"title":"Welcome","user":username,'a':a,'b':b,'c':c,'hour':hour, "staff":staff, "user":username})
 
-@login_required(login_url="/login/")
-def StaffView(request):
-    user=request.user
-    useronline_list=UserProfile.objects.filter(user=user)
-    profile=useronline_list[0]
-    username=profile.name
-    staff=user.is_staff
-    taskapproved = Task.objects.filter(is_approved = True).filter(assigned_by=user)
-    taskpending = Task.objects.filter(is_pending = True).filter(assigned_by=user)
-    taskrejected = Task.objects.filter(is_rejected = True).filter(assigned_by=user)
-    a = taskapproved.count()
-    b = taskpending.count()
-    c = taskrejected.count()
-    projects = Project.objects.filter(status = True)
-    data=[]
-    dur1 = []
-    for pro in projects:
-        dur = []
-        t_hr = 0
-        q5 = 0
-        taskproject = Task.objects.filter(project = pro).filter(is_approved = True)
-        for i in taskproject:
-            q5 += i.duration
-        t_hr = (q5/60)
-        data.append({"name":pro.name,"duration":t_hr})
-    if staff:
-        return render(request,"staff.html",{"title":"Welcome","user":username,'a':a,'b':b,'c':c, "staff":staff, "user":username,"data":data})
-    else:
-        raise Http404("You are not authorized to access this page")
 
 def LogoutView(request):
     logout(request)
-    return redirect('/')
+    return redirect('/login/')
 
 @login_required(login_url="/login/")
 def ApprovedTaskUserView(request):
@@ -213,15 +171,8 @@ def ViewTaskView(request):
     tasks=Task.objects.filter(user=user).order_by("-id")
     return render(request, "viewtasks.html",{'tasks':tasks, "staff":staff,"user":username})
 
-
 @login_required(login_url="/login/")
 def ViewfeedbackView(request):
-    user=request.user
-    useronline_list=UserProfile.objects.filter(user=user)
-    profile=useronline_list[0]
-    username=profile.name
-    staff=user.is_staff
-    tasks=Task.objects.filter(user=user).order_by("-id")
     return render(request, "feedback.html",{'tasks':tasks, "staff":staff,"user":username})
 
 
@@ -233,8 +184,8 @@ def TaskView(request):
     username=profile.name
     if request.method == 'GET':
         records=Task.objects.filter(user=user)
-        projects=Project.objects.filter(status = True).order_by("name")
-        worktypes=WorkType.objects.all().order_by("name")
+        projects=Project.objects.all()
+        worktypes=WorkType.objects.all()
         assigned=User.objects.filter(is_staff=True)
         staff=user.is_staff
         return render(request, "task.html", {"tasks": records,'projects':projects,"worktype":worktypes,"assigned_by":assigned, "staff":staff,"user":username})
@@ -283,18 +234,10 @@ def ApprovedTaskView(request):
     username = profile.name
     staff=user.is_staff
     taskapproved = Task.objects.filter(is_approved=True).filter(is_rejected=False).filter(is_pending=False).filter(assigned_by = user)
-    taskapproved1 = Task.objects.filter(is_approved = True).filter(assigned_by=user)
-    taskpending1 = Task.objects.filter(is_pending = True).filter(assigned_by=user)
-    taskrejected1 = Task.objects.filter(is_rejected = True).filter(assigned_by=user)
-    a = taskapproved1.count()
-    b = taskpending1.count()
-    c = taskrejected1.count()
     if staff:
-        return render(request, "approvedtasks.html",{"taskapproved":taskapproved,'a':a,'b':b,'c':c,"user":username,"staff":staff})
+        return render(request, "approvedtasks.html",{"taskapproved":taskapproved,"user":username,"staff":staff})
     else:
         raise Http404("You are not authorized to access this page")
-
-
 
 @login_required(login_url="/login/")
 def PendingTaskView(request):
@@ -303,28 +246,11 @@ def PendingTaskView(request):
     profile = useronline_list[0]
     username = profile.name
     staff=user.is_staff
-    some_var = []
     taskpending = Task.objects.filter(is_approved=False).filter(is_rejected=False).filter(is_pending=True).filter(assigned_by=user)
-    taskapproved1 = Task.objects.filter(is_approved = True).filter(assigned_by=user)
-    taskpending1 = Task.objects.filter(is_pending = True).filter(assigned_by=user)
-    taskrejected1 = Task.objects.filter(is_rejected = True).filter(assigned_by=user)
-    a = taskapproved1.count()
-    b = taskpending1.count()
-    c = taskrejected1.count()
-    if request.method == 'POST':
-        some_var = request.POST.getlist('checks')
-    for i in some_var:
-        task = Task.objects.get(pk=i)
-        task.is_approved=True
-        task.is_pending=False
-        task.is_rejected=False
-        task.save()
     if staff:
-        return render(request, "pendingtasks.html",{"taskpending":taskpending,'a':a,'b':b,'c':c,"user":username,"staff":staff})
+        return render(request, "pendingtasks.html",{"taskpending":taskpending,"user":username,"staff":staff})
     else:
         raise Http404("You are not authorized to access this page")
-
-
 
 @login_required(login_url="/login/")
 def RejectedTaskView(request):
@@ -334,14 +260,8 @@ def RejectedTaskView(request):
     username = profile.name
     staff=user.is_staff
     taskrejected = Task.objects.filter(is_approved=False).filter(is_rejected=True).filter(is_pending=False).filter(assigned_by = user)
-    taskapproved1 = Task.objects.filter(is_approved = True).filter(assigned_by=user)
-    taskpending1 = Task.objects.filter(is_pending = True).filter(assigned_by=user)
-    taskrejected1 = Task.objects.filter(is_rejected = True).filter(assigned_by=user)
-    a = taskapproved1.count()
-    b = taskpending1.count()
-    c = taskrejected1.count()
     if staff:
-        return render(request, "rejectedtasks.html",{"taskrejected":taskrejected,'a':a,'b':b,'c':c,"user":username,"staff":staff})
+        return render(request, "rejectedtasks.html",{"taskrejected":taskrejected,"user":username,"staff":staff})
     else:
         raise Http404("You are not authorized to access this page")
 
@@ -352,7 +272,7 @@ def ProjectReportView(request):
     profile = useronline_list[0]
     username = profile.name
     staff=user.is_staff
-    projects = Project.objects.filter(status = True)
+    projects = Project.objects.all()
     q1 = []
     for pro in projects:
         q=0
@@ -425,12 +345,6 @@ def UserReportView(request):
     staff=user.is_staff
     delivery_date = ""
     q6 = []
-    taskapproved1 = Task.objects.filter(is_approved = True).filter(assigned_by=user)
-    taskpending1 = Task.objects.filter(is_pending = True).filter(assigned_by=user)
-    taskrejected1 = Task.objects.filter(is_rejected = True).filter(assigned_by=user)
-    a = taskapproved1.count()
-    b = taskpending1.count()
-    c = taskrejected1.count()
     if request.method == 'POST':
         delivery_date = request.POST.get('date')
         members = User.objects.filter(is_staff=False)
@@ -443,7 +357,7 @@ def UserReportView(request):
             t_hr = (q5/60)
             q6.append({"name":mem.username,"duration":t_hr})
     if staff:
-        return render(request,"userreport.html",{"user":username,"q7":q6,'a':a,'b':b,'c':c,"staff":staff,"delivery_date":delivery_date})
+        return render(request,"userreport.html",{"user":username,"q7":q6,"staff":staff})
     else:
         raise Http404("You are not authorized to access this page")
 
