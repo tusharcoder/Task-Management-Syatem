@@ -10,44 +10,6 @@
     <a href="/projectreport/">Project Report</a>
     <a href="/worktypereport/">WorkType Report</a>
   </div>
-    <!-- <div class="sidebar" data-background-color="white" data-active-color="danger">
-
-    	<div class="sidebar-wrapper">
-            <div class="logo">
-                <a href="/about/" class="simple-text">
-                    Scaledesk
-                </a>
-            </div>
-
-            <ul class="nav">
-                <li class="active">
-                    <a href="/staff/">
-                        <i class="ti-panel"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="/profile/">
-                        <i class="ti-user"></i>
-                        <p>User Profile</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="/projectreport/">
-                        <i class="ti-view-list-alt"></i>
-                        <p>Project Report</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="/worktypereport/">
-                        <i class="ti-view-list-alt"></i>
-                        <p>WorkType Report</p>
-                    </a>
-                </li>
-            </ul>
-    	</div>
-    </div> -->
-
     <div id="main">
     <!-- <div class="main-panel"> -->
         <nav class="navbar navbar-default" style="background-color:white;">
@@ -195,7 +157,7 @@
                               {% csrf_token %}
                               <button type="submit" name="Approve" class="btn btn-primary btn-fill btn-wd" style="position: absolute; right: 0  ;">Approve</button>
                             <div class="content table-responsive table-full-width" style="overflow:scroll;">
-                                <table id="example1" class="table table-striped table-bordered">
+                                <table id="example1" class="table table-striped table-bordered" style="overflow:scroll;">
                                   <thead>
                                       <tr>
                                         <th>Select</th>
@@ -250,10 +212,6 @@
                           paging:         false
                         });
                     } );
-                    </script>
-
-                    <script>
-
                     </script>
                 </div>
 

@@ -43,18 +43,27 @@ def LoginView(request):
                 return redirect('staff', permanent=True)
             else:
                 return redirect('nonstaff', permanent=True)
-
         else:
-            return redirect('/', permanent=True)
-
+            try:
+                user1 = User.objects.get(username=request.POST.get("email"))
+                messages.info(request, 'Please enter correct password.')
+                return redirect('/')
+            except:
+                messages.info(request, 'Username and Password do not match.')
+                return redirect('/')
 
 def RegisterView(request):
     if request.method=="GET":
-        return render(request,"register.html",{"title":"Registration"})
+       return render(request,"register.html",{"title":"Registration"})
 
     if request.method=="POST":
-        register(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"name":request.POST.get("name")})
-        return redirect('/', permanent=True)
+        try:
+            user1 = User.objects.get(username=request.POST.get("email"))
+            messages.warning(request, 'username already exist please enter diffrent username.')
+            return render(request,"register.html",{"title":"Registration"})
+        except:
+            register(**{"username":request.POST.get("email"),"password":request.POST.get("password"),"name":request.POST.get("name")})
+            return redirect('/', permanent=True)
 
 
 @login_required(login_url="/login/")
@@ -112,7 +121,7 @@ def StaffView(request):
     a = taskapproved.count()
     b = taskpending.count()
     c = taskrejected.count()
-    projects = Project.objects.all()
+    projects = Project.objects.filter(status = True)
     data=[]
     dur1 = []
     for pro in projects:
@@ -224,7 +233,7 @@ def TaskView(request):
     username=profile.name
     if request.method == 'GET':
         records=Task.objects.filter(user=user)
-        projects=Project.objects.all().order_by("name")
+        projects=Project.objects.filter(status = True).order_by("name")
         worktypes=WorkType.objects.all().order_by("name")
         assigned=User.objects.filter(is_staff=True)
         staff=user.is_staff
@@ -343,7 +352,7 @@ def ProjectReportView(request):
     profile = useronline_list[0]
     username = profile.name
     staff=user.is_staff
-    projects = Project.objects.all()
+    projects = Project.objects.filter(status = True)
     q1 = []
     for pro in projects:
         q=0

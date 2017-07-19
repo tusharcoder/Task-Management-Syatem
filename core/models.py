@@ -45,6 +45,8 @@ class Project(models.Model):
     """Model to store the Projet details"""
     name=models.CharField(max_length=100)
     description=models.CharField(max_length=500)
+    status = models.BooleanField(default = True)
+    expected_hours = models.IntegerField(null = True)
     def __str__(self):
         """return the string representation of the Model Project"""
         return self.name
