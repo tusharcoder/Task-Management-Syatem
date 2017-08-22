@@ -38,7 +38,8 @@ urlpatterns = [
     url(r'^worktypereport/',WorkTypeReportView, name='worktypereport'),
     url(r'^totalprojecthours/',ProjectHourView, name='totalprojecthours'),
     url(r'^userreport/',UserReportView, name='userreport'),
-
+    # for saving user documents
+    url(r'^userprofiledocument/',userprofiledocument, name='userprofiledocument'),
 
     url(r'^approved/(?P<id>[a-zA-Z0-9\-]+)/', Approved, name='approved'),
     url(r'^rejected/(?P<id>[a-zA-Z0-9\-]+)/', Rejected, name='rejected'),

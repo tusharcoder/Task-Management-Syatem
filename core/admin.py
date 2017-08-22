@@ -8,7 +8,7 @@
 
 
 from django.contrib import admin
-from .models import Task, WorkType, Project, UserProfile
+from .models import Task, WorkType, Project, UserProfile, DocumentUpload,MultipleDocument,UserProfileDocument
 # Register your models here.
 
 class TaskAdmin(admin.ModelAdmin):
@@ -29,6 +29,9 @@ admin.site.register(Task , TaskAdmin)
 admin.site.register(WorkType)
 admin.site.register(Project)
 admin.site.register(UserProfile , UserProfileAdmin)
+admin.site.register(DocumentUpload)
+admin.site.register(MultipleDocument)
+admin.site.register(UserProfileDocument)
 
 # for i in (Task, WorkType, Project, UserProfile):
 #     admin.site.register(i)

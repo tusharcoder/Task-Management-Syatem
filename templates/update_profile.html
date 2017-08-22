@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="content">
                                     <div class="author">
-                                        <img class=" avatar border-white" src="/media/{{profile.image}}" alt="..."/>
+                                        <img class=" avatar border-white" src="/media/image/{{profile.image}}" alt="..."/>
                                         <input type="file" name="myfile" />
                                         <input type="submit" name="submit" value="Upload" />
                                         <h4 class="title">{{profile.name}}<br />
@@ -97,7 +97,11 @@
                                                     <div class="col-xs-10">
                                                         <span style="font-family: Courier; font-weight: 400;">Offer Letter</span>
                                                         <br>
-                                                        <div style="text-align: right; cursor: pointer;"><a target="_blank" href="/static/assets/media/pdf/1.pdf">Download</a></div>
+                                                        <div style="text-align: right; cursor: pointer;">
+                                                            <button class="btn btn-primary dropdown-toggle" type="button">
+                                                                <a target="_blank" href="/media/{{documents.offer_letter}}">Download</a>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </li>
@@ -107,7 +111,11 @@
                                                     <div class="col-xs-10">
                                                         <span style="font-family: Courier; font-weight: 400;">Appointment Letter</span>
                                                         <br>
-                                                        <div style="text-align: right; cursor: pointer;"><a target="_blank" href="/static/assets/media/pdf/1.pdf">Download</a></div>
+                                                        <div style="text-align: right; cursor: pointer;">
+                                                            <button class="btn btn-primary dropdown-toggle" type="button">
+                                                                <a target="_blank" href="/media/{{documents.appointment_letter}}">Download</a>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </li>
@@ -117,7 +125,11 @@
                                                     <div class="col-xs-10">
                                                         <span style="font-family: Courier; font-weight: 400;">Acknowledge</span>
                                                         <br>
-                                                        <div style="text-align: right; cursor: pointer;"><a target="_blank" href="/static/assets/media/pdf/1.pdf">Download</a></div>
+                                                        <div style="text-align: right; cursor: pointer;">
+                                                            <button class="btn btn-primary dropdown-toggle" type="button">
+                                                                <a target="_blank" href="/media/{{documents.acknowledge}}">Download</a>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </li>
@@ -127,7 +139,19 @@
                                                     <div class="col-xs-10">
                                                         <span style="font-family: Courier; font-weight: 400;">Increment Letter</span>
                                                         <br>
-                                                        <div style="text-align: right; cursor: pointer;"><a target="_blank" href="/static/assets/media/pdf/1.pdf">Download</a></div>
+                                                        <div style="text-align: right; cursor: pointer;" class="dropdown">
+                                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+                                                            <span class="caret"></span></button>
+                                                            <ul class="dropdown-menu">
+                                                                {% for document in  multiple_document %}
+                                                                    <li>
+                                                                        <a href="/media/{{document.increament_letter}}" target="_blank">
+                                                                            {{document.increament_letter}}
+                                                                        </a>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </li>
@@ -137,7 +161,19 @@
                                                     <div class="col-xs-10">
                                                         <span style="font-family: Courier; font-weight: 400;">Appraisal</span>
                                                         <br>
-                                                        <div style="text-align: right; cursor: pointer;"><a target="_blank" href="/static/assets/media/pdf/1.pdf">Download</a></div>
+                                                          <div style="text-align: right; cursor: pointer;" class="dropdown">
+                                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+                                                            <span class="caret"></span></button>
+                                                            <ul class="dropdown-menu">
+                                                                {% for document in  multiple_document %}
+                                                                    <li>
+                                                                        <a href="/media/{{document.appraisal}}" target="_blank">
+                                                                            {{document.appraisal}}
+                                                                        </a>
+                                                                    </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </li>
@@ -232,8 +268,28 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="mainclass">
+                                        {% for document1 in profiledocument%}
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class='panel panel-default'>
+                                                    <div class='panel-heading'>{{document1.documentTitle}}</div>
+                                                    <div class='panel-body'><span style="color:blue;">FILE:-</span>{{document1.document}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class='panel panel-default'><div class='panel-body'>
+                                                <div id="adddocument"></div>
+                                            </div></div>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" id="add">+Document</button>
 
-                                    <div class="text-center">
+                                        <div class="text-center">
                                         <button type="submit" class="btn btn-info btn-fill btn-wd">Update Profile</button>
                                     </div>
                                     <div class="clearfix"></div>
@@ -280,7 +336,45 @@
 
 
 
+<script>
+    //For getting CSRF token
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+    }
 
+    function cll(){
+        console.log("kdjfksd");
+        var Documentname = $("#name").val();
+        var file = $("#file").val();
+        var csrftoken = getCookie('csrftoken');
+
+        $.ajax({
+            url : "/userprofiledocument/",
+            type : "POST",
+            data : { Documentname : Documentname,file: file, csrfmiddlewaretoken: csrftoken},
+            success : function(json) {
+                $('#adddocument').empty();
+
+                $('.mainclass').append("<div class='row'><div class='col-md-6'><div class='panel panel-default'><div class='panel-heading'>"+Documentname +"</div><div class='panel-body'><span style='color:blue;'>FILE:-</span>"+ file+"</div></div></div></div>")
+            },
+            error: function(err){
+                alert(err);
+            }
+        });            
+    }
+</script>
 
 
 

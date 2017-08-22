@@ -17,6 +17,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.http import Http404
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
+from pprint import pprint
 # import ipdb; ipdb.set_trace()
 
 # Create your views here.
@@ -76,8 +77,12 @@ def ProfileView(request):
     username=profile.name
     profile_image = profile.image
     profile=UserProfile.objects.filter(user=user)[0]
+    user_document = DocumentUpload.objects.get(user=request.user)
+    user_document_multiple = MultipleDocument.objects.filter(related_user_document=user_document)
+
+    userprofiledocument = UserProfileDocument.objects.filter(user_reference=request.user)
     if request.method=="GET":
-        return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email, "staff":staff,"user":username})
+        return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email, "staff":staff,"user":username, 'documents': user_document, 'multiple_document': user_document_multiple, 'profiledocument': userprofiledocument})
 
     if request.method=="POST":
         # user = request.user
@@ -91,13 +96,24 @@ def ProfileView(request):
         # import ipdb; ipdb.set_trace()        
         return render(request,"update_profile.html",{"title":"Profile","profile":profile, "email":request.user.email,"staff":staff,"user":username, 'image':photo_url})
 
+def userprofiledocument(request):
+    if request.method == "POST":
+        if request.is_ajax():
+            documentTitle1 = request.POST.get('Documentname')
+            document1 = request.POST.get('file')
+            documents = UserProfileDocument.objects.create(user_reference=request.user,documentTitle=documentTitle1, document=document1)
+            documents.save()
+        else:
+            pprint("this is not ajax request")
+    return render(request, 'base.html')
+
 
 @login_required(login_url="/login/")
 def NonStaffView(request):
     user=request.user
     useronline_list=UserProfile.objects.filter(user=user)
-    profile=useronline_list[0]
     # import ipdb; ipdb.set_trace()
+    profile=useronline_list[0]
 
     username=profile.name
     staff=request.user.is_staff

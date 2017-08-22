@@ -87,3 +87,28 @@ class Task(models.Model):
 
     def __str__(self):
         return self.name
+
+class DocumentUpload(models.Model):
+    user = models.ForeignKey(User,related_name="currentuser")
+    offer_letter = models.FileField(upload_to='pdf/')
+    appointment_letter = models.FileField(upload_to='pdf/')
+    acknowledge = models.FileField(upload_to='pdf/')
+
+    def __str__(self):
+        return self.user.username
+
+class MultipleDocument(models.Model):
+    related_user_document = models.ForeignKey(DocumentUpload, on_delete=models.CASCADE)
+    increament_letter = models.FileField(upload_to='pdf/')
+    appraisal = models.FileField(upload_to='pdf/')
+
+    def __str__(self):
+        return self.related_user_document.user.username
+    
+class UserProfileDocument(models.Model):
+    user_reference = models.ForeignKey(User, on_delete=models.CASCADE)
+    documentTitle = models.CharField(max_length=30)
+    document = models.FileField(upload_to='userprofiledocument/')
+
+    def __str__(self):
+        return self.documentTitle
